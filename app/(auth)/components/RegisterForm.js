@@ -2,7 +2,6 @@ import { DatePicker } from "zaman";
 import { useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import Link from "next/link";
 
 const RegisterForm = () => {
   const [phone, setPhone] = useState("");
@@ -70,13 +69,6 @@ const RegisterForm = () => {
           ثبت نام
         </button>
       </div>
-
-      <p className="flex items-center justify-center gap-x-1.5 text-xs/[16.8px] font-medium text-[#6C7278] tracking-[-0.12px]">
-        درصورت بروز مشکل تماس بگیـرید
-        <Link href="/" className="font-semibold text-[#2AD1D1]">
-          پشتیبانی
-        </Link>
-      </p>
     </form>
   );
 };

@@ -1,9 +1,14 @@
 import Login from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import Link from "next/link";
 
 const LoginRegister = ({ activeTab, setActiveTab }) => {
   return (
-    <section className={`section-login-register ${activeTab === "login" ? "-mt-[140px]" : "-mt-[190px]"}`}>
+    <section
+      className={`section-login-register ${
+        activeTab === "login" ? "-mt-[140px]" : "-mt-[190px]"
+      }`}
+    >
       <div className="container">
         {/* wrapper */}
         <div className="w-full p-6 bg-white rounded-[10px]">
@@ -43,6 +48,13 @@ const LoginRegister = ({ activeTab, setActiveTab }) => {
 
             {activeTab === "register" && <RegisterForm />}
           </div>
+
+          <p className="flex items-center justify-center gap-x-1.5 mt-6 text-xs/[16.8px] font-medium text-[#6C7278] tracking-[-0.12px]">
+            درصورت بروز مشکل تماس بگیـرید
+            <Link href="/" className="font-semibold text-[#2AD1D1]">
+              پشتیبانی
+            </Link>
+          </p>
         </div>
       </div>
     </section>

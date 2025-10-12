@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const LoginForm = () => {
   return (
     <>
@@ -34,11 +32,6 @@ const LoginForm = () => {
           ورود
         </button>
       </form>
-
-      <p className="flex items-center justify-center gap-x-1.5 mt-6 text-xs/[16.8px] font-medium text-[#6C7278] tracking-[-0.12px]">
-        درصورت بروز مشکل تماس بگیـرید
-        <Link href="/" className="font-semibold text-[#2AD1D1]">پشتیبانی</Link>
-      </p>
     </>
   );
 };
