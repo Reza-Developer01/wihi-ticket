@@ -1,4 +1,5 @@
 import "./auth.css";
+import Footer from "./components/layouts/Footer";
 
 export const metadata = {
   title: "ورود و ثبت نام",
@@ -38,9 +39,34 @@ export default function AuthLayout({ children }) {
             strokeLinejoin="round"
           />
         </symbol>
+        <symbol
+          id="arrow-down"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 6 6"
+          fill="none"
+        >
+          <path
+            d="M1.98535 3.20246L2.64035 3.85746C2.83285 4.04996 3.14785 4.04996 3.34035 3.85746L4.97035 2.22746"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M1.00977 2.22755L1.26977 2.48755"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </symbol>
       </svg>
 
       <main className="main max-w-[425px] mx-auto">{children}</main>
+
+      <Footer />
     </>
   );
 }
