@@ -2,6 +2,7 @@ import { DatePicker } from "zaman";
 import { useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import Input from "./Input";
 
 const RegisterForm = () => {
   const [phone, setPhone] = useState("");
@@ -10,16 +11,8 @@ const RegisterForm = () => {
     <form action="#" className="flex flex-col gap-y-6">
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <input
-            type="text"
-            placeholder="نام"
-            className="custom__input w-full h-[46px] px-3.5 text-sm/[19.6px] bg-white text-[#1A1C1E] font-medium border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#1A1C1E]"
-          />
-          <input
-            type="text"
-            placeholder="نام خانوادگی"
-            className="custom__input w-full h-[46px] px-3.5 text-sm/[19.6px] bg-white text-[#1A1C1E] font-medium border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#1A1C1E]"
-          />
+          <Input type="text" placeholder="نام" />
+          <Input type="text" placeholder="نام خانوادگی" />
         </div>
 
         <div className="relative">
@@ -54,10 +47,9 @@ const RegisterForm = () => {
           <svg className="absolute right-3.5 top-0 bottom-0 m-auto w-4 h-4 text-[#ACB5BB]">
             <use href="#eye-off" />
           </svg>
-          <input
+          <Input
             type="password"
             placeholder="*******"
-            className="custom__input w-full h-[46px] pl-3.5 pr-10 text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#1A1C1E] text-left"
             style={{ direction: "ltr" }}
           />
         </div>

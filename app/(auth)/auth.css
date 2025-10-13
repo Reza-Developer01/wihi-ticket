@@ -9,12 +9,12 @@
     box-shadow: 0px 3px 6px 0px #00000005 inset;
 }
 
-.tab-content+span {
+.login__message {
     position: relative;
 }
 
-.tab-content+span::before,
-.tab-content+span::after {
+.login__message::before,
+.login__message::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -25,15 +25,15 @@
     background-color: #edf1f3;
 }
 
-.tab-content+span::before {
+.login__message::before {
     right: 0;
 }
 
-.tab-content+span::after {
+.login__message::after {
     left: 0;
 }
 
-.tab-content .custom__input,
+.custom__input,
 .date-picker {
     box-shadow: 0px 1px 2px 0px #e4e5e73d;
 }
