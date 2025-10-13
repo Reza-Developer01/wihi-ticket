@@ -1,4 +1,4 @@
-import Login from "./LoginForm";
+import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import Link from "next/link";
 
@@ -44,7 +44,7 @@ const LoginRegister = ({ activeTab, setActiveTab }) => {
 
           {/* tabs content */}
           <div className="tab-content">
-            {activeTab === "login" && <Login />}
+            {activeTab === "login" && <LoginForm />}
 
             {activeTab === "register" && <RegisterForm />}
           </div>

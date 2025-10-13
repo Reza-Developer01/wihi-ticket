@@ -62,3 +62,23 @@
 .react-international-phone-country-selector-button__dropdown-arrow {
     margin: 0 !important;
 }
+
+.timer::before,
+.timer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 97px;
+    height: 1px;
+    background-color: #EDF1F3;
+}
+
+.timer::before {
+    right: 0;
+}
+
+.timer::after {
+    left: 0;
+}
