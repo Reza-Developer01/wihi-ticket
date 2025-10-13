@@ -14,16 +14,11 @@ const LoginForm = () => {
           style={{ direction: "ltr" }}
         />
 
-        <div className="relative">
-          <svg className="absolute right-3.5 top-0 bottom-0 m-auto w-4 h-4 text-[#ACB5BB]">
-            <use href="#eye-off" />
-          </svg>
-          <Input
-            type="password"
-            placeholder="*******"
-            style={{ direction: "ltr" }}
-          />
-        </div>
+        <Input
+          type="password"
+          placeholder="*******"
+          style={{ direction: "ltr" }}
+        />
 
         <button
           type="submit"
