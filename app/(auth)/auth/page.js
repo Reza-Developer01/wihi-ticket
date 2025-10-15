@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import Head from "../components/Head";
-import LoginRegister from "../components/LoginRegister";
 import Link from "next/link";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
+import Tabs from "../components/Tabs";
 
 const page = () => {
   const [activeTab, setActiveTab] = useState("login");
 
   return (
     <>
-      {/* ==== Start Section Top ==== */}
       <Head place="justify-center">
         {activeTab === "login" && (
           <>
@@ -41,11 +42,39 @@ const page = () => {
           </>
         )}
       </Head>
-      {/* ==== Finish Section Top ==== */}
 
-      {/* ==== Start Section Login & Register ==== */}
-      <LoginRegister activeTab={activeTab} setActiveTab={setActiveTab} />
-      {/* ==== Finish Section Login & Register ==== */}
+      <section
+        className={`section-login-register ${
+          activeTab === "login" ? "-mt-[140px]" : "-mt-[190px]"
+        }`}
+      >
+        <div className="container">
+          {/* wrapper */}
+          <div className="w-full p-6 bg-white rounded-[10px]">
+            {/* tabs */}
+            <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+
+            {/* tabs content */}
+            <div className="tab-content">
+              {activeTab === "login" && (
+                <span className="login__message block mb-6 text-center text-[#6C7278] text-xs/[18px]">
+                  نام کاربری و رمز عبور را وارد کنید
+                </span>
+              )}
+              {activeTab === "login" && <LoginForm />}
+
+              {activeTab === "register" && <RegisterForm />}
+            </div>
+
+            <p className="flex items-center justify-center gap-x-1.5 mt-6 text-xs/[16.8px] font-medium text-[#6C7278] tracking-[-0.12px]">
+              درصورت بروز مشکل تماس بگیـرید
+              <Link href="/" className="font-semibold text-[#2AD1D1]">
+                پشتیبانی
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   );
 };
