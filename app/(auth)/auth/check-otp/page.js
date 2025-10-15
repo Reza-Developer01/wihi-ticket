@@ -1,6 +1,5 @@
-import Link from "next/link";
-import Head from "../components/Head";
-import CheckOtpForm from "../components/CheckOtpForm";
+import Head from "../../components/Head";
+import CheckOtpForm from "../../components/CheckOtpForm";
 
 export const metadata = {
   title: "کد تایید",
