@@ -1,11 +1,33 @@
+"use client";
+
 import Input from "./Input";
+import { login } from "@/actions/auth";
+import SubmitButton from "./SubmitButton";
+import { useActionState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const [state, formAction] = useActionState(login, {});
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state?.status === "error") {
+      toast.error(state?.message);
+    } else {
+      toast.success(state?.message);
+      router.push("/auth/check-otp");
+    }
+  }, [state]);
+
   return (
-    <form action="#" className="flex flex-col gap-y-4">
+    <form action={formAction} className="flex flex-col gap-y-4">
       <Input
-        type="email"
-        placeholder="Loisbecket@gmail.com"
+        name="phone"
+        type="text"
+        placeholder="09123456789"
         style={{ direction: "ltr" }}
       />
 
@@ -15,12 +37,7 @@ const LoginForm = () => {
         style={{ direction: "ltr" }}
       />
 
-      <button
-        type="submit"
-        className="w-full h-12 rounded-[10px] leading-6 text-white mt-2 font-medium"
-      >
-        ورود
-      </button>
+      <SubmitButton title="ورود" />
     </form>
   );
 };

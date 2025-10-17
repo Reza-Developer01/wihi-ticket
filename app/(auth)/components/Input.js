@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const Input = ({ placeholder, type, style, ...props }) => {
+const Input = ({ name = "", placeholder, type, style, ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ const Input = ({ placeholder, type, style, ...props }) => {
             </svg>
           </button>
           <input
+            name="password"
             placeholder={placeholder}
             className="custom__input w-full h-[46px] px-3.5 text-sm/[19.6px] bg-white text-[#1A1C1E] font-medium border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#1A1C1E]"
             type={showPassword ? "text" : "password"}
@@ -28,6 +29,7 @@ const Input = ({ placeholder, type, style, ...props }) => {
         </div>
       ) : (
         <input
+          name={name}
           placeholder={placeholder}
           className="custom__input w-full h-[46px] px-3.5 text-sm/[19.6px] bg-white text-[#1A1C1E] font-medium border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#1A1C1E]"
           type={type}
