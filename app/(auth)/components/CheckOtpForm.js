@@ -9,6 +9,8 @@ import { OtpInput } from "reactjs-otp-input";
 const CheckOtpForm = () => {
   const [state, formAction] = useActionState(checkOtp, {});
   const [otp, setOtp] = useState("");
+  const [timeLeft, setTimeLeft] = useState(5);
+  const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
@@ -21,17 +23,44 @@ const CheckOtpForm = () => {
     }
   }, [state]);
 
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      setIsExpired(true);
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
   const handleChange = (otp) => setOtp(otp);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
+  const handleResend = () => {
+    toast.success("کد تایید مجدداً ارسال شد");
+    setTimeLeft(5);
+    setIsExpired(false);
+  };
 
   return (
     <section className="section-check-otp -mt-[140px]">
       <div className="container">
-        {/* wrapper */}
         <div className="w-full p-6 bg-white rounded-[10px]">
           <p className="text-xs/[18px] text-[#6C7278] mb-6 tracking-[-0.12px]">
-            کد تایید ارسال شده را وارد کنید و صورت ارسال نشدن پیامک از صحت شماره
-            خود حاصل فرمایید و تلاش مجدد را بزنید
+            کد تایید ارسال شده را وارد کنید و در صورت ارسال نشدن پیامک از صحت
+            شماره خود مطمئن شوید و تلاش مجدد را بزنید.
           </p>
+
           <form action={formAction}>
             <OtpInput
               value={otp}
@@ -53,12 +82,25 @@ const CheckOtpForm = () => {
                 outline: "none",
                 fontSize: "14px",
                 borderRadius: "10px",
+                textAlign: "center",
               }}
             />
             <input type="hidden" name="code" value={otp} />
-            <span className="timer relative block mt-6 text-center text-[#6C7278] text-xs/[18px] font-bold">
-              25 : 1
-            </span>
+
+            {!isExpired ? (
+              <span className="timer relative block mt-6 text-center text-[#6C7278] text-xs/[18px] font-bold">
+                {formatTime(timeLeft)}
+              </span>
+            ) : (
+              <span
+                type="button"
+                onClick={handleResend}
+                className="timer relative block mt-6 text-center text-[#6C7278] text-xs/[18px] font-bold"
+              >
+                ارسال مجدد کد
+              </span>
+            )}
+
             <button
               type="submit"
               className="w-full h-12 mt-6 rounded-[10px] leading-6 bg-[#20CFCF] text-white font-medium"
@@ -66,6 +108,7 @@ const CheckOtpForm = () => {
               تایید
             </button>
           </form>
+
           <p className="flex items-center justify-center gap-x-1.5 mt-6 text-xs/[16.8px] font-medium text-[#6C7278] tracking-[-0.12px]">
             درصورت بروز مشکل تماس بگیـرید
             <Link href="/" className="font-semibold text-[#2AD1D1]">
