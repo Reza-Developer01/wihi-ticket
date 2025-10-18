@@ -1,11 +1,25 @@
 "use client";
 
+import { checkOtp } from "@/actions/auth";
 import Link from "next/link";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { OtpInput } from "reactjs-otp-input";
 
 const CheckOtpForm = () => {
+  const [state, formAction] = useActionState(checkOtp, {});
   const [otp, setOtp] = useState("");
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state?.status === "error") {
+      toast.error(state?.message);
+    } else {
+      toast.success(state?.message);
+      sessionStorage.removeItem("phone");
+    }
+  }, [state]);
 
   const handleChange = (otp) => setOtp(otp);
 
@@ -18,7 +32,7 @@ const CheckOtpForm = () => {
             کد تایید ارسال شده را وارد کنید و صورت ارسال نشدن پیامک از صحت شماره
             خود حاصل فرمایید و تلاش مجدد را بزنید
           </p>
-          <form action="#">
+          <form action={formAction}>
             <OtpInput
               value={otp}
               onChange={handleChange}
@@ -41,6 +55,7 @@ const CheckOtpForm = () => {
                 borderRadius: "10px",
               }}
             />
+            <input type="hidden" name="code" value={otp} />
             <span className="timer relative block mt-6 text-center text-[#6C7278] text-xs/[18px] font-bold">
               25 : 1
             </span>
