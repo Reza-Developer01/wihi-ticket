@@ -15,7 +15,7 @@
     --breakpoint-xl: initial;
     --breakpoint-2xl: initial;
 
-    --color-body: #f6f8fa;
+    --color-body: #0D0D1B;
 }
 
 @utility container {
@@ -26,4 +26,27 @@
 body {
     font-family: var(--font-pinar);
     background-color: var(--color-body);
+}
+
+/* ==== Custom Styles ==== */
+.plans {
+    background: linear-gradient(262.65deg, #FFFFFF 0.85%, #F7FFFF 48.45%, #FFFFFF 96.06%);
+}
+
+.plans__item-button {
+    box-shadow: 0px -3px 6px 0px #F4F5FA99 inset;
+}
+
+.plans__active button {
+    border: 1px solid #17C7C7;
+    box-shadow: 0px 4px 4px 0px #E0FFFF;
+}
+
+.plans__active span {
+    color: #17C7C7;
+    font-weight: 500;
+}
+
+.selector__items {
+    box-shadow: "0px -3px 6px 0px #F4F5FA99 inset";
 }

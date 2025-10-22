@@ -1,0 +1,33 @@
+import SelectorsItem from "./SelectorsItem";
+
+const selectorItems = [
+  {
+    id: 1,
+    text: "ثبت درخواست | تیکت",
+    href: "/",
+  },
+  {
+    id: 2,
+    text: "درخواست تماس تلفنی",
+    href: "/",
+  },
+  {
+    id: 3,
+    text: "پرسش های متداول",
+    href: "/",
+  },
+];
+
+const Selectors = () => {
+  return (
+    <section>
+      <div className="flex flex-col gap-y-[15px]">
+        {selectorItems.map((item) => (
+          <SelectorsItem key={item.id} item={item} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default Selectors;
