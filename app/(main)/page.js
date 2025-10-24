@@ -4,6 +4,7 @@ import Plans from "./components/main/plans/Plans";
 
 import Footer from "./components/Footer";
 import Selectors from "./components/main/selectors/Selectors";
+import BottomSection from "./components/BottomSection";
 
 export const metadata = {
   title: "خانه",
@@ -27,11 +28,11 @@ const page = () => {
 
       <Plans />
 
-      <main className="main w-full p-6 bg-white rounded-t-3xl mt-[30px]">
+      <BottomSection>
         <Selectors />
 
         <Footer />
-      </main>
+      </BottomSection>
     </>
   );
 };
