@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import BottomSection from "../components/BottomSection";
 import RegistersList from "../components/requestsList/RequestsList";
-import CreateTicketButton from "../components/requestsList/CreateTicketButton";
+import Button from "../components/Button";
 
 export const metadata = {
   title: "لیست درخواست ها",
@@ -29,7 +29,7 @@ const page = () => {
           </svg>
         </div>
 
-        <CreateTicketButton />
+        <Button href="/request-create" text="ثبت تیکت جدید" />
       </BottomSection>
     </>
   );
