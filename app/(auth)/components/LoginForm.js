@@ -3,13 +3,22 @@
 import Input from "./Input";
 import { login } from "@/actions/auth";
 import SubmitButton from "./SubmitButton";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const [state, formAction] = useActionState(login, {});
   const router = useRouter();
+
+  const [formData, setFormData] = useState({ phone: "", password: "" });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
@@ -30,12 +39,17 @@ const LoginForm = () => {
         type="text"
         placeholder="09123456789"
         style={{ direction: "ltr" }}
+        value={formData.phone}
+        onChange={handleChange}
       />
 
       <Input
+        name="password"
         type="password"
         placeholder="*******"
         style={{ direction: "ltr" }}
+        value={formData.password}
+        onChange={handleChange}
       />
 
       <SubmitButton title="ورود" />
