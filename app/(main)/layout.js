@@ -203,6 +203,61 @@ export default function RootLayout({ children }) {
               fill="currentColor"
             />
           </symbol>
+          <symbol
+            id="arrow-down-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="none"
+          >
+            <g id="Iconly/Curved/Light/Arrow - Down 2">
+              <g id="Arrow - Down 2">
+                <path
+                  id="Stroke 1"
+                  d="M15.8337 7.08337C15.8337 7.08337 12.3803 12.9167 10.0003 12.9167C7.62116 12.9167 4.16699 7.08337 4.16699 7.08337"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
+            </g>
+          </symbol>
+          <symbol
+            id="upload"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 25 25"
+            fill="none"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M21.0007 8.64575L15.0944 3.02075C14.334 2.91659 13.4798 2.8645 12.5423 2.8645C5.99023 2.8645 3.80273 5.28117 3.80273 12.4999C3.80273 19.7291 5.99023 22.1353 12.5423 22.1353C19.1048 22.1353 21.2923 19.7291 21.2923 12.4999C21.2923 11.0208 21.1986 9.7395 21.0007 8.64575Z"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M14.5146 2.95056V5.72244C14.5146 7.65785 16.0834 9.22556 18.0188 9.22556H21.0928"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M12.1458 10.3917V16.6844"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M14.5885 12.8453L12.1458 10.3922L9.70312 12.8453"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </symbol>
         </svg>
         {children}
       </body>

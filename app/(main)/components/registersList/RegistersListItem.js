@@ -36,7 +36,7 @@ const RegistersListItem = ({
   const { bg, text } = getStatusStyle(status);
 
   return (
-    <div className="registers-list__item w-full pt-2.5 pb-[15px] pl-3 pr-[15px] bg-white border border-[#EFF0F6] rounded-[10px]">
+    <div className="custom-shadow w-full pt-2.5 pb-[15px] pl-3 pr-[15px] bg-white border border-[#EFF0F6] rounded-[10px]">
       {/* head */}
       <div className="flex items-center justify-between">
         {/* right side */}
