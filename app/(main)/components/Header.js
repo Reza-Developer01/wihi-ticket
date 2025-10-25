@@ -2,14 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 import logo from "@/public/images/svgs/main-logo.svg";
+import BackButton from "./BackButton";
 
-const Header = ({ title, shortDescription }) => {
+const Header = ({ title, shortDescription, showBackButton = false }) => {
   return (
     <header className="mt-[68px]">
       <div className="container">
-        <Link href="/" className="flex items-center justify-between mb-8">
-          <Image src={logo} alt="logo website" />
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center justify-between mb-8">
+            <Image src={logo} alt="logo website" />
+          </Link>
+
+          {showBackButton && <BackButton />}
+        </div>
 
         <div className="flex flex-col gap-y-3">
           <h1 className="text-[#EEEEEE] font-bold text-[32px]/[41.6px] tracking-[-0.64px]">

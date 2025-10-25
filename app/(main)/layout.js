@@ -176,6 +176,33 @@ export default function RootLayout({ children }) {
               strokeLinejoin="round"
             />
           </symbol>
+          <symbol
+            id="arrow-narrow-left"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M5 12H19M5 12L9 16M5 12L9 8"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </symbol>
+          <symbol
+            id="arrow-left-3"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 15 15"
+            fill="none"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12.6094 6.87502H7.4675C7.42625 5.68252 7.26813 4.60689 6.99125 4.32939C6.63938 3.97752 6.05625 4.15627 5.58625 4.35064C4.60437 4.75689 1.76562 6.47314 1.76562 7.50439C1.76562 8.56877 4.7325 10.2781 5.63313 10.6513C5.915 10.7681 6.21625 10.8713 6.48375 10.8713C6.67687 10.8713 6.8525 10.8181 6.99188 10.6781C7.26938 10.3994 7.4275 9.32002 7.46812 8.12502H12.6094C12.955 8.12502 13.2344 7.84564 13.2344 7.50002C13.2344 7.15439 12.955 6.87502 12.6094 6.87502Z"
+              fill="currentColor"
+            />
+          </symbol>
         </svg>
         {children}
       </body>
