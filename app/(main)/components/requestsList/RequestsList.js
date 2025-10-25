@@ -1,4 +1,4 @@
-import RegistersListItem from "./RegistersListItem";
+import RegistersListItem from "./RequestsListItem";
 
 const registers = [
   {

@@ -4,7 +4,7 @@ const selectorItems = [
   {
     id: 1,
     text: "ثبت درخواست | تیکت",
-    href: "/registers-list",
+    href: "/request-list",
   },
   {
     id: 2,
