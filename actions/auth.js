@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { postFetch } from "@/utils/fetch";
 
 const login = async (state, formData) => {
@@ -32,20 +33,11 @@ const checkOtp = async (state, formData) => {
   code = code
     .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
     .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
-  console.log(code);
 
   if (code === "") {
     return {
       status: "error",
       message: "پر کردن تمام موارد ، اجباری است.",
-    };
-  }
-
-  const pattern = /^[0-9]{6}$/;
-  if (!pattern.test(code)) {
-    return {
-      status: "error",
-      message: "کد ورود ، متعبر نیست!",
     };
   }
 
@@ -56,9 +48,26 @@ const checkOtp = async (state, formData) => {
       status: "error",
       message: data.non_field_errors,
     };
-  } else {
-    return data;
   }
+
+  const cookieStore = cookies();
+  cookieStore.set("access_token", data.tokens.access, {
+    httpOnly: true,
+    path: "/",
+    maxAge: 60 * 60,
+  });
+
+  cookieStore.set("refresh_token", data.tokens.refresh, {
+    httpOnly: true,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+  });
+
+  return {
+    status: "success",
+    message: data.message,
+    user: data.user,
+  };
 };
 
 export { login, checkOtp };

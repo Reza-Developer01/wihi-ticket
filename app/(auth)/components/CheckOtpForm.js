@@ -2,6 +2,7 @@
 
 import { checkOtp } from "@/actions/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { OtpInput } from "reactjs-otp-input";
@@ -11,6 +12,7 @@ const CheckOtpForm = () => {
   const [otp, setOtp] = useState("");
   const [timeLeft, setTimeLeft] = useState(5);
   const [isExpired, setIsExpired] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
@@ -20,6 +22,7 @@ const CheckOtpForm = () => {
     } else {
       toast.success(state?.message);
       sessionStorage.removeItem("phone");
+      router.push("/");
     }
   }, [state]);
 
