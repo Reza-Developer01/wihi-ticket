@@ -1,4 +1,5 @@
 import DropDown from "../DropDown";
+import TextArea from "../TextArea";
 
 const RequestCreateForm = () => {
   return (
@@ -13,10 +14,7 @@ const RequestCreateForm = () => {
         placeholder="عنوان  درخواست را  وارد کنیـد"
       />
 
-      <textarea
-        className="custom-shadow w-full h-[220px] p-6 text-xs/[16.8px] font-medium border border-[#EFF0F6] rounded-[10px] outline-none tracking-[-0.12px] placeholder:text-[#8C8C8C]"
-        placeholder="شرح درخاست را وارد کنید"
-      ></textarea>
+      <TextArea height="220px" placeholder="شرح درخاست را وارد کنید" />
 
       <button
         type="button"
