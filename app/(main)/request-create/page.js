@@ -16,19 +16,31 @@ const page = () => {
 
       <BottomSection>
         <form action="#" className="flex flex-col gap-y-[15px]">
-          {/* select box */}
-          <button
-            type="button"
-            className="custom-shadow flex items-center justify-between w-full h-12 pl-[19px] border border-[#EFF0F6] rounded-[10px]"
-          >
-            <div></div>
-            <span className="pr-[19px] font-medium text-sm/[19.6px] text-[#8C8C8C]">
-              انتخاب دسته بندی
-            </span>
-            <svg className="w-5 h-5 text-[#A8A8A8]">
-              <use href="#arrow-down-2" />
-            </svg>
-          </button>
+          <div className="relative">
+            {/* select box */}
+            <button
+              type="button"
+              className="custom-shadow flex items-center justify-between w-full h-12 pl-[19px] border border-[#EFF0F6] rounded-[10px]"
+            >
+              <div></div>
+              <span className="pr-[19px] font-medium text-sm/[19.6px] text-[#8C8C8C]">
+                انتخاب دسته بندی
+              </span>
+              <svg className="w-5 h-5 text-[#A8A8A8]">
+                <use href="#arrow-down-2" />
+              </svg>
+            </button>
+
+            {/* drop down */}
+            <div className="custom-shadow absolute top-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px]">
+              <ul className="space-y-3 *:pb-3 *:last:pb-0 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6]">
+                <li>دسته بندی اول</li>
+                <li>دسته بندی دوم</li>
+                <li>دسته بندی سوم</li>
+                <li>دسته بندی چهارم</li>
+              </ul>
+            </div>
+          </div>
 
           <input
             type="text"
