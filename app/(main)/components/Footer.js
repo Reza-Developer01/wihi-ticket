@@ -3,7 +3,7 @@ import footerLogo from "@/public/images/footer-logo.svg";
 
 const Footer = () => {
   return (
-    <section className="flex flex-col items-center justify-center gap-y-[5px] mt-[81px] mb-4">
+    <section className="flex flex-col items-center justify-center gap-y-[5px] mt-[81px]">
       <div className="flex items-center justify-center gap-x-px">
         <Image src={footerLogo} alt="footer logo" />
         <p className="text-[10px]/4">

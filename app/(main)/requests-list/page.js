@@ -16,7 +16,7 @@ const page = () => {
         showBackButton={true}
       />
 
-      <BottomSection>
+      <BottomSection pb="25px">
         {/* items */}
         <RegistersList />
 

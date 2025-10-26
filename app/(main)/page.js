@@ -28,7 +28,7 @@ const page = () => {
 
       <Plans />
 
-      <BottomSection>
+      <BottomSection pb="36px">
         <Selectors />
 
         <Footer />
