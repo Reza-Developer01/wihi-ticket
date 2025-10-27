@@ -9,6 +9,7 @@ const DropDown = ({
   valueKey = "value",
   onChange,
   defaultValue = null,
+  name,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(defaultValue);
@@ -26,7 +27,8 @@ const DropDown = ({
 
   const handleSelect = (option) => {
     setSelected(option);
-    onChange?.(option[valueKey]);
+    // onChange?.(option[valueKey]);
+    onChange?.(option[valueKey], name);
     setIsOpen(false);
   };
 
@@ -75,6 +77,7 @@ const DropDown = ({
           هیچ گزینه‌ای یافت نشد
         </div>
       )}
+      <input type="hidden" name={name} value={selected?.[valueKey] || ""} />
     </div>
   );
 };

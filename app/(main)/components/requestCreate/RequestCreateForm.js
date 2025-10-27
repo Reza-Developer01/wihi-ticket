@@ -1,20 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import DropDown from "../DropDown";
 import TextArea from "../TextArea";
+import { createRequest } from "@/actions/request";
+import SubmitButton from "../SubmitButton";
+import toast from "react-hot-toast";
 
 const RequestCreateForm = ({ categories, issues }) => {
+  const [state, formAction] = useActionState(createRequest, {});
   const [openIssues, setOpenIssues] = useState(false);
 
+  useEffect(() => {
+    // if (state?.status === "error") {
+    //   toast.error(state?.message);
+    // }
+    console.log(state);
+  }, [state]);
+
   return (
-    <form action="#" className="flex flex-col gap-y-[15px]">
+    <form action={formAction} className="flex flex-col gap-y-[15px]">
       <DropDown
         options={categories}
         placeholder="انتخاب دسته بندی"
         labelKey="name"
         valueKey="id"
         onChange={() => setOpenIssues(true)}
+        name="category"
       />
 
       {openIssues && (
@@ -24,16 +36,22 @@ const RequestCreateForm = ({ categories, issues }) => {
           labelKey="name"
           valueKey="id"
           onChange={(value) => console.log("Category selected:", value)}
+          name="issue"
         />
       )}
 
       <input
         type="text"
+        name="title"
         className="custom-shadow w-full h-12 px-6 text-xs/[16.8px] font-medium border border-[#EFF0F6] rounded-[10px] outline-none tracking-[-0.12px] placeholder:text-[#8C8C8C]"
         placeholder="عنوان  درخواست را  وارد کنیـد"
       />
 
-      <TextArea height="220px" placeholder="شرح درخاست را وارد کنید" />
+      <TextArea
+        height="220px"
+        placeholder="شرح درخاست را وارد کنید"
+        name="description"
+      />
 
       <button
         type="button"
@@ -50,12 +68,7 @@ const RequestCreateForm = ({ categories, issues }) => {
         </svg>
       </button>
 
-      <button
-        type="submit"
-        className="flex items-center justify-center w-full h-12 leading-6 bg-[#20CFCF] text-white rounded-[10px] tracking-[-0.12px] mt-[9px]"
-      >
-        ارسال درخواست
-      </button>
+      <SubmitButton title="ارسال درخواست" />
     </form>
   );
 };
