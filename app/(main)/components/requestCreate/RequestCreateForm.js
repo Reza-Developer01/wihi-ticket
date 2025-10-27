@@ -1,12 +1,31 @@
+"use client";
+
+import { useState } from "react";
 import DropDown from "../DropDown";
 import TextArea from "../TextArea";
 
-const RequestCreateForm = () => {
+const RequestCreateForm = ({ categories, issues }) => {
+  const [openIssues, setOpenIssues] = useState(false);
+
   return (
     <form action="#" className="flex flex-col gap-y-[15px]">
-      <DropDown placeholder="انتخاب دسته بندی" />
+      <DropDown
+        options={categories}
+        placeholder="انتخاب دسته بندی"
+        labelKey="name"
+        valueKey="id"
+        onChange={() => setOpenIssues(true)}
+      />
 
-      <DropDown placeholder="انتخاب سرویس" />
+      {openIssues && (
+        <DropDown
+          options={issues}
+          placeholder="انتخاب سرویس"
+          labelKey="name"
+          valueKey="id"
+          onChange={(value) => console.log("Category selected:", value)}
+        />
+      )}
 
       <input
         type="text"

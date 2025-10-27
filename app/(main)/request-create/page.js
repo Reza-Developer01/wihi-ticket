@@ -1,13 +1,26 @@
+import { getFetch } from "@/utils/fetch";
 import BottomSection from "../components/BottomSection";
 
 import Header from "../components/Header";
 import RequestCreateForm from "../components/requestCreate/RequestCreateForm";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "ایجاد درخواست جدید",
 };
 
-const page = () => {
+const page = async () => {
+  const cookieStore = cookies();
+  const token = cookieStore.get("access_token")?.value;
+
+  const categories = await getFetch("category-tickets/", {
+    Authorization: token ? `Bearer ${token}` : undefined,
+  });
+
+  const issues = await getFetch("service-issues/", {
+    Authorization: token ? `Bearer ${token}` : undefined,
+  });
+
   return (
     <>
       <Header
@@ -17,7 +30,7 @@ const page = () => {
       />
 
       <BottomSection pb="49px">
-        <RequestCreateForm />
+        <RequestCreateForm categories={categories} issues={issues} />
       </BottomSection>
     </>
   );
