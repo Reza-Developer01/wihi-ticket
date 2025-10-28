@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { postFetch } from "@/utils/fetch";
+import { getFetch, postFetch } from "@/utils/fetch";
 
 const login = async (state, formData) => {
   const phone = formData.get("phone");
@@ -70,4 +70,40 @@ const checkOtp = async (state, formData) => {
   };
 };
 
-export { login, checkOtp };
+const getMe = async () => {
+  const cookieStore = cookies();
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    return {
+      authentication: false,
+      user: null,
+    };
+  }
+
+  try {
+    const data = await getFetch("users/me/", {
+      Authorization: `Bearer ${token}`,
+    });
+    if (data.authenticated) {
+      return {
+        authenticated: true,
+        user: data.user,
+      };
+    } else {
+      return {
+        authentication: false,
+        user: null,
+      };
+    }
+  } catch (error) {
+    console.error("خطا در دریافت اطلاعات کاربر:", error);
+    return {
+      authentication: false,
+      user: null,
+      message: "خطا در برقراری ارتباط با سرور.",
+    };
+  }
+};
+
+export { login, checkOtp, getMe };
