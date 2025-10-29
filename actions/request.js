@@ -1,6 +1,5 @@
 "use server";
 
-import { postFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
 
 const createRequest = async (state, formData) => {

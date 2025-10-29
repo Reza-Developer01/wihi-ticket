@@ -10,12 +10,14 @@ import toast from "react-hot-toast";
 const RequestCreateForm = ({ categories, issues }) => {
   const [state, formAction] = useActionState(createRequest, {});
   const [openIssues, setOpenIssues] = useState(false);
+  const [hasFile, setHasFile] = useState(false);
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
 
     if (state?.status) {
       toast.success(state?.message);
+      
     } else {
       toast.error(state?.message);
     }
@@ -60,18 +62,30 @@ const RequestCreateForm = ({ categories, issues }) => {
         name="description"
       />
 
-      <div className="custom-shadow relative flex items-center w-full h-12 bg-[#EFF0F6] rounded-[10px] overflow-hidden">
+      <div
+        className={`custom-shadow relative flex items-center w-full h-12 rounded-[10px] overflow-hidden transition-all duration-300 ${
+          hasFile ? "bg-[#00C96B33]" : "bg-[#EFF0F6]"
+        }`}
+      >
         <button
           type="button"
           className="flex items-center justify-between grow pr-6 pl-[15px]"
         >
-          <span className="font-semibold text-xs/[16.8px] text-[#8C8C8C] tracking-[-0.12px]">
-            آپلود فایل
+          <span
+            className={`font-semibold text-xs/[16.8px] ${
+              hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
+            } tracking-[-0.12px]`}
+          >
+            {hasFile ? "فایل انتخاب شد" : "آپلود فایل"}
             <span className="font-normal text-[8px]/[11.2px]">
               ( تا حجم 50 مگابایت )
             </span>
           </span>
-          <svg className="w-[25px] h-[25px]">
+          <svg
+            className={`w-[25px] h-[25px] ${
+              hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
+            }`}
+          >
             <use href="#upload" />
           </svg>
         </button>
@@ -79,8 +93,19 @@ const RequestCreateForm = ({ categories, issues }) => {
         <input
           type="file"
           name="file"
-          accept="image/*,application/pdf"
-          className="absolute w-full h-full text-transparent"
+          className="absolute w-full h-full text-transparent cursor-pointer"
+          disabled={hasFile}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            if (file.size > 50 * 1024 * 1024) {
+              toast.error("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
+              e.target.value = "";
+              setHasFile(false);
+            } else {
+              setHasFile(true);
+            }
+          }}
         />
       </div>
 
