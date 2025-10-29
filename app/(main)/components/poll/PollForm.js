@@ -1,20 +1,35 @@
-import Link from "next/link";
+"use client";
+
 import PollSystem from "./PollSystem";
 import TextArea from "../TextArea";
+import { useActionState, useEffect } from "react";
+import { pollSystem } from "@/actions/poll";
+import SubmitButton from "../SubmitButton";
+import toast from "react-hot-toast";
 
 const PollForm = () => {
+  const [state, formAction] = useActionState(pollSystem, {});
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+    if (state?.status) {
+      toast.success(state?.message);
+    } else {
+      toast.error(state?.message);
+    }
+  }, [state]);
+
   return (
-    <form action="#" className="flex flex-col gap-y-9">
+    <form action={formAction} className="flex flex-col gap-y-9">
       <PollSystem />
 
-      <TextArea height="300px" placeholder="سوال متداول شماره یک" />
+      <TextArea
+        height="300px"
+        placeholder="سوال متداول شماره یک"
+        name="comment"
+      />
 
-      <Link
-        href="/"
-        className={`flex items-center justify-center w-full h-12 mb-[31px] leading-6 bg-[#20CFCF] text-white rounded-[10px] tracking-[-0.12px]`}
-      >
-        ارسال نظرسنجی
-      </Link>
+      <SubmitButton title="ارسال نظرسنجی" />
     </form>
   );
 };

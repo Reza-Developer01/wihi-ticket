@@ -6,29 +6,27 @@ import TextArea from "../TextArea";
 import { createRequest } from "@/actions/request";
 import SubmitButton from "../SubmitButton";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const RequestCreateForm = ({ categories, issues }) => {
   const [state, formAction] = useActionState(createRequest, {});
   const [openIssues, setOpenIssues] = useState(false);
   const [hasFile, setHasFile] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
 
     if (state?.status) {
       toast.success(state?.message);
-      
+      router.push("/poll");
     } else {
       toast.error(state?.message);
     }
   }, [state]);
 
   return (
-    <form
-      action={formAction}
-      className="flex flex-col gap-y-[15px]"
-      encType="multipart/form-data"
-    >
+    <form action={formAction} className="flex flex-col gap-y-[15px]">
       <DropDown
         options={categories}
         placeholder="انتخاب دسته بندی"

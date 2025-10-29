@@ -33,6 +33,7 @@ const PollSystem = () => {
           </button>
         );
       })}
+      <input type="hidden" name="rating" value={rating} />
     </div>
   );
 };
