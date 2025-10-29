@@ -12,14 +12,19 @@ const RequestCreateForm = ({ categories, issues }) => {
   const [openIssues, setOpenIssues] = useState(false);
 
   useEffect(() => {
-    // if (state?.status === "error") {
-    //   toast.error(state?.message);
-    // }
-    console.log(state);
+    if (state?.status) {
+      toast.success(state?.message);
+    } else {
+      toast.error(state?.message);
+    }
   }, [state]);
 
   return (
-    <form action={formAction} className="flex flex-col gap-y-[15px]">
+    <form
+      action={formAction}
+      className="flex flex-col gap-y-[15px]"
+      encType="multipart/form-data"
+    >
       <DropDown
         options={categories}
         placeholder="انتخاب دسته بندی"
@@ -53,20 +58,29 @@ const RequestCreateForm = ({ categories, issues }) => {
         name="description"
       />
 
-      <button
-        type="button"
-        className="custom-shadow flex items-center justify-between w-full h-12 pr-6 pl-[15px] bg-[#EFF0F6] rounded-[10px]"
-      >
-        <span className="font-semibold text-xs/[16.8px] text-[#8C8C8C] tracking-[-0.12px]">
-          آپلود فایل
-          <span className="font-normal text-[8px]/[11.2px]">
-            ( تا حجم 50 مگابایت )
+      <div className="custom-shadow relative flex items-center w-full h-12 bg-[#EFF0F6] rounded-[10px] overflow-hidden">
+        <button
+          type="button"
+          className="flex items-center justify-between grow pr-6 pl-[15px]"
+        >
+          <span className="font-semibold text-xs/[16.8px] text-[#8C8C8C] tracking-[-0.12px]">
+            آپلود فایل
+            <span className="font-normal text-[8px]/[11.2px]">
+              ( تا حجم 50 مگابایت )
+            </span>
           </span>
-        </span>
-        <svg className="w-[25px] h-[25px]">
-          <use href="#upload" />
-        </svg>
-      </button>
+          <svg className="w-[25px] h-[25px]">
+            <use href="#upload" />
+          </svg>
+        </button>
+
+        <input
+          type="file"
+          name="file"
+          accept="image/*,application/pdf"
+          className="absolute w-full h-full text-transparent"
+        />
+      </div>
 
       <SubmitButton title="ارسال درخواست" />
     </form>

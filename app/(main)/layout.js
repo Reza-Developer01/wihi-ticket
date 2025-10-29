@@ -3,17 +3,10 @@ import "../globals.css";
 import AuthProvider from "@/context/AuthContext";
 
 export default async function RootLayout({ children }) {
-  const userData = await getMe();
-  console.log(userData.authenticated);
-  console.log(userData.user);
-
   return (
     <html lang="fa" dir="rtl">
       <body>
-        <AuthProvider
-          initialUser={userData.user}
-          authenticated={userData.authenticated}
-        >
+        <AuthProvider>
           <svg className="hidden">
             <symbol
               id="user"
