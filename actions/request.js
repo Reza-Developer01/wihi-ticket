@@ -11,8 +11,6 @@ const createRequest = async (state, formData) => {
   const file = formData.get("file");
   const token = cookies().get("access_token")?.value;
 
-  console.log({ title, description, category, issue, file, token });
-
   if (!title || !description || !category || !issue) {
     return {
       status: false,
@@ -20,7 +18,6 @@ const createRequest = async (state, formData) => {
     };
   }
 
-  // 🔹 ساختن FormData جدید برای ارسال به API
   const body = new FormData();
   body.append("title", title);
   body.append("description", description);

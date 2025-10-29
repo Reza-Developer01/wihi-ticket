@@ -1,4 +1,4 @@
-import { getMe } from "@/actions/auth";
+import HotToast from "@/app/(auth)/components/libraries/HotToast";
 import "../globals.css";
 import AuthProvider from "@/context/AuthContext";
 
@@ -275,6 +275,7 @@ export default async function RootLayout({ children }) {
           </svg>
 
           {children}
+          <HotToast />
         </AuthProvider>
       </body>
     </html>

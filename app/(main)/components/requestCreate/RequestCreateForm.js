@@ -12,6 +12,8 @@ const RequestCreateForm = ({ categories, issues }) => {
   const [openIssues, setOpenIssues] = useState(false);
 
   useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
     if (state?.status) {
       toast.success(state?.message);
     } else {
