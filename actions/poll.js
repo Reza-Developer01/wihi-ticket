@@ -23,7 +23,6 @@ const pollSystem = async (state, formData) => {
   );
 
   if (data) {
-    (await cookieStore).delete("ticket_id");
     return {
       status: true,
       message: "ثبت نظر با موفقیت انجام شد.",

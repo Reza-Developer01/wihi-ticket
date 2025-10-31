@@ -4,12 +4,16 @@ import Header from "../components/Header";
 
 import successfully from "@/public/images/svgs/successfully.svg";
 import Button from "../components/Button";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "موفقیت آمیز",
 };
 
-const page = () => {
+const page = async () => {
+  const cookieStore = cookies();
+  const ticketId = (await cookieStore).get("ticket_id")?.value;
+
   return (
     <>
       <Header showBackButton={true} />
@@ -20,9 +24,9 @@ const page = () => {
 
           <div className="flex items-center justify-center h-[150px]">
             <p className="text-[#0D0D1B] font-bold text-lg/[27px] tracking-[-0.12px]">
-              ارسال درخواست با موفقیت ثبت شده به شماره تیکت “{" "}
-              <span className="text-[#2DD2D2]">145632</span> ” نتیجـــه اعلام
-              خواهــد شد
+              ارسال درخواست با موفقیت ثبت شده به شماره تیکت{" "}
+              <span className="text-[#2DD2D2]">“ {ticketId} ”</span> نتیجـــه
+              اعلام خواهــد شد
             </p>
           </div>
 
