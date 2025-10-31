@@ -7,15 +7,20 @@ const pollSystem = async (state, formData) => {
   const rating = formData.get("rating");
   const comment = formData.get("comment");
   const cookieStore = cookies();
-  const token = cookieStore.get("access_token")?.value;
+  const token = (await cookieStore).get("access_token")?.value;
+  const ticket_id = (await cookieStore).get("ticket_id")?.value;
 
-  if (!rating || !comment) {
-    return { status: false, message: "لطفاً امتیاز خود را انتخاب کنید" };
+  if (!rating || rating === "0" || !comment) {
+    return { status: false, message: "پر کردن تمام موارد اجباری است." };
   }
 
-  const data = await postFetch("ticket-ratings/", {
-    Authorization: token ? `Bearer ${token}` : undefined,
-  });
+  const data = await postFetch(
+    "ticket-ratings/",
+    { rating, comment, ticket: ticket_id },
+    {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    }
+  );
 
   console.log(data);
 };

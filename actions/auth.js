@@ -81,27 +81,19 @@ const getMe = async () => {
     };
   }
 
-  try {
-    const data = await getFetch("users/me/", {
-      Authorization: `Bearer ${token}`,
-    });
-    if (data.authenticated) {
-      return {
-        authenticated: true,
-        user: data.user,
-      };
-    } else {
-      return {
-        authentication: false,
-        user: null,
-      };
-    }
-  } catch (error) {
-    console.error("خطا در دریافت اطلاعات کاربر:", error);
+  const data = await getFetch("users/me/", {
+    Authorization: `Bearer ${token}`,
+  });
+
+  if (data.authenticated) {
+    return {
+      authenticated: true,
+      user: data.user,
+    };
+  } else {
     return {
       authentication: false,
       user: null,
-      message: "خطا در برقراری ارتباط با سرور.",
     };
   }
 };

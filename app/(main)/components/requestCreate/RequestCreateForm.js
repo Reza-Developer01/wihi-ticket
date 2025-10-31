@@ -7,12 +7,15 @@ import { createRequest } from "@/actions/request";
 import SubmitButton from "../SubmitButton";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Input from "../Input";
 
 const RequestCreateForm = ({ categories, issues }) => {
   const [state, formAction] = useActionState(createRequest, {});
   const [openIssues, setOpenIssues] = useState(false);
   const [hasFile, setHasFile] = useState(false);
   const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
@@ -47,17 +50,20 @@ const RequestCreateForm = ({ categories, issues }) => {
         />
       )}
 
-      <input
+      <Input
         type="text"
         name="title"
-        className="custom-shadow w-full h-12 px-6 text-xs/[16.8px] font-medium border border-[#EFF0F6] rounded-[10px] outline-none tracking-[-0.12px] placeholder:text-[#8C8C8C]"
         placeholder="عنوان  درخواست را  وارد کنیـد"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
 
       <TextArea
         height="220px"
         placeholder="شرح درخاست را وارد کنید"
         name="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
 
       <div

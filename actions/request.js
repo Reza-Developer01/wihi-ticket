@@ -36,6 +36,10 @@ const createRequest = async (state, formData) => {
   }).then((res) => res.json());
 
   if (data) {
+    cookies().set("ticket_id", data.ticket_number, {
+      httpOnly: false,
+      path: "/",
+    });
     return {
       status: true,
       message: "ثبت درخواست با موفقیت انجام شد.",
