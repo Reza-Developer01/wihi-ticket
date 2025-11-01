@@ -109,6 +109,7 @@ const MessageInput = ({ ticketNumber, id }) => {
               </div>
 
               <input
+                multiple
                 type="file"
                 name="file"
                 className="absolute inset-0 w-full h-full text-transparent cursor-pointer"

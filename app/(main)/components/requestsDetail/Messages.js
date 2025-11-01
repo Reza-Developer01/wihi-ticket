@@ -1,4 +1,5 @@
 const Messages = async ({ request }) => {
+  console.log(request);
   const getStatusStyle = (status) => {
     switch (status) {
       case "open":
@@ -55,11 +56,41 @@ const Messages = async ({ request }) => {
         {request.messages.map((item) => (
           <div key={item.id} className="flex flex-col gap-y-2.5 *:w-[245px]">
             {/* text */}
-            <div className="custom-shadow flex items-center h-12 pr-2.5 bg-white border border-[#F1F1F7] rounded-[10px]">
-              <p className="text-[#404040] text-xs/[16.8px] w-[202px]">
-                {item.message}
-              </p>
-            </div>
+            {item.file ? (
+              <>
+                <div className="custom-shadow flex items-center h-12 pr-2.5 bg-white border border-[#F1F1F7] rounded-[10px]">
+                  <p className="text-[#404040] text-xs/[16.8px] w-[202px]">
+                    {item.message}
+                  </p>
+                </div>
+                <div className="flex items-center justify-end">
+                  <button
+                    type="button"
+                    className="flex flex-col items-center justify-center w-[45px] h-[45px] border border-[#808392] rounded-[10px]"
+                  >
+                    <svg className="w-6 h-6 text-[#808392]">
+                      <use href="#paper-download" />
+                    </svg>
+                    <span className="text-[#808392] text-[7px]/[9.8px] tracking-[-0.12px]">
+                      {item.file
+                        ? item.file
+                            .split("/")
+                            .pop()
+                            .split(".")
+                            .pop()
+                            .toUpperCase()
+                        : ""}
+                    </span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="custom-shadow flex items-center h-12 pr-2.5 bg-white border border-[#F1F1F7] rounded-[10px]">
+                <p className="text-[#404040] text-xs/[16.8px] w-[202px]">
+                  {item.message}
+                </p>
+              </div>
+            )}
 
             {/* info */}
             <div className="flex items-center justify-between text-[#8C8C8C]">
