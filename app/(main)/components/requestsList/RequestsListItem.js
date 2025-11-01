@@ -5,8 +5,8 @@ const RequestsListItem = ({
   status,
   title,
   description,
-  author,
   created_at,
+  owner_name,
 }) => {
   const getStatusStyle = (status) => {
     switch (status) {
@@ -77,7 +77,7 @@ const RequestsListItem = ({
       {/* footer */}
       <div className="flex items-center justify-between mt-[23px]">
         <span className="text-[8px]/[11.2px] tracking-[-0.12px] text-[#404040]">
-          ثبت توسط | {author}
+          ثبت توسط | {owner_name}
         </span>
 
         <div className="flex items-center gap-x-1 font-medium text-[8px]/[11.2px] tracking-[-0.12px] text-[#808392]">
