@@ -1,13 +1,44 @@
 const Messages = async ({ request }) => {
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "open":
+        return {
+          bg: "bg-[#0068C933]",
+          text: "text-[#0068C9]",
+          message: "در دست بررسی",
+        };
+      case "is_progress":
+        return {
+          bg: "bg-[#FF770033]",
+          text: "text-[#FF7700]",
+          message: "منتظر پاسخ کاربر",
+        };
+      case "closed":
+        return {
+          bg: "bg-[#FF000033]",
+          text: "text-[#FF0000]",
+          message: "بسته شده",
+        };
+      default:
+        return {
+          bg: "bg-[#E5E7EB]",
+          text: "text-[#6B7280]",
+          message: "در دست بررسی",
+        };
+    }
+  };
+
+  const { bg, text, message } = getStatusStyle(request.status);
+
   return (
     <div className="relative h-[520px]">
       {/* head */}
       <div className="flex items-center justify-between">
         <button
           type="button"
-          className="flex items-center justify-center w-[100px] h-[30px] bg-[#CCE1F4] text-[#0068C9] font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]"
+          className={`flex items-center justify-center w-[100px] h-[30px] ${bg} ${text} font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]`}
         >
-          در دست بررسی
+          {message}
         </button>
 
         <button

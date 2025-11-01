@@ -16,7 +16,7 @@ const RequestsListItem = ({
           text: "text-[#0068C9]",
           message: "در دست بررسی",
         };
-      case "waiting_for_user_response":
+      case "is_progress":
         return {
           bg: "bg-[#FF770033]",
           text: "text-[#FF7700]",
