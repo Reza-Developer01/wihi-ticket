@@ -1,4 +1,4 @@
-const Messages = () => {
+const Messages = async ({ request }) => {
   return (
     <div className="relative h-[520px]">
       {/* head */}
@@ -21,32 +21,39 @@ const Messages = () => {
       {/* body */}
       <div className="flex flex-col justify-end gap-y-[25px] h-[calc(100%-39px)]">
         {/* item */}
-        <div className="flex flex-col gap-y-2.5 *:w-[245px]">
-          {/* text */}
-          <div className="custom-shadow flex items-center h-12 pr-2.5 bg-white border border-[#F1F1F7] rounded-[10px]">
-            <p className="text-[#404040] text-xs/[16.8px] w-[202px]">
-              متن درخواست در این بخش نوشته خواهد شد این را در نظر داشته باشیــد
-            </p>
-          </div>
-
-          {/* info */}
-          <div className="flex items-center justify-between text-[#8C8C8C]">
-            {/* right */}
-            <div className="flex items-center gap-x-1">
-              <svg className="w-2.5 h-2.5">
-                <use href="#profile" />
-              </svg>
-              <span className="font-light text-[10px]/[14px] tracking-[-0.12px]">
-                علی محسنی
-              </span>
+        {request.messages.map((item) => (
+          <div key={item.id} className="flex flex-col gap-y-2.5 *:w-[245px]">
+            {/* text */}
+            <div className="custom-shadow flex items-center h-12 pr-2.5 bg-white border border-[#F1F1F7] rounded-[10px]">
+              <p className="text-[#404040] text-xs/[16.8px] w-[202px]">
+                {item.message}
+              </p>
             </div>
 
-            {/* left */}
-            <span className="font-light text-[10px]/[14px] tracking-[-0.12px]">
-              13:47 - 1404/6/25
-            </span>
+            {/* info */}
+            <div className="flex items-center justify-between text-[#8C8C8C]">
+              {/* right */}
+              <div className="flex items-center gap-x-1">
+                <svg className="w-2.5 h-2.5">
+                  <use href="#profile" />
+                </svg>
+                <span className="font-light text-[10px]/[14px] tracking-[-0.12px]">
+                  {item.sender_name}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-x-1 font-light text-[10px]/[14px] tracking-[-0.12px]">
+                <span>
+                  {new Date(item.created_at).toLocaleTimeString("fa-IR")}
+                </span>
+                <span>-</span>
+                <span>
+                  {new Date(item.created_at).toLocaleDateString("fa-IR")}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -18,7 +18,6 @@ const page = async ({ params }) => {
   const getRequest = await getFetch(`tickets/${id}/`, {
     Authorization: `Bearer ${token}`,
   });
-  console.log(getRequest);
 
   return (
     <>
@@ -26,7 +25,7 @@ const page = async ({ params }) => {
 
       <BottomSection pb="49px">
         <div className="flex flex-col gap-y-[15px]">
-          <Messages />
+          <Messages request={getRequest} />
 
           <MessageInput />
         </div>
