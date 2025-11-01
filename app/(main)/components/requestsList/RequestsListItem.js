@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const RegistersListItem = ({
+const RequestsListItem = ({
   ticket_number,
   status,
   title,
@@ -90,4 +90,4 @@ const RegistersListItem = ({
   );
 };
 
-export default RegistersListItem;
+export default RequestsListItem;
