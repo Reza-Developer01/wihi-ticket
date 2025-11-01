@@ -272,6 +272,31 @@ export default async function RootLayout({ children }) {
                 fill="currentColor"
               />
             </symbol>
+            <symbol
+              id="profile"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 10 10"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M4.9349 9.0258C3.39664 9.0258 2.08301 8.78643 2.08301 7.82777C2.08301 6.86911 3.38831 5.98413 4.9349 5.98413C6.47316 5.98413 7.7868 6.86053 7.7868 7.81919C7.7868 8.77746 6.48149 9.0258 4.9349 9.0258Z"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M4.93253 4.65568C5.942 4.65568 6.76018 3.8375 6.76018 2.82803C6.76018 1.81856 5.942 1 4.93253 1C3.92306 1 3.1045 1.81856 3.1045 2.82803C3.10109 3.83409 3.91359 4.65227 4.91965 4.65568C4.9242 4.65568 4.92837 4.65568 4.93253 4.65568Z"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </symbol>
           </svg>
 
           {children}

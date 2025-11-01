@@ -64,7 +64,7 @@ const RequestsListItem = ({
       {/* body */}
       <div className="flex flex-col gap-y-[5px] mt-1">
         <Link
-          href="/"
+          href={`/requests-list/${ticket_number}`}
           className="font-medium text-sm/[19.6px] tracking-[-0.12px] text-[#1A1C1E]"
         >
           {title}
