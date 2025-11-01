@@ -1,9 +1,9 @@
 import Header from "../components/Header";
 import BottomSection from "../components/BottomSection";
-import RegistersList from "../components/requestsList/RequestsList";
 import Button from "../components/Button";
 import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
+import RequestsList from "../components/requestsList/RequestsList";
 
 export const metadata = {
   title: "لیست درخواست ها",
@@ -16,7 +16,6 @@ const page = async () => {
   const getRequestsList = await getFetch("tickets/", {
     Authorization: `Bearer ${token}`,
   });
-  console.log(getRequestsList);
 
   return (
     <>
@@ -27,17 +26,7 @@ const page = async () => {
       />
 
       <BottomSection pb="25px">
-        {/* items */}
-        <RegistersList requestsList={getRequestsList} />
-
-        <div className="flex items-center justify-center gap-x-1 mb-6">
-          <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
-            مشاهده 88 درخواست
-          </span>
-          <svg className="w-[15px] h-[15px] text-[#808392]">
-            <use href="#arrow-left-3" />
-          </svg>
-        </div>
+        <RequestsList requestsList={getRequestsList} />
 
         <Button href="/request-create" text="ثبت تیکت جدید" />
       </BottomSection>
