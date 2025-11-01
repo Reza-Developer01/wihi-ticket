@@ -2,12 +2,22 @@ import Header from "../components/Header";
 import BottomSection from "../components/BottomSection";
 import RegistersList from "../components/requestsList/RequestsList";
 import Button from "../components/Button";
+import { getFetch } from "@/utils/fetch";
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "لیست درخواست ها",
 };
 
-const page = () => {
+const page = async () => {
+  const cookieStore = cookies();
+  const token = cookieStore.get("access_token")?.value;
+
+  const getRequestsList = await getFetch("tickets/", {
+    Authorization: `Bearer ${token}`,
+  });
+  console.log(getRequestsList);
+
   return (
     <>
       <Header
@@ -18,7 +28,7 @@ const page = () => {
 
       <BottomSection pb="25px">
         {/* items */}
-        <RegistersList />
+        <RegistersList requestsList={getRequestsList} />
 
         <div className="flex items-center justify-center gap-x-1 mb-6">
           <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">

@@ -1,39 +1,43 @@
 import Link from "next/link";
 
 const RegistersListItem = ({
-  id,
+  ticket_number,
   status,
   title,
   description,
   author,
-  date,
+  created_at,
 }) => {
   const getStatusStyle = (status) => {
     switch (status) {
-      case "در دست بررسی":
+      case "open":
         return {
           bg: "bg-[#0068C933]",
           text: "text-[#0068C9]",
+          message: "در دست بررسی",
         };
-      case "منتظر پاسخ کاربر":
+      case "waiting_for_user_response":
         return {
           bg: "bg-[#FF770033]",
           text: "text-[#FF7700]",
+          message: "منتظر پاسخ کاربر",
         };
-      case "بسته شده":
+      case "closed":
         return {
           bg: "bg-[#FF000033]",
           text: "text-[#FF0000]",
+          message: "بسته شده",
         };
       default:
         return {
           bg: "bg-[#E5E7EB]",
           text: "text-[#6B7280]",
+          message: "در دست بررسی",
         };
     }
   };
 
-  const { bg, text } = getStatusStyle(status);
+  const { bg, text, message } = getStatusStyle(status);
 
   return (
     <div className="custom-shadow w-full pt-2.5 pb-[15px] pl-3 pr-[15px] bg-white border border-[#EFF0F6] rounded-[10px]">
@@ -42,7 +46,7 @@ const RegistersListItem = ({
         {/* right side */}
         <div className="flex flex-col font-medium text-[8px]/[11.2px] tracking-[-0.12px]">
           <span className="text-[#B9BBC9]">شماره تیکت</span>
-          <span className="text-[#808392]">{id}</span>
+          <span className="text-[#808392]">{ticket_number}</span>
         </div>
 
         {/* left side */}
@@ -52,7 +56,7 @@ const RegistersListItem = ({
           <span
             className={`font-medium text-[8px]/[11.2px] tracking-[-0.12px] ${text}`}
           >
-            {status}
+            {message}
           </span>
         </div>
       </div>
@@ -76,9 +80,11 @@ const RegistersListItem = ({
           ثبت توسط | {author}
         </span>
 
-        <span className="font-medium text-[8px]/[11.2px] tracking-[-0.12px] text-[#808392]">
-          {date}
-        </span>
+        <div className="flex items-center gap-x-1 font-medium text-[8px]/[11.2px] tracking-[-0.12px] text-[#808392]">
+          <span>{new Date(created_at).toLocaleTimeString("fa-IR")}</span>
+          <span>|</span>
+          <span>{new Date(created_at).toLocaleDateString("fa-IR")}</span>
+        </div>
       </div>
     </div>
   );
