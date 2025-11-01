@@ -27,11 +27,7 @@ const page = async ({ params }) => {
         <div className="flex flex-col gap-y-[15px]">
           <Messages request={getRequest} />
 
-          <MessageInput
-            ticketNumber={getRequest.ticket_number}
-            status={getRequest.status}
-            id={id}
-          />
+          <MessageInput ticketNumber={getRequest.ticket_number} id={id} />
         </div>
       </BottomSection>
     </>

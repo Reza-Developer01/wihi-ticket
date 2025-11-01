@@ -1,36 +1,58 @@
 "use server";
 
-import { postFetch } from "@/utils/fetch";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
-const sendMessage = async (state, formAction) => {
-  const message = formAction.get("message");
-  const ticket = formAction.get("ticket");
-  const currentPath = formAction.get("path");
+const sendMessage = async (state, formData) => {
+  const message = formData.get("message");
+  const ticket = formData.get("ticket");
+  const currentPath = formData.get("path");
+  const file = formData.get("file");
 
-  const cookieStore = cookies();
-  const token = cookieStore.get("access_token")?.value;
-
-  console.log({ message, ticket });
+  const token = cookies().get("access_token")?.value;
 
   if (!message) {
-    return { status: false, message: "وارد کردن متن پیام ، اجباری است." };
+    return {
+      status: false,
+      message: "وارد کردن متن پیام الزامی است.",
+    };
   }
 
-  const data = await postFetch(
-    "ticket-messages/",
-    { message, ticket },
-    {
-      Authorization: token ? `Bearer ${token}` : undefined,
-    }
-  );
+  const body = new FormData();
+  if (message) body.append("message", message);
+  if (ticket) body.append("ticket", ticket);
+  if (file && file.size > 0) body.append("file", file);
 
-  if (data) {
-    revalidatePath(currentPath);
+  try {
+    const res = await fetch(
+      "http://preview.kft.co.com/ticket/api/ticket-messages/",
+      {
+        method: "POST",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+        body,
+      }
+    );
+
+    const data = await res.json();
+
+    if (data) {
+      revalidatePath(currentPath);
+      return {
+        status: true,
+        message: "پیام با موفقیت ارسال شد.",
+      };
+    } else {
+      return {
+        status: false,
+        message: "خطا در ارسال پیام.",
+      };
+    }
+  } catch (error) {
     return {
-      status: true,
-      message: "پیام با موفقیت ارسال شد.",
+      status: false,
+      message: "خطا در ارسال پیام: " + error.message,
     };
   }
 };

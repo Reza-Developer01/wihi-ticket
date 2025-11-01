@@ -5,9 +5,12 @@ import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Modal } from "../Modal";
 
-const MessageInput = ({ ticketNumber, status, id }) => {
+const MessageInput = ({ ticketNumber, id }) => {
   const [state, formAction] = useActionState(sendMessage, {});
   const [openModal, setOpenModal] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [hasFile, setHasFile] = useState(false);
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
@@ -19,9 +22,24 @@ const MessageInput = ({ ticketNumber, status, id }) => {
     }
   }, [state]);
 
+  const handleFormSubmit = async (formData) => {
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+    return formAction(formData);
+  };
+
+  const handleConfirmFile = () => {
+    if (!selectedFile) {
+      toast.error("فایلی انتخاب نشده است.");
+      return;
+    }
+    setOpenModal(false);
+  };
+
   return (
     <form
-      action={formAction}
+      action={handleFormSubmit}
       className="custom-shadow w-full h-12 pr-6 pl-[19px] bg-[#EFF0F6] rounded-[10px]"
     >
       <div className="flex items-center w-full h-full">
@@ -55,27 +73,67 @@ const MessageInput = ({ ticketNumber, status, id }) => {
             </h4>
 
             <div
-              className="flex items-center gap-x-2 w-[239px] h-[75px] mx-auto pr-[15px] bg-white outline outline-[#EDF1F3] rounded-[10px]"
+              className={`relative flex items-center gap-x-2 w-[239px] h-[75px] mx-auto pr-[15px] rounded-[10px] overflow-hidden transition-all duration-300
+              ${
+                hasFile
+                  ? "bg-[#00C96B33] outline outline-[#00C96B]"
+                  : "bg-white outline outline-[#EDF1F3]"
+              }
+              `}
               style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
             >
-              <svg className="w-[45px] h-[45px] text-[#404040] shrink-0">
+              <svg
+                className={`w-[45px] h-[45px] shrink-0 transition-all duration-300
+                ${hasFile ? "text-[#00C96B]" : "text-[#404040]"}
+                `}
+              >
                 <use href="#upload" />
               </svg>
 
-              <div className="flex flex-col gap-y-1 text-[#6C7278]">
-                <h5 className="text-xs/[16.8px] tracking-[-0.12px]">
-                  برای آپلود کلیک کنید
+              <div className="flex flex-col gap-y-1">
+                <h5
+                  className={`text-xs/[16.8px] tracking-[-0.12px] transition-all duration-300
+                  ${hasFile ? "text-[#00C96B]" : "text-[#6C7278]"}
+                  `}
+                >
+                  {hasFile ? "فایل انتخاب شد" : "برای آپلود کلیک کنید"}
                 </h5>
-                <p className="text-[8px]/[11.2px] tracking-[-0.12px] w-[157px]">
+                <p
+                  className={`text-[8px]/[11.2px] tracking-[-0.12px] w-[157px] transition-all duration-300
+                  ${hasFile ? "text-[#00C96B]" : "text-[#6C7278]"}
+                  `}
+                >
                   در نظر داشته باشید تا حجم 50 مگابایت آپلود صورت گیرد و فرمت
                   PNG , JPG , PDF
                 </p>
               </div>
+
+              <input
+                type="file"
+                name="file"
+                className="absolute inset-0 w-full h-full text-transparent cursor-pointer"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  if (file.size > 50 * 1024 * 1024) {
+                    toast.error("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
+                    e.target.value = "";
+                    setHasFile(false);
+                    setSelectedFile(null);
+                    return;
+                  }
+
+                  setSelectedFile(file);
+                  setHasFile(true);
+                }}
+              />
             </div>
 
             <div className="flex flex-col gap-y-6">
               <button
                 type="button"
+                onClick={handleConfirmFile}
                 className="flex items-center justify-center w-[239px] h-12 mx-auto mt-6 leading-6 text-white bg-[#20CFCF] rounded-[10px] tracking-[-0.12px]"
               >
                 تایید
@@ -83,6 +141,11 @@ const MessageInput = ({ ticketNumber, status, id }) => {
 
               <button
                 type="button"
+                onClick={() => {
+                  setSelectedFile(null);
+                  setHasFile(false);
+                  setOpenModal(false);
+                }}
                 className="flex items-center justify-center w-full text-xs/[16.8px] text-[#6C7278] tracking-[-0.12px]"
               >
                 منصرف شدم
