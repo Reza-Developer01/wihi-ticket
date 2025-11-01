@@ -1,5 +1,6 @@
+import CloseTicket from "./CloseTicket";
+
 const Messages = async ({ request }) => {
-  console.log(request);
   const getStatusStyle = (status) => {
     switch (status) {
       case "open":
@@ -42,12 +43,7 @@ const Messages = async ({ request }) => {
           {message}
         </button>
 
-        <button
-          type="button"
-          className="flex items-center justify-center w-[100px] h-[30px] bg-[#40404033] text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]"
-        >
-          بستن درخواست
-        </button>
+        <CloseTicket />
       </div>
 
       {/* body */}
