@@ -34,7 +34,7 @@ const Messages = async ({ request }) => {
   return (
     <div className="relative h-[520px]">
       {/* head */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-[15px]">
         <button
           type="button"
           className={`flex items-center justify-center w-[100px] h-[30px] ${bg} ${text} font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]`}
@@ -51,7 +51,7 @@ const Messages = async ({ request }) => {
       </div>
 
       {/* body */}
-      <div className="flex flex-col justify-end gap-y-[25px] h-[calc(100%-39px)]">
+      <div className="flex flex-col overflow-y-auto gap-y-[25px] h-[calc(100%-54px)]">
         {/* item */}
         {request.messages.map((item) => (
           <div key={item.id} className="flex flex-col gap-y-2.5 *:w-[245px]">
