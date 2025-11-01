@@ -43,7 +43,7 @@ const Messages = async ({ request }) => {
           {message}
         </button>
 
-        <CloseTicket />
+        <CloseTicket ticketNumber={request.ticket_number} />
       </div>
 
       {/* body */}
