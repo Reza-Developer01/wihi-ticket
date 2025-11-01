@@ -1,7 +1,25 @@
-const MessageInput = () => {
+"use client";
+
+import { sendMessage } from "@/actions/message";
+import { useActionState, useEffect } from "react";
+import toast from "react-hot-toast";
+
+const MessageInput = ({ ticketNumber, status, id }) => {
+  const [state, formAction] = useActionState(sendMessage, {});
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state?.status) {
+      toast.success(state?.message);
+    } else {
+      toast.error(state?.message);
+    }
+  }, [state]);
+
   return (
     <form
-      action="#"
+      action={formAction}
       className="custom-shadow w-full h-12 pr-6 pl-[19px] bg-[#EFF0F6] rounded-[10px]"
     >
       <div className="flex items-center w-full h-full">
@@ -11,6 +29,8 @@ const MessageInput = () => {
           placeholder="یاداشت کنید . . ."
           name="message"
         />
+        <input type="hidden" name="ticket" value={ticketNumber} />
+        <input type="hidden" name="path" value={`/requests-list/${id}`} />
 
         <div className="flex items-center gap-x-2">
           <button type="button">

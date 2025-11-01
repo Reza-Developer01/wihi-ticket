@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 const page = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
 
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
@@ -27,7 +27,11 @@ const page = async ({ params }) => {
         <div className="flex flex-col gap-y-[15px]">
           <Messages request={getRequest} />
 
-          <MessageInput />
+          <MessageInput
+            ticketNumber={getRequest.ticket_number}
+            status={getRequest.status}
+            id={id}
+          />
         </div>
       </BottomSection>
     </>
