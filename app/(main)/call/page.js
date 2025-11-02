@@ -31,7 +31,7 @@ const page = () => {
               <use href="#arrow-left-3" />
             </svg>
           </button>
-          <Button href="/" text="درخواست تماس" />
+          <Button href="/call-request" text="درخواست تماس" />
         </div>
       </BottomSection>
     </>
