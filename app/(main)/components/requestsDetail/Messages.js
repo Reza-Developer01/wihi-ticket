@@ -43,7 +43,11 @@ const Messages = async ({ request }) => {
           {message}
         </button>
 
-        <CloseTicket ticketNumber={request.ticket_number} />
+        {request.status === "open" || request.status === "is_progress" ? (
+          <CloseTicket ticketNumber={request.ticket_number} />
+        ) : (
+          ""
+        )}
       </div>
 
       {/* body */}
