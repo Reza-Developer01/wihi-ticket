@@ -9,7 +9,7 @@ const selectorItems = [
   {
     id: 2,
     text: "درخواست تماس تلفنی",
-    href: "/",
+    href: "/call",
   },
   {
     id: 3,

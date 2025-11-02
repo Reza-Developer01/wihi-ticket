@@ -4,7 +4,13 @@ import Link from "next/link";
 import logo from "@/public/images/svgs/main-logo.svg";
 import BackButton from "./BackButton";
 
-const Header = ({ title, shortDescription, showBackButton = false }) => {
+const Header = ({
+  title,
+  subTitle,
+  hasSubTitle = false,
+  shortDescription,
+  showBackButton = false,
+}) => {
   return (
     <header className="mt-[68px]">
       <div className="container">
@@ -18,7 +24,12 @@ const Header = ({ title, shortDescription, showBackButton = false }) => {
 
         <div className="flex flex-col gap-y-3">
           <h1 className="text-[#EEEEEE] font-bold text-[32px]/[41.6px] tracking-[-0.64px]">
-            {title}
+            {title}{" "}
+            {hasSubTitle && (
+              <span className="text-sm/[19.6px] font-medium tracking-[-0.12px]">
+                {subTitle}
+              </span>
+            )}
           </h1>
           <p className="text-white font-light text-xs/[16.8px] tracking-[-0.12px]">
             {shortDescription}
