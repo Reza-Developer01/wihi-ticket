@@ -14,7 +14,7 @@ const selectorItems = [
   {
     id: 3,
     text: "پرسش های متداول",
-    href: "/",
+    href: "/faqs",
   },
 ];
 

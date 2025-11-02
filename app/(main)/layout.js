@@ -343,6 +343,24 @@ export default async function RootLayout({ children }) {
                 strokeLinejoin="round"
               />
             </symbol>
+            <symbol
+              id="arrow-1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 15 14"
+              fill="none"
+            >
+              <g clipPath="url(#clip0_1563_2885)">
+                <path
+                  d="M6.85153 13.2736L7.68162 9.29272C7.87667 8.35627 8.84813 7.4506 9.85182 7.26996L13.4846 6.6147C14.4879 6.43406 14.5567 5.94839 13.6382 5.53042L1.84791 0.168907C0.928988 -0.249065 0.477837 0.135421 0.839796 1.02729L5.84265 13.3538C6.20461 14.2457 6.65612 14.21 6.85153 13.2736Z"
+                  fill="currentColor"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_1563_2885">
+                  <rect width="15" height="14" fill="white" />
+                </clipPath>
+              </defs>
+            </symbol>
           </svg>
 
           {children}
