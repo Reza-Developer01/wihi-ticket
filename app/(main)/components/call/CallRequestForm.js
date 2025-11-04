@@ -1,62 +1,86 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropDown from "../DropDown";
 import Input from "../Input";
 import TextArea from "../TextArea";
 import SubmitButton from "../SubmitButton";
+import { useActionState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { requestCall } from "@/actions/call";
 
-const CallRequestForm = () => {
+const CallRequestForm = ({ categories, services, issues }) => {
+  const router = useRouter();
+  const [state, formAction] = useActionState(requestCall, {});
+
   const [categorySelected, setCategorySelected] = useState(false);
   const [contactSelected, setContactSelected] = useState(false);
   const [hasFile, setHasFile] = useState(false);
 
-  const categoryOptions = [
-    { id: 1, name: "حل مشکل سرویس" },
-    { id: 2, name: "پشتیبانی فنی" },
-  ];
+  // const [filteredServices, setFilteredServices] = useState([]);
+  // const [filteredContacts, setFilteredContacts] = useState([]);
 
-  const serviceOptions = [
-    { id: 1, name: "وای فای" },
-    { id: 2, name: "اینترنت سازمانی" },
-  ];
+  // const handleCategoryChange = (categoryId) => {
+  //   setCategorySelected(true);
+  //   setContactSelected(false);
+  //   const relatedServices = services.filter(
+  //     (item) => item.category_id === categoryId
+  //   );
 
-  const contactOptions = [
-    { id: 1, name: "0900123456" },
-    { id: 2, name: "0900987654" },
-  ];
+  //   const relatedIssues = issues.filter(
+  //     (item) => item.category_id === categoryId
+  //   );
+
+  //   setFilteredServices(relatedServices);
+  //   setFilteredContacts(relatedIssues);
+  // };
+
+  const handleCategoryChange = () => {
+    setCategorySelected(true);
+    setContactSelected(false);
+  };
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state?.status) {
+      toast.success(state?.message);
+      router.push("/successfully-call");
+    } else {
+      toast.error(state?.message);
+    }
+  }, [state, router]);
 
   return (
-    <form className="flex flex-col gap-y-[15px]">
+    <form action={formAction} className="flex flex-col gap-y-[15px]">
       <DropDown
-        options={categoryOptions}
+        options={categories}
         placeholder="انتخاب دسته بندی"
         labelKey="name"
         valueKey="id"
-        onChange={(value) => {
-          setCategorySelected(true);
-        }}
+        onChange={(value) => handleCategoryChange(value)}
         name="category"
       />
 
       {categorySelected && (
         <>
           <DropDown
-            options={serviceOptions}
+            options={services}
             placeholder="انتخاب سرویس"
             labelKey="name"
             valueKey="id"
-            onChange={(value) => {}}
+            onChange={() => {}}
             name="service"
           />
 
           <DropDown
-            options={contactOptions}
+            options={issues}
             placeholder="انتخاب شماره تماس"
             labelKey="name"
             valueKey="id"
-            onChange={(value) => setContactSelected(true)}
-            name="contact"
+            onChange={() => setContactSelected(true)}
+            name="issue"
           />
         </>
       )}
@@ -64,7 +88,7 @@ const CallRequestForm = () => {
       {contactSelected && (
         <Input
           type="text"
-          name="extension"
+          name="phone_number"
           placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
         />
       )}
