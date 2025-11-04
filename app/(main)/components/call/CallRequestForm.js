@@ -11,8 +11,6 @@ const CallRequestForm = () => {
   const [contactSelected, setContactSelected] = useState(false);
   const [hasFile, setHasFile] = useState(false);
 
-  console.log({ categorySelected, contactSelected, hasFile });
-
   const categoryOptions = [
     { id: 1, name: "حل مشکل سرویس" },
     { id: 2, name: "پشتیبانی فنی" },
