@@ -16,7 +16,7 @@ const page = () => {
 
       <InformationSection />
 
-      <AdminBottomPage>
+      <AdminBottomPage pb="pb-9">
         <PagesLinks />
 
         <AdminFooter />

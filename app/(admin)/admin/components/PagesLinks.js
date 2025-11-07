@@ -17,7 +17,7 @@ const PagesLinks = () => {
             hasLabel={true}
             labelTitle="مشاهد آرشیو"
           />
-          <PagesLink title="گزارشات" />
+          <PagesLink title="گزارشات" href="admin/reports" />
           <PagesLink
             title="افزودن کارشناس"
             hasLabel={true}
