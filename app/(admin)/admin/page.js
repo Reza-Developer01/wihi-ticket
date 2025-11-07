@@ -1,5 +1,6 @@
 import "./admin.css";
 import AdminBottomPage from "./components/AdminBottomPage";
+import AdminFooter from "./components/AdminFooter";
 import AdminHeader from "./components/AdminHeader";
 import InformationSection from "./components/InformationSection";
 import PagesLinks from "./components/PagesLinks";
@@ -17,6 +18,8 @@ const page = () => {
 
       <AdminBottomPage>
         <PagesLinks />
+
+        <AdminFooter />
       </AdminBottomPage>
     </>
   );
