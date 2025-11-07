@@ -1,12 +1,18 @@
 import Link from "next/link";
 
-const PagesLink = ({ title, subTitle, hasLabel = false, labelTitle }) => {
+const PagesLink = ({
+  title,
+  subTitle,
+  hasLabel = false,
+  labelTitle,
+  href = "/",
+}) => {
   return (
     <Link
-      href="/"
+      href={href}
       className={`custom-shadow flex items-center ${
-        hasLabel ? "justify-between" : "justify-center"
-      } pl-[13px] w-full h-12 text-base bg-white text-[#1A1C1E] leading-[22.4px] tracking-[-0.12px] border border-[#EFF0F6] rounded-[10px]`}
+        hasLabel ? "justify-between pl-[13px]" : "justify-center"
+      } w-full h-12 text-base/[22.4px] bg-white text-[#1A1C1E] tracking-[-0.12px] border border-[#EFF0F6] rounded-[10px]`}
     >
       {hasLabel && <div></div>}
       <div
