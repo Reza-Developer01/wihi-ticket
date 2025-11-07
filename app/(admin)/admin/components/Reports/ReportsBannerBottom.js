@@ -33,7 +33,7 @@ const items = [
 
 const ReportsBannerBottom = () => {
   return (
-    <div className="grid grid-cols-4 gap-[15px]">
+    <div className="flex flex-wrap gap-[15px] *:grow">
       {items.map((item, index) => (
         <ReportsBannerBottomItem key={index} {...item} />
       ))}
