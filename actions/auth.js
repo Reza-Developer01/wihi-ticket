@@ -43,6 +43,9 @@ const checkOtp = async (state, formData) => {
 
   const data = await postFetch("users/verify-otp/", { code });
 
+  console.log(data);
+  
+
   if (data.non_field_errors) {
     return {
       status: "error",
@@ -61,6 +64,11 @@ const checkOtp = async (state, formData) => {
     httpOnly: true,
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
+  });
+
+  cookieStore.set("role", data.user.role, {
+    path: "/",
+    maxAge: 60 * 60,
   });
 
   return {
@@ -84,6 +92,8 @@ const getMe = async () => {
   const data = await getFetch("users/me/", {
     Authorization: `Bearer ${token}`,
   });
+
+  console.log(data);
 
   if (data.authenticated) {
     return {
