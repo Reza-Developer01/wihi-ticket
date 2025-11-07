@@ -16,6 +16,8 @@ const login = async (state, formData) => {
 
   const data = await postFetch("users/login/", { phone, password });
 
+  console.log(data);
+
   if (data.non_field_errors) {
     return {
       status: "error",

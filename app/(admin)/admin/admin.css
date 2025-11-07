@@ -1,0 +1,14 @@
+.items__wrapper {
+    background: linear-gradient(262.65deg, #FFFFFF 0.85%, #F7FFFF 48.45%, #FFFFFF 96.06%);
+}
+
+.item__active button {
+    border: 1px solid #17C7C7;
+    box-shadow: 0px 4px 4px 0px #E0FFFF;
+    color: #6CDCDC;
+}
+
+.item__active span {
+    color: #6CDCDC;
+    font-weight: 500;
+}
