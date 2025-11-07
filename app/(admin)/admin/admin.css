@@ -12,3 +12,34 @@
     color: #6CDCDC;
     font-weight: 500;
 }
+
+.reports__banner {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    padding: 9px 18px 11px 14px;
+    background: #EFF0F680;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.reports__banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    padding: 1px;
+    background: linear-gradient(90deg, #FF0000, #CC0000, #990000);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+}
+
+.reports__text-gradient {
+    background: linear-gradient(90deg, #FF0000 0%, #CC0000 50%, #990000 100%);
+    color: transparent;
+    background-clip: text;
+}

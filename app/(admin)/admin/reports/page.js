@@ -1,4 +1,5 @@
 import AdminBottomPage from "../components/AdminBottomPage";
+import ReportsBanner from "../components/Reports/ReportsBanner";
 import ReportsFilter from "../components/Reports/ReportsFilter";
 
 export const metadata = {
@@ -14,13 +15,7 @@ const page = () => {
           <ReportsFilter />
 
           {/* information */}
-          <div className="flex flex-col gap-y-[15px]">
-            {/* top */}
-            <div></div>
-
-            {/* bottom */}
-            <div></div>
-          </div>
+          <ReportsBanner />
         </div>
       </section>
     </AdminBottomPage>
