@@ -10,12 +10,13 @@ const Header = ({
   hasSubTitle = false,
   shortDescription,
   showBackButton = false,
+  mb = "mb-8",
 }) => {
   return (
     <header className="mt-[68px]">
       <div className="container">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center justify-between mb-8">
+          <Link href="/" className={`flex items-center justify-between ${mb}`}>
             <Image src={logo} alt="logo website" />
           </Link>
 

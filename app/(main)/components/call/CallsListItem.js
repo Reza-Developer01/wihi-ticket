@@ -70,7 +70,7 @@ const CallsListItem = ({
       {/* body */}
       <div className="flex flex-col gap-y-px pr-[18px] mb-[13px]">
         <Link
-          href={`/call-requests/${call_request_number}`}
+          href={`/call-request/${call_request_number}`}
           className="font-medium text-xs/[16.8px] tracking-[-0.12px] text-[#8C8C8C]"
         >
           {title}
