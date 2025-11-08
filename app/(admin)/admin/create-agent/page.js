@@ -1,6 +1,6 @@
 import AdminBottomPage from "../components/AdminBottomPage";
-import CreateUserForm from "../components/CreateAgent/CreateAgentForm";
-import CreateUserHead from "../components/CreateAgent/CreateAgentHead";
+import CreateAgentForm from "../components/CreateAgent/CreateAgentForm";
+import CreateAgentHead from "../components/CreateAgent/CreateAgentHead";
 import SubTitle from "../components/SubTitle";
 
 export const metadata = {
@@ -13,12 +13,12 @@ const page = () => {
       <section>
         <div className="container">
           {/* head */}
-          <CreateUserHead />
+          <CreateAgentHead />
 
           <SubTitle title="اطلاعات هویتــی کارشناس" w="w-[90px]" />
 
           {/* form */}
-          <CreateUserForm />
+          <CreateAgentForm />
         </div>
       </section>
     </AdminBottomPage>
