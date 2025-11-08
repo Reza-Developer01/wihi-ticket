@@ -18,7 +18,7 @@ const CreateAgentForm = ({ agentsCategory }) => {
     register_date: "",
     email: "",
     phone: "",
-    user_name: "",
+    username: "",
     password: "",
     rePassword: "",
   });
@@ -127,8 +127,8 @@ const CreateAgentForm = ({ agentsCategory }) => {
         <input
           type="text"
           placeholder="نام کاربری را وارد کنید"
-          name="user_name"
-          value={formData.user_name}
+          name="username"
+          value={formData.username}
           onChange={handleChange}
           className="input-shadow w-full h-[46px] px-3.5 bg-white text-[#1A1C1E] font-medium text-xs/[19.6px] border border-[#EDF1F3] rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#8C8C8C]"
         />
