@@ -94,6 +94,7 @@ export default async function RootLayout({ children }) {
         </svg>
         {children}
         <HotToast />
+        <div className="shape"></div>
       </body>
     </html>
   );
