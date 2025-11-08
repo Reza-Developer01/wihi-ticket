@@ -4,7 +4,7 @@ import CreateAgentHead from "../components/CreateAgent/CreateAgentHead";
 import SubTitle from "../components/SubTitle";
 
 export const metadata = {
-  title: "افزودن کاربر",
+  title: "افزودن کارشناس",
 };
 
 const page = () => {

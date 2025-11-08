@@ -6,6 +6,7 @@ import { PhoneInput } from "react-international-phone";
 import { useState } from "react";
 import "react-international-phone/style.css";
 import SubTitle from "../SubTitle";
+import AgentsCategories from "./AgentsCategories";
 
 const CreateAgentForm = () => {
   const [phone, setPhone] = useState("");
@@ -57,20 +58,7 @@ const CreateAgentForm = () => {
           style={{ direction: "ltr" }}
         />
 
-        <div className="input-shadow flex items-center justify-between w-full h-[46px] border border-[#EDF1F3] rounded-[10px] overflow-hidden">
-          <p className="pr-12 font-medium text-xs/[16.8px] outline-none tracking-[-0.12px] text-[#8C8C8C]">
-            انتخاب دسته بندی کارشناس
-          </p>
-
-          <button
-            type="button"
-            className="flex items-center justify-center w-[62px] h-full border-r border-r-[#EDF1F3]"
-          >
-            <svg className="w-3 h-3 text-[#6C7278]">
-              <use href="#arrow-down-2" />
-            </svg>
-          </button>
-        </div>
+        <AgentsCategories />
 
         <div className="w-full *:mb-0 *:mt-5">
           <SubTitle title="اطلاعات ورود کارشناس" w="w-[96px]" />

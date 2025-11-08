@@ -7,7 +7,7 @@ const ReportsBannerBottomItem = ({
 }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-y-[7px] w-[70px] h-[67px] ${bg} ${text} rounded-[7px]`}
+      className={`flex flex-col items-center justify-center gap-y-[7px] w-[66px] h-[67px] ${bg} ${text} rounded-[7px]`}
     >
       <span className="inline-block h-[23px] font-extrabold text-2xl/[33.6px]">
         {number}
