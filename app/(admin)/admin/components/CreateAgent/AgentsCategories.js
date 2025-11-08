@@ -68,7 +68,7 @@ const AgentsCategories = ({ agentsCategory }) => {
         </div>
       )}
 
-      <input type="hidden" name="agent_category" value={selected?.id || ""} />
+      <input type="hidden" name="category" value={selected?.id || ""} />
     </div>
   );
 };

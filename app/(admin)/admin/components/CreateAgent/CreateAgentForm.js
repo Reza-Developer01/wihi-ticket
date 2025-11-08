@@ -3,49 +3,108 @@
 import { DatePicker } from "zaman";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import "react-international-phone/style.css";
 import SubTitle from "../SubTitle";
 import AgentsCategories from "./AgentsCategories";
+import { createAgent } from "@/actions/agent";
+import toast from "react-hot-toast";
+import { toJalaali } from "jalaali-js";
 
 const CreateAgentForm = ({ agentsCategory }) => {
-  const [phone, setPhone] = useState("");
-  const [showPass, setShowPass] = useState(false);
-  const [showRePass, setShowRePass] = useState(false);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    register_date: "",
+    email: "",
+    phone: "",
+    user_name: "",
+    password: "",
+    rePassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const [state, formAction] = useActionState(createAgent, {});
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state?.status) toast.success(state?.message);
+    else toast.error(state?.message);
+  }, [state]);
 
   return (
-    <form action="#">
+    <form action={formAction}>
       <div className="flex flex-col gap-y-4">
+        {/* نام و نام خانوادگی */}
         <div className="flex items-center gap-x-4">
-          <Input placeholder="نام" name="name" />
-          <Input placeholder="نام خانوادگی" name="family" />
+          <Input
+            placeholder="نام"
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+          />
+
+          <Input
+            placeholder="نام خانوادگی"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+          />
         </div>
 
+        {/* تاریخ */}
         <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
+
           <div
             className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]"
             style={{ textAlignLast: "left" }}
           >
             <DatePicker
-              onChange={(e) => console.log(e)}
+              value={formData.register_date}
+              onChange={(e) => {
+                const d = new Date(e.value);
+                const { jy, jm, jd } = toJalaali(d);
+
+                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
+                  jd
+                ).padStart(2, "0")}`;
+
+                setFormData((prev) => ({ ...prev, register_date: jDate }));
+              }}
               round="x2"
               defaultValue={new Date()}
+            />
+
+            <input
+              type="hidden"
+              name="register_date"
+              value={formData.register_date}
             />
           </div>
         </div>
 
+        {/* ایمیل */}
         <Input
           placeholder="Loisbecket@gmail.com"
           name="email"
+          value={formData.email}
+          onChange={handleChange}
           style={{ textAlign: "left", direction: "ltr" }}
         />
 
+        {/* شماره تماس */}
         <PhoneInput
-          value={phone}
-          onChange={(phone) => setPhone(phone)}
+          name="phone"
+          value={formData.phone}
+          onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
           defaultCountry="ir"
           className="input-shadow w-full h-[46px] text-sm/[19.6px] text-[#1A1C1E] font-medium rounded-[10px] outline-none"
           inputClassName="!h-full !pl-2.5 !bg-white !text-[#1A1C1E] placeholder:!text-[#1A1C1E] !text-left !grow !outline-none !shadow-none !ring-0 !p-0 !rounded-r-[10px] !border-[#EDF1F3]"
@@ -64,45 +123,52 @@ const CreateAgentForm = ({ agentsCategory }) => {
           <SubTitle title="اطلاعات ورود کارشناس" w="w-[96px]" />
         </div>
 
+        {/* نام کاربری */}
         <input
           type="text"
           placeholder="نام کاربری را وارد کنید"
-          className="input-shadow w-full h-[46px] px-3.5 bg-white text-[#1A1C1E] font-medium text-xs/[19.6px] border border-[#EDF1F3] 
-            rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#8C8C8C]"
+          name="user_name"
+          value={formData.user_name}
+          onChange={handleChange}
+          className="input-shadow w-full h-[46px] px-3.5 bg-white text-[#1A1C1E] font-medium text-xs/[19.6px] border border-[#EDF1F3] rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#8C8C8C]"
         />
 
+        {/* پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg
-            className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowPass((value) => !value)}
-          >
+          <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#eye-off" />
           </svg>
 
           <input
-            type={showPass ? "text" : "password"}
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder="*******"
             className="text-left outline-none placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
             style={{ direction: "ltr" }}
           />
         </div>
 
+        {/* تکرار پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg
-            className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowRePass((value) => !value)}
-          >
+          <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#eye-off" />
           </svg>
 
           <input
-            type={showRePass ? "text" : "password"}
+            name="rePassword"
+            type="password"
+            value={formData.rePassword}
+            onChange={handleChange}
             placeholder="*******"
             className="text-left outline-none placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
             style={{ direction: "ltr" }}
           />
         </div>
       </div>
+
+      <button type="submit">ارسال</button>
     </form>
   );
 };
