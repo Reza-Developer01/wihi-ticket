@@ -4,17 +4,17 @@ import { cookies } from "next/headers";
 import { getFetch, postFetch } from "@/utils/fetch";
 
 const login = async (state, formData) => {
-  const phone = formData.get("phone");
+  const username = formData.get("username");
   const password = formData.get("password");
 
-  if (phone === "" || password === "") {
+  if (username === "" || password === "") {
     return {
       status: "error",
       message: "پر کردن تمام موارد ، اجباری است.",
     };
   }
 
-  const data = await postFetch("users/login/", { phone, password });
+  const data = await postFetch("users/login/", { username, password });
 
   console.log(data);
 

@@ -8,11 +8,16 @@ const createAgent = async (state, formData) => {
   const last_name = formData.get("last_name");
   const register_date = formData.get("register_date");
   const email = formData.get("email");
-  const phone = formData.get("phone");
+  let phone = formData.get("phone");
   const category = formData.get("category");
-  const user_name = formData.get("user_name");
+  const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
+
+  phone = phone.replace(/\D/g, "");
+  if (phone.startsWith("98")) {
+    phone = "0" + phone.slice(2);
+  }
 
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
@@ -24,7 +29,7 @@ const createAgent = async (state, formData) => {
       !email ||
       !phone ||
       !category ||
-      !user_name,
+      !username,
     !password)
   ) {
     return {
@@ -49,7 +54,7 @@ const createAgent = async (state, formData) => {
       email,
       phone,
       category,
-      user_name,
+      username,
       password,
     },
     {
@@ -57,8 +62,9 @@ const createAgent = async (state, formData) => {
     }
   );
 
+  console.log(data);
+
   if (data) {
-    console.log(data);
     return {
       status: true,
       message: "کارشناس با موفقیت ساخته شد.",

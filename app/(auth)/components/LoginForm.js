@@ -11,7 +11,7 @@ const LoginForm = () => {
   const [state, formAction] = useActionState(login, {});
   const router = useRouter();
 
-  const [formData, setFormData] = useState({ phone: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -26,7 +26,7 @@ const LoginForm = () => {
     if (state?.status === "error") {
       toast.error(state?.message);
     } else {
-      sessionStorage.setItem("phone", state?.phone);
+      sessionStorage.setItem("username", state?.username);
       toast.success(state?.message);
       router.push("/auth/check-otp");
     }
@@ -35,11 +35,11 @@ const LoginForm = () => {
   return (
     <form action={formAction} className="flex flex-col gap-y-4">
       <Input
-        name="phone"
+        name="username"
         type="text"
         placeholder="09123456789"
         style={{ direction: "ltr" }}
-        value={formData.phone}
+        value={formData.username}
         onChange={handleChange}
       />
 
