@@ -22,12 +22,12 @@ const PagesLinks = () => {
             title="افزودن کارشناس"
             hasLabel={true}
             labelTitle="12 | کارشناس"
+            href="/admin/create-agent"
           />
           <PagesLink
             title="افزودن کاربــــر"
             hasLabel={true}
             labelTitle="102 | کاربــر"
-            href="/admin/create-user"
           />
         </div>
       </div>

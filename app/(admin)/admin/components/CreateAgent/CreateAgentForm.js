@@ -7,7 +7,7 @@ import { useState } from "react";
 import "react-international-phone/style.css";
 import SubTitle from "../SubTitle";
 
-const CreateUserForm = () => {
+const CreateAgentForm = () => {
   const [phone, setPhone] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
@@ -119,4 +119,4 @@ const CreateUserForm = () => {
   );
 };
 
-export default CreateUserForm;
+export default CreateAgentForm;

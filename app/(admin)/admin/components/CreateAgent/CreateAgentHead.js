@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const CreateUserHead = () => {
+const CreateAgentHead = () => {
   return (
     <div className="flex items-center justify-between mb-[25px]">
       <div className="flex items-center gap-x-[7px]">
@@ -20,4 +20,4 @@ const CreateUserHead = () => {
   );
 };
 
-export default CreateUserHead;
+export default CreateAgentHead;

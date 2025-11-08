@@ -1,6 +1,6 @@
 import AdminBottomPage from "../components/AdminBottomPage";
-import CreateUserForm from "../components/CreateUser/CreateUserForm";
-import CreateUserHead from "../components/CreateUser/CreateUserHead";
+import CreateUserForm from "../components/CreateAgent/CreateAgentForm";
+import CreateUserHead from "../components/CreateAgent/CreateAgentHead";
 import SubTitle from "../components/SubTitle";
 
 export const metadata = {
