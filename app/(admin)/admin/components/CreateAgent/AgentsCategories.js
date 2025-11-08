@@ -2,15 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 
-const AgentsCategories = () => {
+const AgentsCategories = ({ agentsCategory }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(null);
-
-  const categories = [
-    { id: 1, name: "پشتیبانی فنی" },
-    { id: 2, name: "مالی و حسابداری" },
-    { id: 3, name: "منابع انسانی" },
-  ];
 
   const dropdownRef = useRef(null);
 
@@ -52,20 +46,24 @@ const AgentsCategories = () => {
       {isOpen && (
         <div className="custom-shadow absolute top-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
           <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
-            {categories.map((item) => (
-              <li
-                key={item.id}
-                className={`cursor-pointer hover:text-black pb-3 ${
-                  selected?.id === item.id ? "text-black font-semibold" : ""
-                }`}
-                onClick={() => {
-                  setSelected(item);
-                  setIsOpen(false);
-                }}
-              >
-                {item.name}
-              </li>
-            ))}
+            {agentsCategory?.length > 0 ? (
+              agentsCategory.map((item) => (
+                <li
+                  key={item.id}
+                  className={`cursor-pointer hover:text-black pb-3 ${
+                    selected?.id === item.id ? "text-black font-semibold" : ""
+                  }`}
+                  onClick={() => {
+                    setSelected(item);
+                    setIsOpen(false);
+                  }}
+                >
+                  {item.name}
+                </li>
+              ))
+            ) : (
+              <li className="text-gray-400 pb-3">هیچ دسته‌بندی‌ای یافت نشد</li>
+            )}
           </ul>
         </div>
       )}

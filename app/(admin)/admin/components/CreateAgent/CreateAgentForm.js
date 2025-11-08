@@ -8,7 +8,7 @@ import "react-international-phone/style.css";
 import SubTitle from "../SubTitle";
 import AgentsCategories from "./AgentsCategories";
 
-const CreateAgentForm = () => {
+const CreateAgentForm = ({ agentsCategory }) => {
   const [phone, setPhone] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
@@ -58,7 +58,7 @@ const CreateAgentForm = () => {
           style={{ direction: "ltr" }}
         />
 
-        <AgentsCategories />
+        <AgentsCategories agentsCategory={agentsCategory} />
 
         <div className="w-full *:mb-0 *:mt-5">
           <SubTitle title="اطلاعات ورود کارشناس" w="w-[96px]" />
