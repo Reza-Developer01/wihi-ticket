@@ -27,6 +27,7 @@ const PagesLinks = () => {
             title="افزودن کاربــــر"
             hasLabel={true}
             labelTitle="102 | کاربــر"
+            href="/admin/create-user"
           />
         </div>
       </div>
