@@ -1,4 +1,5 @@
 import AdminBottomPage from "../components/AdminBottomPage";
+import CreateUserForm from "../components/CreateUser/CreateUserForm";
 import CreateUserHead from "../components/CreateUser/CreateUserHead";
 import SubTitle from "../components/SubTitle";
 
@@ -8,7 +9,7 @@ export const metadata = {
 
 const page = () => {
   return (
-    <AdminBottomPage mt="mt-[79px] pb-[50px] h-[calc(100vh-79px)]">
+    <AdminBottomPage mt="mt-[79px] pb-[50px]">
       <section>
         <div className="container">
           {/* head */}
@@ -17,6 +18,7 @@ const page = () => {
           <SubTitle title="اطلاعات هویتــی کارشناس" w="w-[90px]" />
 
           {/* form */}
+          <CreateUserForm />
         </div>
       </section>
     </AdminBottomPage>
