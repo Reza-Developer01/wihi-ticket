@@ -10,6 +10,7 @@ import AgentsCategories from "./AgentsCategories";
 import { createAgent } from "@/actions/agent";
 import toast from "react-hot-toast";
 import { toJalaali } from "jalaali-js";
+import SubmitButton from "../SubmitButton";
 
 const CreateAgentForm = ({ agentsCategory }) => {
   const [formData, setFormData] = useState({
@@ -166,9 +167,9 @@ const CreateAgentForm = ({ agentsCategory }) => {
             style={{ direction: "ltr" }}
           />
         </div>
+        
+        <SubmitButton title="افزودن کارشناس" />
       </div>
-
-      <button type="submit">ارسال</button>
     </form>
   );
 };
