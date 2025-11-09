@@ -1,11 +1,15 @@
+"use client";
+
 import { DatePicker } from "zaman";
 import { toJalaali } from "jalaali-js";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import { useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import SubmitButton from "../SubmitButton";
 import SubTitle from "../SubTitle";
+import { createRealUser } from "@/actions/user";
+import toast from "react-hot-toast";
 
 const CreateUserReal = () => {
   const [hasFile, setHasFile] = useState(false);
@@ -26,14 +30,24 @@ const CreateUserReal = () => {
     password: "",
     rePassword: "",
   });
+  const fileRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const [state, formAction] = useActionState(createRealUser, {});
+
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state?.status) toast.success(state?.message);
+    else toast.error(state?.message);
+  }, [state]);
+
   return (
-    <form action="#">
+    <form action={formAction}>
       <div className="flex flex-col gap-y-4">
         {/* نام و نام خانوادگی */}
         <div className="flex items-center gap-x-4">
@@ -179,10 +193,11 @@ const CreateUserReal = () => {
           </button>
 
           <input
+            ref={fileRef}
             type="file"
             name="file"
             className="absolute w-full h-full text-transparent cursor-pointer"
-            disabled={hasFile}
+            // disabled={hasFile}
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
@@ -254,6 +269,8 @@ const CreateUserReal = () => {
         <div className="w-full *:mb-0 *:mt-5">
           <SubTitle title="سطح پلن کاربر" w="w-[90px]" />
         </div>
+
+        <input type="hidden" name="user_type" value="legal" />
 
         <SubmitButton title="افزودن کارشناس" />
       </div>
