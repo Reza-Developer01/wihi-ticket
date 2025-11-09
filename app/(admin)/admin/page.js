@@ -15,7 +15,7 @@ const page = async () => {
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
-  const getAgents = await getFetch("users/agents", {
+  const data = await getFetch("reports/", {
     Authorization: `Bearer ${token}`,
   });
 
@@ -23,10 +23,10 @@ const page = async () => {
     <>
       <AdminHeader />
 
-      <InformationSection />
+      <InformationSection data={data} />
 
       <AdminBottomPage pb="pb-9">
-        <PagesLinks getAgents={getAgents} />
+        <PagesLinks data={data} />
 
         <AdminFooter />
       </AdminBottomPage>

@@ -1,6 +1,6 @@
 import PagesLink from "./PagesLink";
 
-const PagesLinks = ({ getAgents }) => {
+const PagesLinks = ({ data }) => {
   return (
     <section className="mb-5">
       <div className="container">
@@ -21,13 +21,13 @@ const PagesLinks = ({ getAgents }) => {
           <PagesLink
             title="افزودن کارشناس"
             hasLabel={true}
-            labelTitle={`${getAgents.length} | کارشناس`}
+            labelTitle={`${data.number_agent} | کارشناس`}
             href="/admin/create-agent"
           />
           <PagesLink
             title="افزودن کاربــــر"
             hasLabel={true}
-            labelTitle="102 | کاربــر"
+            labelTitle={`${data.number_customer} | کاربــر`}
             href="/admin/create-user"
           />
         </div>
