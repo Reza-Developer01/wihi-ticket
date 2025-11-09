@@ -23,14 +23,14 @@ const createAgent = async (state, formData) => {
   const token = (await cookieStore).get("access_token")?.value;
 
   if (
-    (!first_name ||
-      !last_name ||
-      !register_date ||
-      !email ||
-      !phone ||
-      !category ||
-      !username,
-    !password)
+    !first_name ||
+    !last_name ||
+    !register_date ||
+    !email ||
+    !phone ||
+    !category ||
+    !username ||
+    !password
   ) {
     return {
       status: false,
