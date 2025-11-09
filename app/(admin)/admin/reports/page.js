@@ -15,7 +15,6 @@ const page = async () => {
   const data = await getFetch("reports/", {
     Authorization: `Bearer ${token}`,
   });
-  console.log(data);
 
   return (
     <AdminBottomPage mt="mt-[79px] pb-[50px] h-[calc(100vh-79px)]">
@@ -25,7 +24,7 @@ const page = async () => {
           <ReportsFilter />
 
           {/* information */}
-          <ReportsBanner />
+          <ReportsBanner data={data} />
         </div>
       </section>
     </AdminBottomPage>

@@ -1,14 +1,14 @@
 import ReportsBannerBottom from "./ReportsBannerBottom";
 import ReportsBannerTop from "./ReportsBannerTop";
 
-const ReportsBanner = () => {
+const ReportsBanner = ({ data }) => {
   return (
     <div className="flex flex-col gap-y-[15px]">
       {/* top */}
-      <ReportsBannerTop />
+      <ReportsBannerTop data={data} />
 
       {/* bottom */}
-      <ReportsBannerBottom />
+      <ReportsBannerBottom data={data} />
     </div>
   );
 };
