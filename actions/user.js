@@ -17,6 +17,7 @@ const createRealUser = async (state, formData) => {
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
   const user_type = formData.get("user_type");
+  const plan = formData.get("plan");
 
   console.log(user_type);
 
@@ -85,6 +86,7 @@ const createRealUser = async (state, formData) => {
   body.append("password", password);
   body.append("file", file);
   body.append("user_type", user_type);
+  body.append("plan", plan);
 
   const token = cookies().get("access_token")?.value;
 

@@ -10,6 +10,7 @@ import SubmitButton from "../SubmitButton";
 import SubTitle from "../SubTitle";
 import { createRealUser } from "@/actions/user";
 import toast from "react-hot-toast";
+import UserPlans from "./UserPlans";
 
 const CreateUserReal = () => {
   const [hasFile, setHasFile] = useState(false);
@@ -31,6 +32,7 @@ const CreateUserReal = () => {
     rePassword: "",
   });
   const fileRef = useRef(null);
+  const [selectedPlan, setSelectedPlan] = useState(1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -271,6 +273,12 @@ const CreateUserReal = () => {
         </div>
 
         <input type="hidden" name="user_type" value="legal" />
+
+        <UserPlans
+          selectedPlan={selectedPlan}
+          setSelectedPlan={setSelectedPlan}
+        />
+        <input type="hidden" name="plan" value={selectedPlan} />
 
         <SubmitButton title="افزودن کارشناس" />
       </div>
