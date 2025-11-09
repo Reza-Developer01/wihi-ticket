@@ -13,6 +13,8 @@ import { toJalaali } from "jalaali-js";
 import SubmitButton from "../SubmitButton";
 
 const CreateAgentForm = ({ agentsCategory }) => {
+  const [showPass, setShowPass] = useState(false);
+  const [showRePass, setShowRePass] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -136,13 +138,16 @@ const CreateAgentForm = ({ agentsCategory }) => {
 
         {/* پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg className="w-4 h-4 text-[#ACB5BB]">
+          <svg
+            className="w-4 h-4 text-[#ACB5BB]"
+            onClick={() => setShowPass((value) => !value)}
+          >
             <use href="#eye-off" />
           </svg>
 
           <input
             name="password"
-            type="password"
+            type={showPass ? "text" : "password"}
             value={formData.password}
             onChange={handleChange}
             placeholder="*******"
@@ -153,13 +158,16 @@ const CreateAgentForm = ({ agentsCategory }) => {
 
         {/* تکرار پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg className="w-4 h-4 text-[#ACB5BB]">
+          <svg
+            className="w-4 h-4 text-[#ACB5BB]"
+            onClick={() => setShowRePass((value) => !value)}
+          >
             <use href="#eye-off" />
           </svg>
 
           <input
             name="rePassword"
-            type="password"
+            type={showRePass ? "text" : "password"}
             value={formData.rePassword}
             onChange={handleChange}
             placeholder="*******"
@@ -167,7 +175,7 @@ const CreateAgentForm = ({ agentsCategory }) => {
             style={{ direction: "ltr" }}
           />
         </div>
-        
+
         <SubmitButton title="افزودن کارشناس" />
       </div>
     </form>

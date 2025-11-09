@@ -9,7 +9,7 @@ export const metadata = {
 
 const page = () => {
   return (
-    <AdminBottomPage mt="h-[calc(100vh-79px)] mt-[79px] pb-[50px]">
+    <AdminBottomPage mt="mt-[79px] pb-[50px]">
       <section>
         <div className="container">
           {/* head */}
