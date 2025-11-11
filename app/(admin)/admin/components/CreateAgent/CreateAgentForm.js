@@ -11,6 +11,7 @@ import { createAgent } from "@/actions/agent";
 import toast from "react-hot-toast";
 import { toJalaali } from "jalaali-js";
 import SubmitButton from "../SubmitButton";
+import AuthorizationCheckbox from "./AuthorizationCheckbox";
 
 const CreateAgentForm = ({ agentsCategory }) => {
   const [showPass, setShowPass] = useState(false);
@@ -175,6 +176,12 @@ const CreateAgentForm = ({ agentsCategory }) => {
             style={{ direction: "ltr" }}
           />
         </div>
+
+        <div className="w-full *:mb-0 *:mt-5">
+          <SubTitle title="سطح دسترسی کارشناس" w="w-[96px]" />
+        </div>
+
+        <AuthorizationCheckbox />
 
         <SubmitButton title="افزودن کارشناس" />
       </div>
