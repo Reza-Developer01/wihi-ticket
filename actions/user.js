@@ -147,7 +147,26 @@ const createLegalUser = async (state, formData) => {
   const user_type = formData.get("user_type");
   const plan = formData.get("plan");
 
-  console.log("LEGAL USER TYPE:", user_type);
+  console.log({
+    company_name,
+    first_name,
+    last_name,
+    registration_number,
+    national_id,
+    economic_code,
+    email,
+    phone,
+    address,
+    floor,
+    unit,
+    zip_code,
+    file,
+    username,
+    password,
+    rePassword,
+    user_type,
+    plan,
+  });
 
   // اصلاح شماره موبایل
   phone = phone?.replace(/\D/g, "");

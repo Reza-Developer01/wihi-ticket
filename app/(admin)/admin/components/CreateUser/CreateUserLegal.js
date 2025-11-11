@@ -31,6 +31,8 @@ const CreateUserLegal = () => {
     username: "",
     password: "",
     rePassword: "",
+    economic_code: "",
+    national_id: "",
   });
   const fileRef = useRef(null);
   const [selectedPlan, setSelectedPlan] = useState(1);
@@ -83,33 +85,35 @@ const CreateUserLegal = () => {
         </div>
 
         {/* تاریخ */}
-        <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
+        <div className="input-shadow flex items-center gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5 relative">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
 
-          <div
-            className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]"
-            style={{ textAlignLast: "left" }}
-          >
+          <div className="date-picker h-full flex items-center text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]">
             <DatePicker
               value={formData.registration_number}
               onChange={(e) => {
                 const d = new Date(e.value);
                 const { jy, jm, jd } = toJalaali(d);
-
                 const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
                   jd
                 ).padStart(2, "0")}`;
-
                 setFormData((prev) => ({
                   ...prev,
                   registration_number: jDate,
                 }));
               }}
               round="x2"
-              defaultValue={new Date()}
+              // defaultValue={new Date()}
             />
+
+            {/* متن دلخواه روی Input وقتی تاریخ خالیه */}
+            {!formData.registration_number && (
+              <span className="absolute top-1/2 -translate-y-1/2 text-[#8C8C8C] pointer-events-none text-xs">
+                تاریخ ثبت
+              </span>
+            )}
 
             <input
               type="hidden"
@@ -129,18 +133,18 @@ const CreateUserLegal = () => {
         />
 
         <input
-          name=""
+          name="national_id"
           type="text"
-          // value={formData.company_name}
+          value={formData.national_id}
           onChange={handleChange}
           placeholder="شناســـه ملی"
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
         />
 
         <input
-          name=""
+          name="economic_code"
           type="text"
-          // value={formData.company_name}
+          value={formData.economic_code}
           onChange={handleChange}
           placeholder="کد اقتصادی"
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
