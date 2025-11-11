@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import CreateUserReal from "./CreateUserReal";
+import CreateUserLegal from "./CreateUserLegal";
 
 const CreateUserFilter = () => {
   const [activeTab, setActiveTab] = useState("real");
@@ -34,9 +35,7 @@ const CreateUserFilter = () => {
       <div className="mt-4">
         {activeTab === "real" && <CreateUserReal />}
 
-        {activeTab === "legal" && (
-          <p className="text-[#232447]">فرم مربوط به کاربر حقوقی…</p>
-        )}
+        {activeTab === "legal" && <CreateUserLegal />}
       </div>
     </>
   );
