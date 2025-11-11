@@ -128,6 +128,7 @@ const createLegalUser = async (state, formData) => {
   const company_name = formData.get("company_name");
   const first_name = formData.get("first_name");
   const last_name = formData.get("last_name");
+  const register_date = formData.get("register_date");
   const registration_number = formData.get("registration_number");
   const national_id = formData.get("national_id");
   const economic_code = formData.get("economic_code");
@@ -151,6 +152,7 @@ const createLegalUser = async (state, formData) => {
     company_name,
     first_name,
     last_name,
+    register_date,
     registration_number,
     national_id,
     economic_code,
@@ -272,6 +274,7 @@ const createLegalUser = async (state, formData) => {
     );
 
     const data = await res.json();
+    console.log(data);
 
     if (!res.ok) {
       return {

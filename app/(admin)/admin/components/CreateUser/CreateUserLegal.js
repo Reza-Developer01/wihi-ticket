@@ -20,6 +20,7 @@ const CreateUserLegal = () => {
     company_name: "",
     first_name: "",
     last_name: "",
+    register_date: "",
     registration_number: "",
     email: "",
     phone: "",
@@ -92,7 +93,7 @@ const CreateUserLegal = () => {
 
           <div className="date-picker h-full flex items-center text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]">
             <DatePicker
-              value={formData.registration_number}
+              value={formData.register_date}
               onChange={(e) => {
                 const d = new Date(e.value);
                 const { jy, jm, jd } = toJalaali(d);
@@ -101,7 +102,7 @@ const CreateUserLegal = () => {
                 ).padStart(2, "0")}`;
                 setFormData((prev) => ({
                   ...prev,
-                  registration_number: jDate,
+                  register_date: jDate,
                 }));
               }}
               round="x2"
@@ -109,7 +110,7 @@ const CreateUserLegal = () => {
             />
 
             {/* متن دلخواه روی Input وقتی تاریخ خالیه */}
-            {!formData.registration_number && (
+            {!formData.register_date && (
               <span className="absolute top-1/2 -translate-y-1/2 text-[#8C8C8C] pointer-events-none text-xs">
                 تاریخ ثبت
               </span>
@@ -117,16 +118,16 @@ const CreateUserLegal = () => {
 
             <input
               type="hidden"
-              name="registration_number"
-              value={formData.registration_number}
+              name="register_date"
+              value={formData.register_date}
             />
           </div>
         </div>
 
         <input
-          name=""
+          name="registration_number"
           type="text"
-          // value={formData.company_name}
+          value={formData.registration_number}
           onChange={handleChange}
           placeholder="شماره ثبت"
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
