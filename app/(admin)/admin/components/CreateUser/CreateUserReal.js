@@ -272,7 +272,7 @@ const CreateUserReal = () => {
           <SubTitle title="سطح پلن کاربر" w="w-[90px]" />
         </div>
 
-        <input type="hidden" name="user_type" value="legal" />
+        <input type="hidden" name="user_type" value="real" />
 
         <UserPlans
           selectedPlan={selectedPlan}
@@ -280,7 +280,7 @@ const CreateUserReal = () => {
         />
         <input type="hidden" name="plan" value={selectedPlan} />
 
-        <SubmitButton title="افزودن کارشناس" />
+        <SubmitButton title="افزودن کاربر حقیقی" />
       </div>
     </form>
   );
