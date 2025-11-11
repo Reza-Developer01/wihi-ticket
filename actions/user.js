@@ -138,7 +138,7 @@ const createLegalUser = async (state, formData) => {
   const address = formData.get("address");
   const floor = formData.get("floor");
   const unit = formData.get("unit");
-  const zip_code = formData.get("zip_code");
+  const postal_code = formData.get("postal_code");
   const file = formData.get("file");
 
   const username = formData.get("username");
@@ -147,28 +147,6 @@ const createLegalUser = async (state, formData) => {
 
   const user_type = formData.get("user_type");
   const plan = formData.get("plan");
-
-  console.log({
-    company_name,
-    first_name,
-    last_name,
-    register_date,
-    registration_number,
-    national_id,
-    economic_code,
-    email,
-    phone,
-    address,
-    floor,
-    unit,
-    zip_code,
-    file,
-    username,
-    password,
-    rePassword,
-    user_type,
-    plan,
-  });
 
   // اصلاح شماره موبایل
   phone = phone?.replace(/\D/g, "");
@@ -213,7 +191,7 @@ const createLegalUser = async (state, formData) => {
   if (!unit || isNaN(unit))
     return { status: false, message: "شماره واحد معتبر نیست." };
 
-  if (!zip_code || !/^\d{10}$/.test(zip_code))
+  if (!postal_code || !/^\d{10}$/.test(postal_code))
     return { status: false, message: "کد پستی باید ۱۰ رقم باشد." };
 
   if (file?.size > 50 * 1024 * 1024)
@@ -239,6 +217,7 @@ const createLegalUser = async (state, formData) => {
   body.append("company_name", company_name);
   body.append("first_name", first_name);
   body.append("last_name", last_name);
+  body.append("register_date", register_date);
   body.append("registration_number", registration_number);
   body.append("national_id", national_id);
   body.append("economic_code", economic_code);
@@ -248,7 +227,7 @@ const createLegalUser = async (state, formData) => {
   body.append("address", address);
   body.append("floor", floor);
   body.append("unit", unit);
-  body.append("zip_code", zip_code);
+  body.append("postal_code", postal_code);
   body.append("username", username);
   body.append("password", password);
   body.append("file", file);
@@ -256,9 +235,6 @@ const createLegalUser = async (state, formData) => {
   body.append("user_type", user_type);
   body.append("plan", plan);
 
-  // -------------------------------
-  // ارسال به API
-  // -------------------------------
   const token = cookies().get("access_token")?.value;
 
   try {

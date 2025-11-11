@@ -27,7 +27,7 @@ const CreateUserLegal = () => {
     address: "",
     floor: "",
     unit: "",
-    zip_code: "",
+    postal_code: "",
     file: "",
     username: "",
     password: "",
@@ -207,9 +207,9 @@ const CreateUserLegal = () => {
         </div>
 
         <input
-          name="zip_code"
+          name="postal_code"
           type="text"
-          value={formData.zip_code}
+          value={formData.postal_code}
           onChange={handleChange}
           placeholder="کد پستی"
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
