@@ -1,9 +1,11 @@
 import TicketList from "./TicketList";
 
-const TicketsList = () => {
+const TicketsList = ({ tickets }) => {
   return (
     <div className="flex flex-col gap-y-6">
-      <TicketList />
+      {tickets.map((ticket) => (
+        <TicketList key={ticket.ticket_number} data={ticket} />
+      ))}
     </div>
   );
 };

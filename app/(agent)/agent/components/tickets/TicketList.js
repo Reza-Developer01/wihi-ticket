@@ -1,6 +1,43 @@
 import Link from "next/link";
 
-const TicketList = () => {
+const TicketList = ({ data }) => {
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "open":
+        return {
+          bg: "bg-[#0068C933]",
+          text: "text-[#0068C9]",
+          message: "در دست بررسی",
+        };
+      case "is_progress":
+        return {
+          bg: "bg-[#FF770033]",
+          text: "text-[#FF7700]",
+          message: "منتظر پاسخ کاربر",
+        };
+      case "closed":
+        return {
+          bg: "bg-[#FF000033]",
+          text: "text-[#FF0000]",
+          message: "بسته شده",
+        };
+      case "Guided":
+        return {
+          bg: "bg-[#40404033]",
+          text: "text-[#404040]",
+          message: "هدایت شده",
+        };
+      default:
+        return {
+          bg: "bg-[#E5E7EB]",
+          text: "text-[#6B7280]",
+          message: "در دست بررسی",
+        };
+    }
+  };
+
+  const { bg, text, message } = getStatusStyle(data.status);
+
   return (
     <div className="custom-shadow w-full h-31 bg-white border border-[#FF000033] rounded-[10px]">
       {/* head */}
@@ -17,7 +54,9 @@ const TicketList = () => {
             <span className="text-[4px]/[5.6px] text-[#B9BBC9]">
               شماره تیکت
             </span>
-            <span className="text-[8px]/[11.2px] text-[#808392]">146845</span>
+            <span className="text-[8px]/[11.2px] text-[#808392]">
+              {data.ticket_number}
+            </span>
           </div>
         </div>
 
@@ -32,8 +71,10 @@ const TicketList = () => {
             </span>
           </div>
 
-          <button className="flex items-center justify-center w-15 h-5 bg-[#0068C933] text-[#0068C9] font-medium text-[8px]/[11.2px] tracking-[-0.12px]">
-            در دست بررسی
+          <button
+            className={`flex items-center justify-center w-15 h-5 ${bg} ${text} font-medium text-[8px]/[11.2px] tracking-[-0.12px]`}
+          >
+            {message}
           </button>
         </div>
       </div>
@@ -41,10 +82,10 @@ const TicketList = () => {
       {/* body */}
       <div className="flex flex-col gap-px w-full px-4.5 mb-[13px]">
         <Link href="/" className="text-[#8C8C8C] font-medium text-xs/[16.8px]">
-          عنوان درخواست تماس در اینجا
+          {data.title}
         </Link>
         <p className="text-[#B9BBC9] text-[8px]/[11.2px] tracking-[-0.12px] line-clamp-1">
-          خلاصه چندین کلمـــه اول توضیحات کاربــر درباره مشکل پیش آمـــده . . .
+          {data.description}
         </p>
       </div>
 
@@ -60,14 +101,16 @@ const TicketList = () => {
           </span>
 
           <p className="text-[#404040] text-[8px]/[11.2px] tracking-[-0.12px]">
-            ثبت توسط | علی محسنی
+            ثبت توسط | {data.owner_name}
           </p>
         </div>
 
         {/* left */}
-        <p className="text-[#808392] font-medium text-[8px]/[11.2px] tracking-[-0.12px]">
-          1404/06/25 | 12 : 45 : 28
-        </p>
+        <div className="flex items-center gap-x-1 font-medium text-[8px]/[11.2px] tracking-[-0.12px] text-[#808392]">
+          <span>{new Date(data.created_at).toLocaleTimeString("fa-IR")}</span>
+          <span>|</span>
+          <span>{new Date(data.created_at).toLocaleDateString("fa-IR")}</span>
+        </div>
       </div>
     </div>
   );
