@@ -1,3 +1,4 @@
+import AgentBottomPage from "./components/AgentBottomPage";
 import AgentHeader from "./components/AgentHeader";
 import InformationSection from "./components/InformationSection";
 
@@ -11,6 +12,8 @@ const page = async () => {
       <AgentHeader />
 
       <InformationSection />
+
+      <AgentBottomPage pb="pb-9"></AgentBottomPage>
     </>
   );
 };
