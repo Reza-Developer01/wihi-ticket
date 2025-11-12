@@ -6,7 +6,7 @@ import PagesLinks from "./components/PagesLinks";
 import AgentFooter from "./components/AgentFooter";
 
 export const metadata = {
-  title: "کارشناسان - ادمین",
+  title: "کارشناسان",
 };
 
 const page = async () => {

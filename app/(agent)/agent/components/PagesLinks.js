@@ -10,6 +10,7 @@ const PagesLinks = () => {
             subTitle="جدیدترین ها"
             hasLabel={true}
             labelTitle="مشاهد آرشیو"
+            href="/agent/tickets"
           />
           <PagesLink
             title="تماس ها"
