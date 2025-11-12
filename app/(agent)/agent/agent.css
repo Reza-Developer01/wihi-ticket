@@ -1,0 +1,30 @@
+body {
+    background-image: url("../../../public/images/svgs/star.svg");
+}
+
+.shape {
+    position: absolute;
+    top: -162.05px;
+    left: 120.35px;
+    width: 394px;
+    height: 406px;
+    background: linear-gradient(181.28deg, rgba(255, 255, 255, 0) 1.09%, rgba(255, 255, 255, 0.15) 82.08%);
+    z-index: -1;
+    transform: rotate(28.28deg);
+    filter: blur(63.73px);
+}
+
+.items__wrapper {
+    background: linear-gradient(262.65deg, #FFFFFF 0.85%, #F7FFFF 48.45%, #FFFFFF 96.06%);
+}
+
+.item__active button {
+    border: 1px solid #17C7C7;
+    box-shadow: 0px 4px 4px 0px #E0FFFF;
+    color: #6CDCDC;
+}
+
+.item__active span {
+    color: #6CDCDC;
+    font-weight: 500;
+}
