@@ -39,7 +39,11 @@ const TicketList = ({ data }) => {
   const { bg, text, message } = getStatusStyle(data.status);
 
   return (
-    <div className="custom-shadow w-full h-31 bg-white border border-[#FF000033] rounded-[10px]">
+    <div
+      className={`custom-shadow w-full h-31 bg-white border ${
+        data.has_sla ? "border-[#FF000033]" : "border-[#EFF0F6]"
+      } rounded-[10px]`}
+    >
       {/* head */}
       <div className="flex items-center justify-between pr-4.5 pl-5 pt-3.5 mb-2.5">
         {/* right */}
@@ -67,7 +71,7 @@ const TicketList = ({ data }) => {
               دستــه بندی
             </span>
             <span className="text-[6px]/[8.4px] text-[#808392]">
-              پشتیبانی فنی
+              {data.category_name}
             </span>
           </div>
 
@@ -96,7 +100,11 @@ const TicketList = ({ data }) => {
       <div className="flex items-center justify-between pr-4.5 pl-5">
         {/* right */}
         <div className="flex items-center gap-x-0.5">
-          <span className="flex items-center justify-center w-[11px] h-[11px] bg-[#FF0000] rounded-full font-extrabold text-[4px] text-white">
+          <span
+            className={`flex items-center justify-center w-[11px] h-[11px] ${
+              data.has_sla ? "bg-[#FF0000]" : "bg-[#B9BBC9]"
+            } rounded-full font-extrabold text-[4px] text-white`}
+          >
             SLA
           </span>
 

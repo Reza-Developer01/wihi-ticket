@@ -18,7 +18,7 @@ const page = async () => {
   console.log(tickets);
 
   return (
-    <AgentBottomPage mt="mt-[79px]" h="h-[calc(100vh-79px)]">
+    <AgentBottomPage mt="mt-[79px]" pb="pb-[24px]">
       <div className="flex flex-col gap-y-[25px] px-6">
         <TicketsHead />
 
