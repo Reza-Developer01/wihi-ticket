@@ -1,5 +1,4 @@
-import CloseTicket from "@/app/(main)/components/requestsDetail/CloseTicket";
-import HistoryStatus from "./HistoryStatus";
+import MessagesHead from "./MessagesHead";
 
 const Messages = ({ request }) => {
   const getStatusStyle = (status) => {
@@ -36,33 +35,7 @@ const Messages = ({ request }) => {
   return (
     <div className="relative h-[520px]">
       {/* head */}
-      <div className="flex items-center justify-between mb-[15px]">
-        <button
-          type="button"
-          className="flex items-center justify-center gap-x-[13px] w-[150px] h-[30px] bg-[#292D321A] text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]"
-        >
-          انتخاب کارشناس مربوطـــــه
-          <svg className="w-[15px] h-[15px]">
-            <use href="#arrow-down" />
-          </svg>
-        </button>
-
-        <button className="flex items-center justify-between w-[121px] h-[30px] px-2.5 rounded-[7px] bg-[#292D321A]">
-          <div className="flex items-center gap-x-[5px]">
-            <svg className="w-[15px] h-[15px] text-[#17C7C7]">
-              <use href="#info" />
-            </svg>
-
-            <span className="text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px]">
-              {message}
-            </span>
-          </div>
-
-          <svg className="w-[15px] h-[15px]">
-            <use href="#arrow-down" />
-          </svg>
-        </button>
-      </div>
+      <MessagesHead message={message} />
 
       {/* body */}
       <div className="flex flex-col overflow-y-auto gap-y-[25px] h-[calc(100%-54px)]">
