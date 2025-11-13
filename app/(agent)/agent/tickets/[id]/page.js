@@ -5,6 +5,7 @@ import Header from "@/app/(main)/components/Header";
 import AgentBottomPage from "../../components/AgentBottomPage";
 import Messages from "../../components/tickets/Messages";
 import MessageInput from "../../components/tickets/MessageInput";
+import Successfully from "../../components/Successfully";
 
 export const metadata = {
   title: "جزییات درخواست",
@@ -18,8 +19,6 @@ const page = async ({ params }) => {
   const getRequest = await getFetch(`tickets/${id}/`, {
     Authorization: `Bearer ${token}`,
   });
-
-  console.log(getRequest);
 
   return (
     <>
@@ -36,6 +35,8 @@ const page = async ({ params }) => {
               id={id}
             />
           </div>
+
+          {/* <Successfully /> */}
         </div>
       </AgentBottomPage>
     </>
