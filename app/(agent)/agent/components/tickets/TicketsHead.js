@@ -4,8 +4,26 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "../Modal";
 
-const TicketsHead = () => {
+const TicketsHead = ({ setFilters }) => {
   const [openFilter, setOpenFilter] = useState(false);
+
+  const [filters, setLocalFilters] = useState({
+    newest: false,
+    oldest: false,
+    hasSla: false,
+  });
+
+  const toggleFilter = (key) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
+  const handleApplyFilters = () => {
+    setFilters(filters);
+    setOpenFilter(false);
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -40,28 +58,46 @@ const TicketsHead = () => {
           </h3>
 
           <div className="flex flex-col gap-y-6 mt-6">
-            <button className="w-full py-3 bg-[#EFF0F6] rounded-[10px] font-medium leading-6 text-[#404040]">
+            <button
+              className={`w-full py-3 rounded-[10px] font-medium leading-6 ${
+                filters.newest
+                  ? "border border-[#20CFCF] text-[#20CFCF]"
+                  : "bg-[#EFF0F6] text-[#404040]"
+              }`}
+              onClick={() => toggleFilter("newest")}
+            >
               جدیدترین ها
             </button>
-            <button className="w-full py-3 bg-[#EFF0F6] rounded-[10px] font-medium leading-6 text-[#404040]">
+
+            <button
+              className={`w-full py-3 rounded-[10px] font-medium leading-6 ${
+                filters.oldest
+                  ? "border border-[#20CFCF] text-[#20CFCF]"
+                  : "bg-[#EFF0F6] text-[#404040]"
+              }`}
+              onClick={() => toggleFilter("oldest")}
+            >
               قدیمی ترین
             </button>
-            <button className="w-full py-3 bg-[#EFF0F6] rounded-[10px] font-medium leading-6 text-[#404040]">
+
+            <button
+              className={`w-full py-3 rounded-[10px] font-medium leading-6 ${
+                filters.hasSla
+                  ? "border border-[#20CFCF] text-[#20CFCF]"
+                  : "bg-[#EFF0F6] text-[#404040]"
+              }`}
+              onClick={() => toggleFilter("hasSla")}
+            >
               دارای SLA
             </button>
-            <button className="w-full py-3 bg-[#EFF0F6] rounded-[10px] font-medium leading-6 text-[#404040]">
-              انتخاب تاریخ
-            </button>
-            <button className="w-full py-3 bg-[#EFF0F6] rounded-[10px] font-medium leading-6 text-[#404040]">
-              انتخاب ساعت
-            </button>
-            <button className="w-full py-3 bg-[#EFF0F6] rounded-[10px] font-medium leading-6 text-[#404040]">
-              انتخاب کاربر
-            </button>
 
-            <button className="w-full py-3 bg-[#20CFCF] text-white rounded-[10px] font-medium leading-6">
+            <button
+              className="w-full py-3 bg-[#20CFCF] text-white rounded-[10px] font-medium leading-6"
+              onClick={handleApplyFilters}
+            >
               اعمال فیلتر
             </button>
+
             <button
               className="w-full text-[#6C7278] font-medium leading-6 text-xs"
               onClick={() => setOpenFilter((value) => !value)}

@@ -1,8 +1,7 @@
 import { cookies } from "next/headers";
 import AgentBottomPage from "../components/AgentBottomPage";
-import TicketsHead from "../components/tickets/TicketsHead";
-import TicketsList from "../components/tickets/TicketsList";
 import { getFetch } from "@/utils/fetch";
+import TicketsWrapper from "../components/tickets/TicketWrapper";
 
 export const metadata = {
   title: "تیکت ها",
@@ -20,9 +19,7 @@ const page = async () => {
   return (
     <AgentBottomPage mt="mt-[79px]" pb="pb-[24px]">
       <div className="flex flex-col gap-y-[25px] px-6">
-        <TicketsHead />
-
-        <TicketsList tickets={tickets} />
+        <TicketsWrapper tickets={tickets} />
       </div>
     </AgentBottomPage>
   );
