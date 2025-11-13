@@ -85,7 +85,10 @@ const TicketList = ({ data }) => {
 
       {/* body */}
       <div className="flex flex-col gap-px w-full px-4.5 mb-[13px]">
-        <Link href="/" className="text-[#8C8C8C] font-medium text-xs/[16.8px]">
+        <Link
+          href={`/agent/tickets/${data.ticket_number}`}
+          className="text-[#8C8C8C] font-medium text-xs/[16.8px]"
+        >
           {data.title}
         </Link>
         <p className="text-[#B9BBC9] text-[8px]/[11.2px] tracking-[-0.12px] line-clamp-1">
