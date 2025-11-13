@@ -1,4 +1,5 @@
 import CloseTicket from "@/app/(main)/components/requestsDetail/CloseTicket";
+import HistoryStatus from "./HistoryStatus";
 
 const Messages = ({ request }) => {
   const getStatusStyle = (status) => {
@@ -130,6 +131,8 @@ const Messages = ({ request }) => {
           </div>
         ))}
       </div>
+
+      {/* <HistoryStatus /> */}
     </div>
   );
 };
