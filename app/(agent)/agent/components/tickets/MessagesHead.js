@@ -1,14 +1,24 @@
 "use client";
 
+import changeStatus from "@/actions/changeStatusTicket";
 import { useState } from "react";
 
-const MessagesHead = ({ message }) => {
+const statusMap = {
+  "در دست بررسی": "is_progress",
+  "منتظر پاسخ": "open",
+  "بسته شده": "closed",
+  "هدایت شده": "Guided",
+};
+
+const MessagesHead = ({ message, ticket_number }) => {
   const [open, setOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(message);
 
-  const handleSelect = (value) => {
+  const handleSelect = async (value) => {
     setSelectedMessage(value);
     setOpen(false);
+
+    await changeStatus(ticket_number, statusMap[value]);
   };
 
   return (

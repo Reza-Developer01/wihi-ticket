@@ -35,7 +35,7 @@ const Messages = ({ request }) => {
   return (
     <div className="relative h-[520px]">
       {/* head */}
-      <MessagesHead message={message} />
+      <MessagesHead message={message} ticket_number={request.ticket_number} />
 
       {/* body */}
       <div className="flex flex-col overflow-y-auto gap-y-[25px] h-[calc(100%-54px)]">
