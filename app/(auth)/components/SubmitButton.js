@@ -8,7 +8,7 @@ const SubmitButton = ({ title }) => {
   return (
     <button
       type="submit"
-      className="flex items-center justify-center gap-x-2 w-full h-12 rounded-[10px] leading-6 text-white mt-2 font-medium"
+      className="flex items-center justify-center gap-x-2 w-full h-12 bg-[#20CFCF] rounded-[10px] leading-6 text-white mt-2 font-medium"
       disabled={pending}
     >
       {pending && (

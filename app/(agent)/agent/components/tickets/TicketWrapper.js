@@ -12,7 +12,7 @@ const TicketsWrapper = ({ tickets }) => {
     <>
       <TicketsHead setFilters={setFilters} />
       <TicketsList tickets={tickets} filters={filters} />
-      <Button href="/" text="ثبت تیکت جدید" />
+      <Button href="/agent/tickets/create" text="ثبت تیکت جدید" />
     </>
   );
 };
