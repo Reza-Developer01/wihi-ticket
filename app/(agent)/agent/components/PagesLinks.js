@@ -22,6 +22,7 @@ const PagesLinks = ({ user }) => {
             subTitle="جدیدترین ها"
             hasLabel={true}
             labelTitle="مشاهده آرشیو"
+            href="/agent/call"
           />
 
           {canViewReports && (
