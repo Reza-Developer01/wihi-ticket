@@ -27,6 +27,13 @@ const CreateAgentForm = ({ agentsCategory }) => {
     rePassword: "",
   });
 
+  const [permissions, setPermissions] = useState([]);
+  const handlePermissionChange = (key, checked) => {
+    setPermissions((prev) =>
+      checked ? [...prev, key] : prev.filter((item) => item !== key)
+    );
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -181,7 +188,13 @@ const CreateAgentForm = ({ agentsCategory }) => {
           <SubTitle title="سطح دسترسی کارشناس" w="w-[96px]" />
         </div>
 
-        <AuthorizationCheckbox />
+        <AuthorizationCheckbox onChangePermission={handlePermissionChange} />
+
+        <input
+          type="hidden"
+          name="permissions"
+          value={JSON.stringify(permissions)}
+        />
 
         <SubmitButton title="افزودن کارشناس" />
       </div>

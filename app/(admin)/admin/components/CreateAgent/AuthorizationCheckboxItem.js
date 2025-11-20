@@ -1,8 +1,12 @@
-const AuthorizationCheckboxItem = ({ title }) => {
+const AuthorizationCheckboxItem = ({ title, permKey, onChangePermission }) => {
   return (
     <li>
       <label className="checkbox flex items-center gap-3.5 cursor-pointer">
-        <input type="checkbox" className="checkbox__input" />
+        <input
+          type="checkbox"
+          className="checkbox__input"
+          onChange={(e) => onChangePermission(permKey, e.target.checked)}
+        />
         <span className="checkbox__marker">
           <svg
             xmlns="http://www.w3.org/2000/svg"

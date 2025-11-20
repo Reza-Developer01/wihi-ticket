@@ -1,21 +1,35 @@
 import AuthorizationCheckboxItem from "./AuthorizationCheckboxItem";
 
-const AuthorizationCheckbox = () => {
+const AuthorizationCheckbox = ({ onChangePermission }) => {
+  const permissions = [
+    { key: "send_otp", title: "ارسال کد یکبار مصرف" },
+    { key: "view_all_tickets", title: "مشاهده همه تیکت ها" },
+    { key: "view_all_calls", title: "مشاهده همه درخواست تماس" },
+    { key: "view_reports", title: "مشاهده گزارشات" },
+    { key: "view_waiting", title: "مشاهده منتظر پاسخ ها" },
+    { key: "close_ticket", title: "امکان بستن تیکت" },
+    { key: "close_call", title: "امکان بستن درخواست تماس" },
+    { key: "change_ticket_status", title: "امکان تغییر وضعیت تیکت" },
+    { key: "change_call_status", title: "امکان تغییر وضعیت تماس ها" },
+    { key: "assign_ticket_agent", title: "امکان هدایت تیکت به کارشناس" },
+    { key: "assign_call_agent", title: "امکان هدایت درخواست تماس به کارشناس" },
+    { key: "assign_ticket_admin", title: "امکان هدایت تیکت به مدیر سیستم" },
+    {
+      key: "assign_call_admin",
+      title: "امکان هدایت درخواست تماس به مدیر سیستم",
+    },
+  ];
+
   return (
     <ul className="flex flex-col gap-y-3.5">
-      <AuthorizationCheckboxItem title="ارسال کد یکبار مصـــرف" />
-      <AuthorizationCheckboxItem title="مشاهــده همه تیکت ها" />
-      <AuthorizationCheckboxItem title="مشاهــده همه درخواست تماس" />
-      <AuthorizationCheckboxItem title="مشاهــده گزارشات" />
-      <AuthorizationCheckboxItem title="مشاهــده منتظر پاسخ ها" />
-      <AuthorizationCheckboxItem title="امکان بستــن تیکت" />
-      <AuthorizationCheckboxItem title="امکان بستــن درخواست تماس" />
-      <AuthorizationCheckboxItem title="امکان تغییر وضعیت تیکت" />
-      <AuthorizationCheckboxItem title="امکان تغییر وضعیت تماس ها" />
-      <AuthorizationCheckboxItem title="امکان هدایت تیکت به کارشناس" />
-      <AuthorizationCheckboxItem title="امکان هدایت درخواست تماس به کارشناس" />
-      <AuthorizationCheckboxItem title="امکان هدایت تیکت به مدیر سیسیتم" />
-      <AuthorizationCheckboxItem title="امکان هدایت درخواست تماس به مدیر سیسیتم" />
+      {permissions.map((item) => (
+        <AuthorizationCheckboxItem
+          key={item.key}
+          title={item.title}
+          permKey={item.key}
+          onChangePermission={onChangePermission}
+        />
+      ))}
     </ul>
   );
 };

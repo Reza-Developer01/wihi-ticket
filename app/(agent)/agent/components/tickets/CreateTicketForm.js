@@ -9,6 +9,7 @@ import DropDown from "@/app/(main)/components/DropDown";
 import TextArea from "@/app/(main)/components/TextArea";
 import SubmitButton from "@/app/(auth)/components/SubmitButton";
 import Input from "@/app/(auth)/components/Input";
+import ChangeStatus from "./ChangeStatus";
 
 const CreateTicketForm = ({ categories, services, issues }) => {
   const router = useRouter();
@@ -96,10 +97,7 @@ const CreateTicketForm = ({ categories, services, issues }) => {
               hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
             } tracking-[-0.12px]`}
           >
-            {hasFile ? "فایل انتخاب شد" : "آپلود فایل"}
-            <span className="font-normal text-[8px]/[11.2px]">
-              ( تا حجم 50 مگابایت )
-            </span>
+            {hasFile ? "فایل انتخاب شد" : "فایل آپلودی وجــــود ندارد"}
           </span>
 
           <svg
@@ -130,7 +128,7 @@ const CreateTicketForm = ({ categories, services, issues }) => {
         />
       </div>
 
-      <SubmitButton title="ارسال درخواست" />
+      <ChangeStatus />
     </form>
   );
 };
