@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import TicketList from "./TicketList";
 
-const TicketsList = ({ tickets, filters }) => {
+const TicketsList = ({ tickets, filters, user }) => {
   const [filteredTickets, setFilteredTickets] = useState(tickets);
   const [visibleCount, setVisibleCount] = useState(3);
+
+  const canSeeList =
+    user?.role === "agent" &&
+    user?.permissions?.some((p) => p.slug === "view_all_tickets");
 
   useEffect(() => {
     let result = [...tickets];
@@ -21,7 +25,7 @@ const TicketsList = ({ tickets, filters }) => {
     }
 
     setFilteredTickets(result);
-    setVisibleCount(3); // هر بار فیلتر تغییر کرد از اول نمایش بده
+    setVisibleCount(3);
   }, [filters, tickets]);
 
   const total = filteredTickets.length;
@@ -29,6 +33,14 @@ const TicketsList = ({ tickets, filters }) => {
 
   const handleLoadMore = () =>
     setVisibleCount((prev) => Math.min(prev + 10, total));
+
+  if (!canSeeList) {
+    return (
+      <div className="text-center text-[#808392] mt-4">
+        شما دسترسی مشاهده همهٔ تیکت‌ها را ندارید.
+      </div>
+    );
+  }
 
   return (
     <>
@@ -40,7 +52,10 @@ const TicketsList = ({ tickets, filters }) => {
 
       <div className="flex items-center justify-center gap-x-1">
         {remaining > 0 ? (
-          <button onClick={handleLoadMore} className="flex items-center gap-x-1">
+          <button
+            onClick={handleLoadMore}
+            className="flex items-center gap-x-1"
+          >
             <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
               مشاهده {remaining} درخواست
             </span>
