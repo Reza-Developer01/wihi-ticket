@@ -1,8 +1,8 @@
 import { getFetch } from "@/utils/fetch";
-import AdminBottomPage from "../components/AdminBottomPage";
-import ReportsBanner from "../components/Reports/ReportsBanner";
-import ReportsFilter from "../components/Reports/ReportsFilter";
+import AdminBottomPage from "@/app/(admin)/admin/components/AdminBottomPage";
 import { cookies } from "next/headers";
+import ReportsFilter from "@/app/(admin)/admin/components/Reports/ReportsFilter";
+import ReportsBanner from "@/app/(admin)/admin/components/Reports/ReportsBanner";
 
 export const metadata = {
   title: "ادمین - گزارشات",

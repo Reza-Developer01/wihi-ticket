@@ -1,6 +1,10 @@
 import PagesLink from "./PagesLink";
 
-const PagesLinks = () => {
+const PagesLinks = ({ user }) => {
+  const canViewReports = user?.permissions?.some(
+    (p) => p.slug === "view_reports"
+  );
+
   return (
     <section className="mb-5">
       <div className="container">
@@ -9,16 +13,20 @@ const PagesLinks = () => {
             title="تیکت ها"
             subTitle="جدیدترین ها"
             hasLabel={true}
-            labelTitle="مشاهد آرشیو"
+            labelTitle="مشاهده آرشیو"
             href="/agent/tickets"
           />
+
           <PagesLink
             title="تماس ها"
             subTitle="جدیدترین ها"
             hasLabel={true}
-            labelTitle="مشاهد آرشیو"
+            labelTitle="مشاهده آرشیو"
           />
-          <PagesLink title="گزارشات" href="admin/reports" />
+
+          {canViewReports && (
+            <PagesLink title="گزارشات" href="/agent/reports" />
+          )}
         </div>
       </div>
     </section>

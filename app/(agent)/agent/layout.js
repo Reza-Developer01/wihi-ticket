@@ -1,6 +1,7 @@
 import HotToast from "@/app/(auth)/components/libraries/HotToast";
 import "../../globals.css";
 import "./agent.css";
+import "../../(admin)/admin/admin.css";
 
 export default function RootLayout({ children }) {
   return (

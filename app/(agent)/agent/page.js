@@ -4,12 +4,15 @@ import AgentHeader from "./components/AgentHeader";
 import InformationSection from "./components/InformationSection";
 import PagesLinks from "./components/PagesLinks";
 import AgentFooter from "./components/AgentFooter";
+import { getMe } from "@/actions/auth";
 
 export const metadata = {
   title: "کارشناسان",
 };
 
 const page = async () => {
+  const { user } = await getMe();
+
   return (
     <>
       <AgentHeader />
@@ -17,7 +20,7 @@ const page = async () => {
       <InformationSection />
 
       <AgentBottomPage pb="pb-9">
-        <PagesLinks />
+        <PagesLinks user={user} />
 
         <AgentFooter />
       </AgentBottomPage>
