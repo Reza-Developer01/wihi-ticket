@@ -1,5 +1,6 @@
 "use server";
 
+import { postFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
 // import { redirect } from "next/navigation";
 
@@ -74,4 +75,69 @@ const requestCall = async (state, formData) => {
   };
 };
 
-export { requestCall };
+const changeStatus = async (state, formData) => {
+  const comment = formData.get("comment");
+  const call_request_number = formData.get("call_request_number");
+  const status = formData.get("status");
+
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  console.log({ comment, call_request_number, status });
+
+  if (!comment) {
+    return {
+      status: false,
+      message: "پر کردن تمام موارد الزامی است.",
+    };
+  }
+
+  const data = await postFetch(
+    `callrequests/${call_request_number}/change_status/`,
+    {
+      comment,
+      call_request_number,
+      status,
+    },
+    {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    }
+  );
+
+  console.log(data);
+  return {
+    status: false,
+    message: data.detail,
+  };
+};
+
+const guidedStatus = async (state, formData) => {
+  const assigned_to_id = formData.get("assigned_to_id");
+  const call_request_number = formData.get("call_request_number");
+  const status = formData.get("status");
+
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  console.log({ assigned_to_id, call_request_number, status });
+
+  const data = await postFetch(
+    `callrequests/${call_request_number}/change_status/`,
+    {
+      assigned_to_id,
+      call_request_number,
+      status,
+    },
+    {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    }
+  );
+
+  console.log(data);
+  return {
+    status: false,
+    message: data.detail,
+  };
+};
+
+export { requestCall, changeStatus, guidedStatus };

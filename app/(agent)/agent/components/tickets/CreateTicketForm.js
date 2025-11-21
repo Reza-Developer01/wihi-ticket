@@ -43,7 +43,8 @@ const CreateTicketForm = ({ data, categories, services, issues }) => {
   }, [data]);
 
   return (
-    <form action={formAction} className="flex flex-col gap-y-[15px]">
+    // action={formAction}
+    <div className="flex flex-col gap-y-[15px]">
       <DropDown
         options={categories}
         placeholder="انتخاب دسته بندی"
@@ -145,8 +146,11 @@ const CreateTicketForm = ({ data, categories, services, issues }) => {
         />
       </div>
 
-      <ChangeStatus />
-    </form>
+      <ChangeStatus
+        call_request_number={data.call_request_number}
+        initialStatus={data.status}
+      />
+    </div>
   );
 };
 

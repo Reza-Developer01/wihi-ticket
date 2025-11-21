@@ -17,7 +17,11 @@ const page = async () => {
   const calls = await getFetch("callrequests/", {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
-  console.log(calls);
+
+  // const agents = await getFetch("users/agents-list/", {
+  //   Authorization: `Bearer ${token}`,
+  // });
+  // console.log({ calls, agents });
 
   return (
     <AgentBottomPage mt="mt-[79px]" pb="pb-[24px]">
