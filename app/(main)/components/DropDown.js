@@ -12,8 +12,16 @@ const DropDown = ({
   name,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(defaultValue);
+  const [selected, setSelected] = useState(null);
   const dropdownRef = useRef(null);
+
+  // ⬅️ مهم: ست شدن مقدار از سرور
+  useEffect(() => {
+    if (defaultValue !== null && options.length > 0) {
+      const found = options.find((o) => o[valueKey] === defaultValue);
+      setSelected(found || null);
+    }
+  }, [defaultValue, options]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -27,7 +35,6 @@ const DropDown = ({
 
   const handleSelect = (option) => {
     setSelected(option);
-    // onChange?.(option[valueKey]);
     onChange?.(option[valueKey], name);
     setIsOpen(false);
   };
@@ -72,11 +79,6 @@ const DropDown = ({
         </div>
       )}
 
-      {isOpen && options.length === 0 && (
-        <div className="absolute top-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] text-center text-sm text-gray-400 z-10">
-          هیچ گزینه‌ای یافت نشد
-        </div>
-      )}
       <input type="hidden" name={name} value={selected?.[valueKey] || ""} />
     </div>
   );

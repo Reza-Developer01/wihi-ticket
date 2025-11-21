@@ -11,7 +11,8 @@ import SubmitButton from "@/app/(auth)/components/SubmitButton";
 import Input from "@/app/(auth)/components/Input";
 import ChangeStatus from "./ChangeStatus";
 
-const CreateTicketForm = ({ categories, services, issues }) => {
+const CreateTicketForm = ({ data, categories, services, issues }) => {
+  console.log(data);
   const router = useRouter();
   const [state, formAction] = useActionState(requestCall, {});
 
@@ -35,6 +36,12 @@ const CreateTicketForm = ({ categories, services, issues }) => {
     }
   }, [state, router]);
 
+  useEffect(() => {
+    if (data?.file) {
+      setHasFile(true);
+    }
+  }, [data]);
+
   return (
     <form action={formAction} className="flex flex-col gap-y-[15px]">
       <DropDown
@@ -44,7 +51,10 @@ const CreateTicketForm = ({ categories, services, issues }) => {
         valueKey="id"
         onChange={(value) => handleCategoryChange(value)}
         name="category"
+        value={data?.category} // مقدار انتخاب شده از سرور
+        defaultValue={data?.category}
       />
+
       <DropDown
         options={services}
         placeholder="انتخاب سرویس"
@@ -52,6 +62,8 @@ const CreateTicketForm = ({ categories, services, issues }) => {
         valueKey="id"
         onChange={() => {}}
         name="service"
+        value={data?.service}
+        defaultValue={data?.service}
       />
 
       <DropDown
@@ -61,11 +73,14 @@ const CreateTicketForm = ({ categories, services, issues }) => {
         valueKey="id"
         onChange={() => setContactSelected(true)}
         name="issue"
+        value={data?.issue}
+        defaultValue={data?.issue}
       />
 
       <Input
         type="text"
         name="phone_number"
+        defaultValue={data?.phone_number}
         placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
         placeholderColor=""
       />
@@ -73,6 +88,7 @@ const CreateTicketForm = ({ categories, services, issues }) => {
       <Input
         type="text"
         name="title"
+        defaultValue={data?.title}
         placeholder="عنوان درخواست را وارد کنید"
         placeholderColor=""
       />
@@ -81,6 +97,7 @@ const CreateTicketForm = ({ categories, services, issues }) => {
         height="220px"
         placeholder="شرح در درخواست را وارد کنید"
         name="description"
+        defaultValue={data?.description}
       />
 
       <div

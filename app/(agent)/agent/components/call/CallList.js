@@ -63,7 +63,7 @@ const CallList = ({ calls }) => {
                     شماره تیکت
                   </span>
                   <span className="text-[8px]/[11.2px] text-[#808392]">
-                    {data.ticket_number}
+                    {data.call_request_number}
                   </span>
                 </div>
               </div>
@@ -90,7 +90,7 @@ const CallList = ({ calls }) => {
             {/* body */}
             <div className="flex flex-col gap-px w-full px-4.5 mb-[13px]">
               <Link
-                href={`/agent/tickets/${data.ticket_number}`}
+                href={`/agent/call/${data.call_request_number}`}
                 className="text-[#8C8C8C] font-medium text-xs/[16.8px]"
               >
                 {data.title}
