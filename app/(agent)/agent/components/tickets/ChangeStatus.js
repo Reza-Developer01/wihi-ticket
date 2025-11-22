@@ -78,11 +78,19 @@ const ChangeStatus = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSelect = (label) => {
+  const handleSelect = (label, value) => {
     setSelected(label);
     setIsOpen(false);
-    if (label === "لغو شده") setIsModalOpen(true);
-    if (label === "هدایت شده") setIsGuidedModalOpen(true);
+
+    if (label === "لغو شده") return setIsModalOpen(true);
+    if (label === "هدایت شده") return setIsGuidedModalOpen(true);
+
+    // ⭐ ارسال فوری و اتوماتیک برای گزینه‌های ساده
+    if (value === "callـqueue" || value === "Checked") {
+      const form = document.getElementById("quick-status-form");
+      form.querySelector('input[name="status"]').value = value;
+      form.requestSubmit(); // سابمیت واقعی بدون کلیک
+    }
   };
 
   return (
@@ -112,7 +120,7 @@ const ChangeStatus = ({
             {statusOptions.map((option) => (
               <li
                 key={option.value}
-                onClick={() => handleSelect(option.label)}
+                onClick={() => handleSelect(option.label, option.value)}
                 className="cursor-pointer hover:text-black pb-3"
               >
                 {option.label}
@@ -240,6 +248,15 @@ const ChangeStatus = ({
           </form>
         </Modal>
       )}
+
+      <form id="quick-status-form" action={formAction} className="hidden">
+        <input
+          type="hidden"
+          name="call_request_number"
+          value={call_request_number}
+        />
+        <input type="hidden" name="status" />
+      </form>
     </div>
   );
 };

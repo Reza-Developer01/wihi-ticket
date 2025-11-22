@@ -85,12 +85,12 @@ const changeStatus = async (state, formData) => {
 
   console.log({ comment, call_request_number, status });
 
-  if (!comment) {
-    return {
-      status: false,
-      message: "پر کردن تمام موارد الزامی است.",
-    };
-  }
+  // if (!comment) {
+  //   return {
+  //     status: false,
+  //     message: "پر کردن تمام موارد الزامی است.",
+  //   };
+  // }
 
   const data = await postFetch(
     `callrequests/${call_request_number}/change_status/`,
