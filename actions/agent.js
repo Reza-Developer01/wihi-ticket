@@ -143,4 +143,64 @@ const createTicket = async (state, formData) => {
   };
 };
 
-export { createAgent, createTicket };
+const createCategoryAgent = async (state, formData) => {
+  const name = formData.get("name");
+
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  if (!name || name === "") {
+    return {
+      status: false,
+      message: "پر کردن عنوان دسته بندی اجباری است.",
+    };
+  }
+
+  const data = await postFetch(
+    `users/agents-categories/`,
+    {
+      name,
+    },
+    {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    }
+  );
+
+  console.log(data);
+
+  if (data) {
+    return {
+      status: true,
+      message: "دسته بندی کارشناس با موفقیت ساخته شد.",
+    };
+  }
+};
+
+const deleteCategoryAgent = async (state, formData) => {
+  const id = formData.get("id");
+
+  console.log(id);
+
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  const data = await postFetch(
+    `users/agents-categories/${id}`,
+    { id },
+    { Authorization: token ? `Bearer ${token}` : undefined }
+  );
+
+  // if (data) {
+  //   return {
+  //     status: true,
+  //     message: "دسته بندی کارشناس با موفقیت حذف شد.",
+  //   };
+  // } else {
+  //   return {
+  //     status: false,
+  //     message: "حذف دسته‌بندی موفقیت‌آمیز نبود.",
+  //   };
+  // }
+};
+
+export { createAgent, createTicket, createCategoryAgent, deleteCategoryAgent };

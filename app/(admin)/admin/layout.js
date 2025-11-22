@@ -257,6 +257,46 @@ export default async function RootLayout({ children }) {
               strokeLinejoin="round"
             />
           </symbol>
+          <symbol
+            id="plus"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+          >
+            <path
+              d="M7.75164 0.75V14.75"
+              stroke="black"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M14.75 7.75054H0.75"
+              stroke="black"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </symbol>
+          <symbol
+            id="delete"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="none"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M15.9165 7.99794C15.9165 7.76794 15.7298 7.58128 15.4998 7.58128H4.50315C4.27231 7.58128 4.08648 7.76794 4.08648 7.99794C4.08648 8.82878 4.07148 9.60294 4.05731 10.3204C3.99565 13.4446 3.95481 15.5088 5.21731 16.7963C6.11398 17.7104 7.58648 18.1188 9.99231 18.1188C12.4006 18.1188 13.8756 17.7096 14.7748 16.7938C16.0431 15.5004 16.0031 13.4263 15.944 10.2846C15.9306 9.57711 15.9165 8.81461 15.9165 7.99794Z"
+              fill="#FF0000"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M16.7298 4.81194H13.279C13.2448 4.26694 13.094 3.4986 12.5515 2.87527C11.9782 2.2161 11.1198 1.8811 9.99982 1.8811C8.88065 1.8811 8.02232 2.2161 7.44898 2.87527C6.90648 3.4986 6.75482 4.26694 6.72065 4.81194H3.27148C2.92648 4.81194 2.64648 5.09194 2.64648 5.43694C2.64648 5.78194 2.92648 6.06194 3.27148 6.06194H16.7298C17.0748 6.06194 17.3548 5.78194 17.3548 5.43694C17.3548 5.09194 17.0748 4.81194 16.7298 4.81194Z"
+              fill="#FF0000"
+            />
+          </symbol>
         </svg>
         {children}
         <HotToast />
