@@ -10,6 +10,7 @@ export const metadata = {
 const page = async ({ params }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
+  console.log(`token : ${token}`);
 
   const getCall = await getFetch(`callrequests/${params.id}`, {
     Authorization: token ? `Bearer ${token}` : undefined,
@@ -27,7 +28,9 @@ const page = async ({ params }) => {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
 
-  console.log({ categories, services, issues });
+  const agentsList = await getFetch("users/agents-list/", {
+    Authorization: token ? `Bearer ${token}` : undefined,
+  });
 
   return (
     <AgentBottomPage mt="mt-[79px]" pb="pb-[24px]">
@@ -37,6 +40,7 @@ const page = async ({ params }) => {
           services={services}
           issues={issues}
           data={getCall}
+          agentsList={agentsList}
         />
       </div>
     </AgentBottomPage>

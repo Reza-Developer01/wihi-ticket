@@ -15,6 +15,7 @@ const statusOptions = [
 const ChangeStatus = ({
   call_request_number,
   initialStatus = "callـqueue",
+  agentsList = [],
 }) => {
   // منوی اصلی وضعیت
   const [isOpen, setIsOpen] = useState(false);
@@ -33,10 +34,8 @@ const ChangeStatus = ({
   const agentDropdownRef = useRef(null);
 
   // لیست کارشناسان
-  const [agents, setAgents] = useState([
-    { id: 1, name: "علی رضایی" },
-    { id: 2, name: "مریم احمدی" },
-  ]);
+  const [agents, setAgents] = useState(agentsList);
+  console.log(agents);
 
   const [state, formAction] = useActionState(changeStatus, {});
   const [stateGuided, formActionGuided] = useActionState(guidedStatus, {});
@@ -183,7 +182,7 @@ const ChangeStatus = ({
               >
                 <span className="truncate text-sm/[19.6px]">
                   {selectedAgent
-                    ? selectedAgent.name
+                    ? selectedAgent.full_name
                     : "کارشناس مورد نظر را انتخاب کنید"}
                 </span>
                 <svg
@@ -210,7 +209,7 @@ const ChangeStatus = ({
                             : ""
                         }`}
                       >
-                        {agent.name}
+                        {agent.full_name}
                       </li>
                     ))}
                   </ul>

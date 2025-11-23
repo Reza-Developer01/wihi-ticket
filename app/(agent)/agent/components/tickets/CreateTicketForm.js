@@ -11,8 +11,14 @@ import SubmitButton from "@/app/(auth)/components/SubmitButton";
 import Input from "@/app/(auth)/components/Input";
 import ChangeStatus from "./ChangeStatus";
 
-const CreateTicketForm = ({ data, categories, services, issues }) => {
-  console.log(data);
+const CreateTicketForm = ({
+  data,
+  categories,
+  services,
+  issues,
+  agentsList,
+}) => {
+  console.log(agentsList);
   const router = useRouter();
   const [state, formAction] = useActionState(requestCall, {});
 
@@ -149,6 +155,7 @@ const CreateTicketForm = ({ data, categories, services, issues }) => {
       <ChangeStatus
         call_request_number={data.call_request_number}
         initialStatus={data.status}
+        agentsList={agentsList}
       />
     </div>
   );
