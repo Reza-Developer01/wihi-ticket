@@ -7,13 +7,13 @@ const TicketList = ({ data }) => {
         return {
           bg: "bg-[#0068C933]",
           text: "text-[#0068C9]",
-          message: "در دست بررسی",
+          message: "منتظر پاسخ",
         };
       case "is_progress":
         return {
           bg: "bg-[#FF770033]",
           text: "text-[#FF7700]",
-          message: "منتظر پاسخ کاربر",
+          message: "در دست بررسی",
         };
       case "closed":
         return {
