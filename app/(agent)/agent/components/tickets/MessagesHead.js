@@ -19,7 +19,7 @@ const MessagesHead = async ({
 
   return (
     <div className="flex items-center justify-between mb-[15px]">
-      <ChangeAgentButton agents={agents} />
+      <ChangeAgentButton agents={agents} ticket_number={ticket_number} />
 
       <ChangeStatusButton
         message={message}

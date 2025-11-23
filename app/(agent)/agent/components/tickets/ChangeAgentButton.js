@@ -1,16 +1,26 @@
 "use client";
 
+import { assignAgent } from "@/actions/agent";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-const ChangeAgentButton = ({ agents }) => {
+const ChangeAgentButton = ({ agents, ticket_number }) => {
   const [open, setOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(
     "انتخاب کارشناس مربوطـــــه"
   );
 
-  const handleSelect = (agent) => {
-    setSelectedAgent(agent);
+  const handleSelect = async (agent) => {
+    setSelectedAgent(agent.full_name);
     setOpen(false);
+
+    const response = await assignAgent(ticket_number, agent.id);
+
+    if (response.status) {
+      toast.success(response.message);
+    } else {
+      toast.error(response?.message || "خطا در تغییر کارشناس");
+    }
   };
 
   return (
@@ -31,7 +41,6 @@ const ChangeAgentButton = ({ agents }) => {
         </svg>
       </button>
 
-      {/* زیرمنوی بازشونده */}
       <div
         className={`custom-shadow ${
           open ? "opacity-100 visible" : "opacity-0 invisible"
@@ -40,7 +49,7 @@ const ChangeAgentButton = ({ agents }) => {
         {agents.map((agent) => (
           <span
             key={agent.id}
-            onClick={() => handleSelect(agent.full_name)}
+            onClick={() => handleSelect(agent)}
             className="cursor-pointer hover:bg-gray-100 text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] px-2 py-1 rounded-[5px] transition"
           >
             {agent.full_name}

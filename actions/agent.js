@@ -203,4 +203,36 @@ const deleteCategoryAgent = async (state, formData) => {
   // }
 };
 
-export { createAgent, createTicket, createCategoryAgent, deleteCategoryAgent };
+const assignAgent = async (ticket_number, assigned_to_id) => {
+  console.log({ ticket_number, assigned_to_id });
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  const data = await postFetch(
+    `tickets/${ticket_number}/assign/`,
+    { assigned_to_id },
+    {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    }
+  );
+
+  if (data) {
+    return {
+      status: true,
+      message: data.message,
+    };
+  } else {
+    return {
+      status: false,
+      message: "با خطا مواجه شد",
+    };
+  }
+};
+
+export {
+  createAgent,
+  createTicket,
+  createCategoryAgent,
+  deleteCategoryAgent,
+  assignAgent,
+};
