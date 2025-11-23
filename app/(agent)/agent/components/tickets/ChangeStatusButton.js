@@ -4,6 +4,8 @@ import changeStatus from "@/actions/changeStatusTicket";
 import { useState } from "react";
 import HistoryStatus from "./HistoryStatus";
 import toast from "react-hot-toast";
+import { Modal } from "@/app/(main)/components/Modal";
+import Link from "next/link";
 
 const statusMap = {
   "در دست بررسی": "is_progress",
@@ -29,18 +31,35 @@ const ChangeStatusButton = ({
     reverseStatusMap[status] || status
   );
   const [showHistory, setShowHistory] = useState(false);
+  const [showCloseTicket, setShowCloseTicket] = useState(false);
+  const [closeComment, setCloseComment] = useState("");
 
-  const handleSelect = async (value) => {
+  const handleSelect = async (value, force = false) => {
     if (value === "مشاهده تغییرات") {
-      setShowHistory((prev) => !prev);
+      setShowHistory(true);
       setOpen(false);
       return;
     }
 
+    // اگر کاربر از منوی اصلی روی "بسته شده" زد → فقط مدال را باز کن
+    if (value === "بسته شده" && !force) {
+      setShowCloseTicket(true);
+      setOpen(false);
+      return;
+    }
+
+    // اگر به اینجا برسیم یعنی از داخل مدال "تایید" کلیک شده
     setSelectedMessage(value);
     setOpen(false);
 
-    const response = await changeStatus(ticket_number, statusMap[value]);
+    const response = await changeStatus(
+      ticket_number,
+      statusMap[value],
+      closeComment
+    );
+
+    console.log(response);
+
     if (response.status) {
       toast.success(response.message);
     } else {
@@ -94,6 +113,56 @@ const ChangeStatusButton = ({
             getTicketHistory={getTicketHistory}
             setShowHistory={setShowHistory}
           />
+        )}
+
+        {showCloseTicket && (
+          <Modal>
+            <h4 className="mb-6 text-[#FF0000] font-semibold leading-[22.4px] tracking-[-0.12px]">
+              بستن درخواست
+            </h4>
+
+            <form action="#" className="flex flex-col">
+              <textarea
+                name="comment"
+                className="custom-shadow w-[240px] h-[150px] mx-auto pt-[15px] pr-[15px] text-[#404040] text-xs/[16.8px] tracking-[-0.12px] bg-white border border-[#EFF0F6] rounded-[10px] outline-none"
+                placeholder="دلیل بستن درخواست خود را بنویسد"
+                value={closeComment}
+                onChange={(e) => setCloseComment(e.target.value)}
+              ></textarea>
+              <input type="hidden" name="ticket_number" value={ticket_number} />
+
+              <div className="flex flex-col gap-y-6">
+                <a
+                  onClick={async (e) => {
+                    e.preventDefault();
+
+                    if (!closeComment.trim()) {
+                      toast.error("لطفاً دلیل بستن درخواست را وارد کنید");
+                      return;
+                    }
+
+                    setShowCloseTicket(false);
+
+                    await handleSelect("بسته شده", true);
+                  }}
+                  href="#"
+                  className="flex items-center justify-center w-[239px] h-12 mx-auto mt-6 leading-6 text-white bg-[#FF0000] rounded-[10px] tracking-[-0.12px]"
+                >
+                  تایید
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCloseTicket(false);
+                  }}
+                  className="flex items-center justify-center w-full text-xs/[16.8px] text-[#6C7278] tracking-[-0.12px]"
+                >
+                  منصرف شدم
+                </button>
+              </div>
+            </form>
+          </Modal>
         )}
       </button>
     </>

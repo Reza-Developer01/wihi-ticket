@@ -3,13 +3,13 @@
 import { postFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
 
-const changeStatus = async (ticket_number, status) => {
+const changeStatus = async (ticket_number, status, closeComment) => {
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
 
   const data = await postFetch(
     `tickets/${ticket_number}/change_status/`,
-    { ticket_number, status },
+    { ticket_number, status, comment: closeComment },
     {
       Authorization: token ? `Bearer ${token}` : undefined,
     }
