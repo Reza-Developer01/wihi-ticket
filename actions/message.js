@@ -25,7 +25,7 @@ const sendMessage = async (state, formData) => {
 
   try {
     const res = await fetch(
-      "http://preview.kft.co.com/ticket/api/ticket-messages/",
+      `http://preview.kft.co.com/ticket/api/tickets/${ticket}/messages/`,
       {
         method: "POST",
         headers: {
