@@ -15,7 +15,17 @@ const changeStatus = async (ticket_number, status) => {
     }
   );
 
-  console.log(data);
+  if (data.detail) {
+    return {
+      status: true,
+      message: data.message,
+    };
+  } else {
+    return {
+      status: false,
+      message: data.message,
+    };
+  }
 };
 
 export default changeStatus;

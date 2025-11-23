@@ -1,6 +1,6 @@
 import MessagesHead from "./MessagesHead";
 
-const Messages = ({ request }) => {
+const Messages = ({ request, getTicketHistory, status }) => {
   const getStatusStyle = (status) => {
     switch (status) {
       case "open":
@@ -35,7 +35,12 @@ const Messages = ({ request }) => {
   return (
     <div className="relative h-[520px]">
       {/* head */}
-      <MessagesHead message={message} ticket_number={request.ticket_number} />
+      <MessagesHead
+        message={message}
+        ticket_number={request.ticket_number}
+        getTicketHistory={getTicketHistory}
+        status={status}
+      />
 
       {/* body */}
       <div className="flex flex-col overflow-y-auto gap-y-[25px] h-[calc(100%-54px)]">

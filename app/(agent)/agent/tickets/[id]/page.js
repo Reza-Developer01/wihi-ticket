@@ -20,6 +20,12 @@ const page = async ({ params }) => {
     Authorization: `Bearer ${token}`,
   });
 
+  const getTicketHistory = await getFetch(`tickets/${id}/status_history/`, {
+    Authorization: `Bearer ${token}`,
+  });
+
+  console.log(getRequest);
+
   return (
     <>
       <Header showBackButton={true} />
@@ -27,7 +33,11 @@ const page = async ({ params }) => {
       <AgentBottomPage pb="pb-[49px]">
         <div className="container">
           <div className="flex flex-col gap-y-[15px]">
-            <Messages request={getRequest} />
+            <Messages
+              request={getRequest}
+              getTicketHistory={getTicketHistory}
+              status={getRequest.status}
+            />
 
             <MessageInput
               requestStatus={getRequest.status}

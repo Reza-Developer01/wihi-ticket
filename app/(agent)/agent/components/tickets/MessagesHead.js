@@ -3,7 +3,12 @@ import ChangeAgentButton from "./ChangeAgentButton";
 import ChangeStatusButton from "./ChangeStatusButton";
 import { cookies } from "next/headers";
 
-const MessagesHead = async ({ message, ticket_number }) => {
+const MessagesHead = async ({
+  message,
+  ticket_number,
+  getTicketHistory,
+  status,
+}) => {
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
@@ -16,7 +21,12 @@ const MessagesHead = async ({ message, ticket_number }) => {
     <div className="flex items-center justify-between mb-[15px]">
       <ChangeAgentButton />
 
-      <ChangeStatusButton message={message} ticket_number={ticket_number} />
+      <ChangeStatusButton
+        message={message}
+        ticket_number={ticket_number}
+        getTicketHistory={getTicketHistory}
+        status={status}
+      />
     </div>
   );
 };
