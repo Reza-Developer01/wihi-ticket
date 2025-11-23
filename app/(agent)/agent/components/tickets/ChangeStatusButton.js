@@ -11,7 +11,7 @@ const statusMap = {
   "در دست بررسی": "is_progress",
   "منتظر پاسخ": "open",
   "بسته شده": "closed",
-  "هدایت شده": "Guided",
+  // "هدایت شده": "guided",
 };
 
 const reverseStatusMap = Object.fromEntries(
@@ -28,7 +28,7 @@ const ChangeStatusButton = ({
 
   const [open, setOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(
-    reverseStatusMap[status] || status
+    status === "Guided" ? "هدایت شده" : reverseStatusMap[status] || status
   );
   const [showHistory, setShowHistory] = useState(false);
   const [showCloseTicket, setShowCloseTicket] = useState(false);
