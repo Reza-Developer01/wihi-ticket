@@ -18,6 +18,8 @@ const page = async () => {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
 
+  console.log(calls);
+
   // const agents = await getFetch("users/agents-list/", {
   //   Authorization: `Bearer ${token}`,
   // });

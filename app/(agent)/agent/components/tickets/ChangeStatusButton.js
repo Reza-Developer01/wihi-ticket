@@ -6,6 +6,7 @@ import HistoryStatus from "./HistoryStatus";
 import toast from "react-hot-toast";
 import { Modal } from "@/app/(main)/components/Modal";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const statusMap = {
   "در دست بررسی": "is_progress",
@@ -33,12 +34,18 @@ const ChangeStatusButton = ({
   const [showHistory, setShowHistory] = useState(false);
   const [showCloseTicket, setShowCloseTicket] = useState(false);
   const [closeComment, setCloseComment] = useState("");
+  const router = useRouter();
 
   const handleSelect = async (value, force = false) => {
     if (value === "مشاهده تغییرات") {
       setShowHistory(true);
       setOpen(false);
       return;
+    }
+
+    if (value === "منتظر پاسخ") {
+      router.push(`change-status?ticket=${ticket_number}`);
+      // return;
     }
 
     // اگر کاربر از منوی اصلی روی "بسته شده" زد → فقط مدال را باز کن
