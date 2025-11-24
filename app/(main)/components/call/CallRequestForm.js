@@ -77,10 +77,10 @@ const CallRequestForm = ({ categories, services, issues }) => {
           <DropDown
             options={issues}
             placeholder="انتخاب شماره تماس"
-            labelKey="name"
+            labelKey="phone_numbers"
             valueKey="id"
             onChange={() => setContactSelected(true)}
-            name="issue"
+            name="phone_numbers"
           />
         </>
       )}

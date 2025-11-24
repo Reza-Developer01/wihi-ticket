@@ -13,10 +13,20 @@ const requestCall = async (state, formData) => {
   const phone_number = formData.get("phone_number");
   const file = formData.get("file");
 
+  console.log({
+    title,
+    description,
+    category,
+    service,
+    issue,
+    phone_number,
+    file,
+  });
+
   const token = cookies().get("access_token")?.value;
 
   // ✅ ولیدیشن لازم طبق API
-  if (!title || !description || !category || !issue || !phone_number) {
+  if (!title || !description || !category || !phone_number) {
     return {
       status: false,
       message: "پر کردن تمام موارد الزامی است.",
@@ -54,6 +64,10 @@ const requestCall = async (state, formData) => {
   );
 
   const data = await res.json();
+
+  console.log(data);
+
+  console.log(data);
 
   cookies().set("call_id", data.call_request_number, {
     httpOnly: false,

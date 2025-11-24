@@ -16,7 +16,9 @@ const page = async () => {
 
   const categories = await getFetch("category-callrequests/", headers);
   const services = await getFetch("service-callrequests/", headers);
-  const serviceIssues = await getFetch("service-issues-callrequests/", headers);
+  const serviceIssues = await getFetch("users/phones/", headers);
+
+  console.log({ categories, services, serviceIssues });
 
   return (
     <>

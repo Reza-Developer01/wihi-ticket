@@ -17,6 +17,8 @@ const page = async () => {
     Authorization: `Bearer ${token}`,
   });
 
+  console.log(getRequestsList);
+
   return (
     <>
       <Header

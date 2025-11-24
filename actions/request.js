@@ -35,6 +35,8 @@ const createRequest = async (state, formData) => {
     body,
   }).then((res) => res.json());
 
+  console.log(data);
+
   if (data) {
     cookies().set("ticket_id", data.ticket_number, {
       httpOnly: false,
