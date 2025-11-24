@@ -7,7 +7,7 @@ const HistoryStatus = ({ getTicketHistory, setShowHistory }) => {
         تاریخچــــه تغییرات
       </h2>
 
-      <div className="flex flex-col gap-y-6">
+      <div className="flex flex-col gap-y-6 h-[200px] overflow-auto">
         {getTicketHistory.map((item) => (
           <div key={item.id} className="flex flex-col gap-y-[3px] px-5">
             <span className="text-[#6C7278] font-medium text-xs/[19.2px] text-right tracking-[-0.64px]">
