@@ -95,7 +95,7 @@ const changeStatus = async (state, formData) => {
   const data = await postFetch(
     `callrequests/${call_request_number}/change_status/`,
     {
-      comment,
+      comment: "",
       call_request_number,
       status,
     },
