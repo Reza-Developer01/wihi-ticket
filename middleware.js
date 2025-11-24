@@ -17,8 +17,8 @@ export function middleware(req) {
   }
 
   if (pathname === "/") {
-    if (role === "customer")
-      return NextResponse.redirect(new URL("/", req.url));
+    // if (role === "customer")
+    //   return NextResponse.redirect(new URL("/", req.url));
     if (role === "agent")
       return NextResponse.redirect(new URL("/agent", req.url));
     if (role === "admin")
