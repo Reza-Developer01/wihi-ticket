@@ -1,6 +1,7 @@
 "use client";
 
 import { assignAgent } from "@/actions/agent";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -10,6 +11,8 @@ const ChangeAgentButton = ({ agents, ticket_number }) => {
     "انتخاب کارشناس مربوطـــــه"
   );
 
+  const router = useRouter();
+
   const handleSelect = async (agent) => {
     setSelectedAgent(agent.full_name);
     setOpen(false);
@@ -18,6 +21,7 @@ const ChangeAgentButton = ({ agents, ticket_number }) => {
 
     if (response.status) {
       toast.success(response.message);
+      router.push(`/agent/assign-agent?ticket=${ticket_number}`);
     } else {
       toast.error(response?.message || "خطا در تغییر کارشناس");
     }
