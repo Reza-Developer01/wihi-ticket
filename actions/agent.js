@@ -216,6 +216,8 @@ const assignAgent = async (ticket_number, assigned_to_id) => {
     }
   );
 
+  console.log(`data : ${data}`);
+
   if (data) {
     return {
       status: true,

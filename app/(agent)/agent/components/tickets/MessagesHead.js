@@ -15,13 +15,12 @@ const MessagesHead = async ({
 
   const { user } = await getMe();
   const hasPermission = user.permissions.some(
-    (p) => p.slug === "can_redirect_ticket"
+    (p) => p.slug === "can_assign_tickets"
   );
 
   const agents = await getFetch("users/agents-list/", {
     Authorization: `Bearer ${token}`,
   });
-  console.log(agents);
 
   return (
     <div className="flex items-center justify-between mb-[15px]">

@@ -20,7 +20,7 @@ const ChangeAgentButton = ({ agents, ticket_number, hasPermission }) => {
     const response = await assignAgent(ticket_number, agent.id);
 
     if (response.status) {
-      toast.success(response.message);
+      // toast.success(response.message);
       router.push(`/agent/assign-agent?ticket=${ticket_number}`);
     } else {
       toast.error(response?.message || "خطا در تغییر کارشناس");
