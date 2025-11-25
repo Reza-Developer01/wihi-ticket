@@ -54,7 +54,11 @@ const CallRequestForm = ({ categories, services, phones }) => {
   }, [state, router]);
 
   return (
-    <form action={formAction} className="flex flex-col gap-y-[15px]">
+    <form
+      action={formAction}
+      className="flex flex-col gap-y-[15px]"
+      encType="multipart/form-data"
+    >
       <DropDown
         options={categories}
         placeholder="انتخاب دسته بندی"
@@ -134,12 +138,11 @@ const CallRequestForm = ({ categories, services, phones }) => {
             <use href="#upload" />
           </svg>
         </button>
-
+        
         <input
           type="file"
           name="file"
           className="absolute w-full h-full text-transparent cursor-pointer"
-          disabled={hasFile}
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file) return;
