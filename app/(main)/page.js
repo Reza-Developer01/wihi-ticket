@@ -13,7 +13,6 @@ export const metadata = {
 
 const page = async () => {
   const { user } = await getMe();
-  console.log(user);
 
   return (
     <>

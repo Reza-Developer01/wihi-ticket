@@ -3,6 +3,7 @@ import BottomSection from "../components/BottomSection";
 import Header from "../components/Header";
 import CallRequestForm from "../components/call/CallRequestForm";
 import { cookies } from "next/headers";
+import { getMe } from "@/actions/auth";
 
 export const metadata = {
   title: "درخواست تماس جدید",
@@ -16,9 +17,7 @@ const page = async () => {
 
   const categories = await getFetch("category-callrequests/", headers);
   const services = await getFetch("service-callrequests/", headers);
-  const serviceIssues = await getFetch("users/phones/", headers);
-
-  console.log({ categories, services, serviceIssues });
+  const phones = await getFetch(`users/phones/`, headers);
 
   return (
     <>
@@ -32,7 +31,7 @@ const page = async () => {
         <CallRequestForm
           categories={categories}
           services={services}
-          issues={serviceIssues}
+          phones={phones.phones}
         />
       </BottomSection>
     </>

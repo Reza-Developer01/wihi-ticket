@@ -10,13 +10,14 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { requestCall } from "@/actions/call";
 
-const CallRequestForm = ({ categories, services, issues }) => {
+const CallRequestForm = ({ categories, services, phones }) => {
   const router = useRouter();
   const [state, formAction] = useActionState(requestCall, {});
 
   const [categorySelected, setCategorySelected] = useState(false);
   const [contactSelected, setContactSelected] = useState(false);
   const [hasFile, setHasFile] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   // const [filteredServices, setFilteredServices] = useState([]);
   // const [filteredContacts, setFilteredContacts] = useState([]);
@@ -75,12 +76,12 @@ const CallRequestForm = ({ categories, services, issues }) => {
           />
 
           <DropDown
-            options={issues}
+            options={phones}
             placeholder="انتخاب شماره تماس"
             labelKey="phone_numbers"
             valueKey="id"
-            onChange={() => setContactSelected(true)}
-            name="phone_numbers"
+            onChange={(value) => setContactSelected(true)}
+            name="phone_number"
           />
         </>
       )}
@@ -88,7 +89,7 @@ const CallRequestForm = ({ categories, services, issues }) => {
       {contactSelected && (
         <Input
           type="text"
-          name="phone_number"
+          name="extension"
           placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
         />
       )}

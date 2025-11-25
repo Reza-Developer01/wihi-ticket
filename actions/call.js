@@ -9,8 +9,8 @@ const requestCall = async (state, formData) => {
   const description = formData.get("description");
   const category = formData.get("category");
   const service = formData.get("service");
-  const issue = formData.get("issue");
   const phone_number = formData.get("phone_number");
+  const extension = formData.get("extension");
   const file = formData.get("file");
 
   console.log({
@@ -18,30 +18,35 @@ const requestCall = async (state, formData) => {
     description,
     category,
     service,
-    issue,
     phone_number,
+    extension,
     file,
   });
 
   const token = cookies().get("access_token")?.value;
 
   // ✅ ولیدیشن لازم طبق API
-  if (!title || !description || !category || !phone_number) {
-    return {
-      status: false,
-      message: "پر کردن تمام موارد الزامی است.",
-    };
-  }
+  // if (
+  //   title === "" ||
+  //   description === "" ||
+  //   category === "" ||
+  //   phone_number === "" ||
+  //   service === ""
+  // ) {
+  //   return {
+  //     status: false,
+  //     message: "پر کردن تمام موارد الزامی است.",
+  //   };
+  // }
 
   // ✅ ساخت FormData
   const body = new FormData();
   body.append("title", title);
   body.append("description", description);
   body.append("category", category);
-  body.append("issue", issue);
   body.append("phone_number", phone_number);
+  body.append("extension", extension);
 
-  // service nullable هست
   if (service) {
     body.append("service", service);
   }
@@ -64,8 +69,6 @@ const requestCall = async (state, formData) => {
   );
 
   const data = await res.json();
-
-  console.log(data);
 
   console.log(data);
 
