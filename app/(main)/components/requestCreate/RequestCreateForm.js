@@ -98,7 +98,6 @@ const RequestCreateForm = ({ categories, issues }) => {
           type="file"
           name="file"
           className="absolute w-full h-full text-transparent cursor-pointer"
-          disabled={hasFile}
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file) return;
