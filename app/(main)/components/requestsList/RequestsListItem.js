@@ -28,6 +28,12 @@ const RequestsListItem = ({
           text: "text-[#FF0000]",
           message: "بسته شده",
         };
+      case "Guided":
+        return {
+          bg: "bg-[#40404033]",
+          text: "text-[#404040]",
+          message: "هدایت شده",
+        };
       default:
         return {
           bg: "bg-[#E5E7EB]",

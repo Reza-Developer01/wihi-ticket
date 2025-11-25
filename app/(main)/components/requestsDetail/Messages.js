@@ -21,6 +21,12 @@ const Messages = async ({ request }) => {
           text: "text-[#FF0000]",
           message: "بسته شده",
         };
+      case "Guided":
+        return {
+          bg: "bg-[#40404033]",
+          text: "text-[#404040]",
+          message: "هدایت شده",
+        };
       default:
         return {
           bg: "bg-[#E5E7EB]",
@@ -43,11 +49,7 @@ const Messages = async ({ request }) => {
           {message}
         </button>
 
-        {request.status === "open" || request.status === "is_progress" ? (
-          <CloseTicket ticketNumber={request.ticket_number} />
-        ) : (
-          ""
-        )}
+        <CloseTicket ticketNumber={request.ticket_number} />
       </div>
 
       {/* body */}
