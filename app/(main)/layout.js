@@ -365,6 +365,7 @@ export default async function RootLayout({ children }) {
 
           {children}
           <HotToast />
+          <div className="shape"></div>
         </AuthProvider>
       </body>
     </html>

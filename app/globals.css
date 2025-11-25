@@ -26,9 +26,22 @@
 body {
     font-family: var(--font-pinar);
     background-color: var(--color-body);
+    background-image: url("../public/images/svgs/star.svg");
 }
 
 /* ==== Custom Styles ==== */
+.shape {
+    position: absolute;
+    top: -162.05px;
+    left: 120.35px;
+    width: 394px;
+    height: 406px;
+    background: linear-gradient(181.28deg, rgba(255, 255, 255, 0) 1.09%, rgba(255, 255, 255, 0.15) 82.08%);
+    z-index: -1;
+    transform: rotate(28.28deg);
+    filter: blur(63.73px);
+}
+
 .plans {
     background: linear-gradient(262.65deg, #FFFFFF 0.85%, #F7FFFF 48.45%, #FFFFFF 96.06%);
 }
