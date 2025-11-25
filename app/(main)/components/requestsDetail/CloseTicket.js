@@ -46,6 +46,7 @@ const CloseTicket = ({ ticketNumber }) => {
               placeholder="دلیل بستن درخواست خود را بنویسد"
             ></textarea>
             <input type="hidden" name="ticket_number" value={ticketNumber} />
+            <input type="hidden" name="status" value="closed" />
 
             <div className="flex flex-col gap-y-6">
               <button
