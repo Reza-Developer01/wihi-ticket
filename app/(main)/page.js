@@ -5,12 +5,16 @@ import Plans from "./components/main/plans/Plans";
 import Footer from "./components/Footer";
 import Selectors from "./components/main/selectors/Selectors";
 import BottomSection from "./components/BottomSection";
+import { getMe } from "@/actions/auth";
 
 export const metadata = {
   title: "خانه",
 };
 
-const page = () => {
+const page = async () => {
+  const { user } = await getMe();
+  console.log(user);
+
   return (
     <>
       <Header
@@ -26,7 +30,7 @@ const page = () => {
         }
       />
 
-      <Plans />
+      <Plans currentPlan={user?.plan?.name} />
 
       <BottomSection pb="36px">
         <Selectors />

@@ -1,15 +1,27 @@
 import PlansItem from "./PlansItem";
 
-const Plans = () => {
+const Plans = ({ currentPlan }) => {
+  const plans = [
+    { icon: "user", title: "پایـــــه", name: "basic" },
+    { icon: "add-user", title: "رشـــــد", name: "growth" },
+    { icon: "two-user", title: "حرفـــه ای", name: "pro" },
+    { icon: "users", title: "سازمانـــی", name: "enterprise" },
+  ];
+
   return (
     <section className="mt-[86px]">
       <div className="container">
         <div className="plans max-w-[300px] mx-auto pt-6 pl-6 pr-[29px] pb-[15px] bg-white rounded-2xl">
+
           <div className="flex items-center justify-center flex-row-reverse gap-x-4">
-            <PlansItem icon="user" title="پایـــــه" isActive={true} />
-            <PlansItem icon="add-user" title="رشـــــد" />
-            <PlansItem icon="two-user" title="حرفـــه ای" />
-            <PlansItem icon="users" title="سازمانـــی" />
+            {plans.map((p) => (
+              <PlansItem
+                key={p.name}
+                icon={p.icon}
+                title={p.title}
+                isActive={currentPlan === p.name}
+              />
+            ))}
           </div>
 
           <a
