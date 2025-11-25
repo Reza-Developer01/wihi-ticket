@@ -1,8 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { changeStatus } from "@/actions/call";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useActionState,
+  useTransition,
+} from "react";
 
-const ChangeStatusDropDown = ({ status: initialStatus }) => {
+const ChangeStatusDropDown = ({
+  status: initialStatus,
+  call_request_number,
+}) => {
+  console.log("call_request_number =>", call_request_number);
+
   const statusMap = {
     callـqueue: {
       bg: "bg-[#FF770033]",
@@ -25,6 +37,15 @@ const ChangeStatusDropDown = ({ status: initialStatus }) => {
       message: "لغو شده",
     },
   };
+
+  const formRef = useRef(null);
+
+  const [state, formAction] = useActionState(changeStatus, {});
+
+  useEffect(() => {
+    console.log("STATE FROM ACTION:", state);
+  }, [state]);
+  const [isPending, startTransition] = useTransition();
 
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
 
@@ -49,6 +70,29 @@ const ChangeStatusDropDown = ({ status: initialStatus }) => {
   const handleSelect = (option) => {
     setIsOpen(false);
     setCurrentStatus(option.value);
+
+    if (option.value === "cancelled") {
+      const form = formRef.current;
+
+      // مقداردهی به فیلدهای فرم
+      form.querySelector("input[name='comment']").value = "";
+      form.querySelector("input[name='call_request_number']").value =
+        call_request_number;
+      form.querySelector("input[name='status']").value = "cancelled";
+
+      // اجرای اکشن
+      startTransition(() => {
+        form.requestSubmit();
+      });
+
+      setTimeout(() => {
+        if (state?.status === false) {
+          console.log("خطا:", state.message);
+        } else {
+          console.log("با موفقیت انجام شد");
+        }
+      }, 0);
+    }
   };
 
   return (
@@ -97,6 +141,13 @@ const ChangeStatusDropDown = ({ status: initialStatus }) => {
           </ul>
         </div>
       )}
+
+      {/* 🔥 فرم واقعی + hidden inputs (ضروری برای اجرای سرور اکشن) */}
+      <form ref={formRef} action={formAction} className="hidden">
+        <input type="hidden" name="comment" />
+        <input type="hidden" name="call_request_number" />
+        <input type="hidden" name="status" />
+      </form>
     </div>
   );
 };

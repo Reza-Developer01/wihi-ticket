@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import ChangeStatusDropDown from "./ChangeStatusDropDown";
 
 const CallDetail = ({ call, categories, services, issues }) => {
+  console.log(call);
   const categoryName = useMemo(() => {
     return categories.find((c) => c.id === call.category)?.name || "-";
   }, [categories, call]);
@@ -106,7 +107,10 @@ const CallDetail = ({ call, categories, services, issues }) => {
       </div>
 
       {/* وضعیت --- فعلاً طبق گفته تو خالی می‌ذارم */}
-      <ChangeStatusDropDown status={call.status} />
+      <ChangeStatusDropDown
+        status={call.status}
+        call_request_number={call.call_request_number}
+      />
     </div>
   );
 };
