@@ -13,6 +13,9 @@ const createAgent = async (state, formData) => {
   const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
+  const permissions = JSON.parse(formData.get("permissions") || "[]");
+
+  console.log(`permissions : ${permissions}`);
 
   phone = phone.replace(/\D/g, "");
   if (phone.startsWith("98")) {
@@ -56,6 +59,7 @@ const createAgent = async (state, formData) => {
       category,
       username,
       password,
+      permissions,
     },
     {
       Authorization: token ? `Bearer ${token}` : undefined,
