@@ -57,7 +57,9 @@ const ChangeStatusDropDown = ({ status: initialStatus }) => {
         type="button"
         disabled={!isEditable}
         onClick={() => isEditable && setIsOpen(!isOpen)}
-        className={`flex items-center justify-between w-full h-12 px-[19px] rounded-[10px] ${current.bg}`}
+        className={`flex items-center ${
+          currentStatus === "callـqueue" ? "justify-between" : "justify-center"
+        } w-full h-12 px-[19px] rounded-[10px] ${current.bg}`}
       >
         <div></div>
 
