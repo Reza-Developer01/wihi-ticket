@@ -71,8 +71,11 @@ const Messages = async ({ request }) => {
                   </p>
                 </div>
                 <div className="flex items-center justify-end">
-                  <button
-                    type="button"
+                  <a
+                    href={item.file}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex flex-col items-center justify-center w-[45px] h-[45px] border border-[#808392] rounded-[10px]"
                   >
                     <svg className="w-6 h-6 text-[#808392]">
@@ -88,7 +91,7 @@ const Messages = async ({ request }) => {
                             .toUpperCase()
                         : ""}
                     </span>
-                  </button>
+                  </a>
                 </div>
               </>
             ) : (
