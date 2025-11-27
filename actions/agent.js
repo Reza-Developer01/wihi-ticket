@@ -9,7 +9,7 @@ const createAgent = async (state, formData) => {
   const register_date = formData.get("register_date");
   const email = formData.get("email");
   let phone = formData.get("phone");
-  const category = formData.get("category");
+  const category_agent = formData.get("category_agent");
   const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
@@ -31,7 +31,7 @@ const createAgent = async (state, formData) => {
     !register_date ||
     !email ||
     !phone ||
-    !category ||
+    !category_agent ||
     !username ||
     !password
   ) {
@@ -56,7 +56,7 @@ const createAgent = async (state, formData) => {
       register_date,
       email,
       phone,
-      category,
+      category_agent,
       username,
       password,
       permissions,
@@ -79,7 +79,7 @@ const createAgent = async (state, formData) => {
 const createTicket = async (state, formData) => {
   const title = formData.get("title");
   const description = formData.get("description");
-  const category = formData.get("category");
+  const category_agent = formData.get("category_agent");
   const service = formData.get("service");
   const issue = formData.get("issue");
   const phone_number = formData.get("phone_number");
@@ -88,7 +88,7 @@ const createTicket = async (state, formData) => {
   const token = cookies().get("access_token")?.value;
 
   // ✅ ولیدیشن لازم طبق API
-  if (!title || !description || !category || !issue || !phone_number) {
+  if (!title || !description || !category_agent || !issue || !phone_number) {
     return {
       status: false,
       message: "پر کردن تمام موارد الزامی است.",
@@ -99,7 +99,7 @@ const createTicket = async (state, formData) => {
   const body = new FormData();
   body.append("title", title);
   body.append("description", description);
-  body.append("category", category);
+  body.append("category_agent", category_agent);
   body.append("issue", issue);
   body.append("phone_number", phone_number);
 

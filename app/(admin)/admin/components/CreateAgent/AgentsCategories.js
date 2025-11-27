@@ -139,7 +139,7 @@ const AgentsCategories = ({ agentsCategory }) => {
           تعریف دستــه بندی جدید
         </button>
 
-        <input type="hidden" name="category" value={selected?.id || ""} />
+        <input type="hidden" name="category_agent" value={selected?.id || ""} />
       </div>
 
       {/* Modal */}
