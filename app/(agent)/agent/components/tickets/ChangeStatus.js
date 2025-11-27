@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useActionState } from "react";
 import Modal from "../Modal";
 import { changeStatus, guidedStatus } from "@/actions/call";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const statusOptions = [
   { label: "در صف تماس", value: "callـqueue" },
@@ -17,6 +18,9 @@ const ChangeStatus = ({
   initialStatus = "callـqueue",
   agentsList = [],
 }) => {
+  console.log("Hello");
+  const router = useRouter();
+
   // منوی اصلی وضعیت
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(
@@ -36,24 +40,53 @@ const ChangeStatus = ({
 
   // لیست کارشناسان
   const [agents, setAgents] = useState(agentsList);
-  console.log(agents);
 
   const [state, formAction] = useActionState(changeStatus, {});
   const [stateGuided, formActionGuided] = useActionState(guidedStatus, {});
 
-  // Toast برای تغییر وضعیت
+  // optional: جلوگیری از ریدایرکت دوبل
+  // const [didRedirect, setDidRedirect] = useState(false);
+
+  // Toast برای تغییر وضعیت + ریدایرکت
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
-    state?.status ? toast.success(state.message) : toast.error(state.message);
-  }, [state]);
+    console.log(state);
 
-  // Toast برای هدایت شده
+    if (state?.status) {
+      toast.success(state.message);
+
+      // اگر می‌خواهی از جلوگیری دوبل استفاده کنی، این‌چنین:
+      // if (!didRedirect) {
+      //   setDidRedirect(true);
+      //   router.push(`/call-status-success?request=${encodeURIComponent(call_request_number)}`);
+      // }
+
+      router.push(
+        `/agent/call-status-success?request=${encodeURIComponent(
+          call_request_number
+        )}`
+      );
+    } else {
+      toast.error(state.message);
+    }
+  }, [state, router, call_request_number /*, didRedirect */]);
+
+  // Toast برای هدایت شده + ریدایرکت
   useEffect(() => {
     if (!stateGuided || Object.keys(stateGuided).length === 0) return;
-    stateGuided?.status
-      ? toast.success(stateGuided.message)
-      : toast.error(stateGuided.message);
-  }, [stateGuided]);
+
+    if (stateGuided?.status) {
+      toast.success(stateGuided.message);
+
+      router.push(
+        `/agent/call-status-success?request=${encodeURIComponent(
+          call_request_number
+        )}`
+      );
+    } else {
+      toast.error(stateGuided.message);
+    }
+  }, [stateGuided, router, call_request_number]);
 
   // بروزرسانی selected وقتی initialStatus تغییر کرد
   useEffect(() => {
@@ -85,7 +118,7 @@ const ChangeStatus = ({
     if (label === "لغو شده") return setIsModalOpen(true);
     if (label === "هدایت شده") return setIsGuidedModalOpen(true);
 
-    // ⭐ ارسال فوری و اتوماتیک برای گزینه‌های ساده
+    // ارسال فوری و اتوماتیک برای گزینه‌های ساده
     if (value === "callـqueue" || value === "Checked") {
       const form = document.getElementById("quick-status-form");
       form.querySelector('input[name="status"]').value = value;

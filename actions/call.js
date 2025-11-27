@@ -122,10 +122,17 @@ const changeStatus = async (state, formData) => {
   );
 
   console.log(data);
-  return {
-    status: false,
-    message: data.detail,
-  };
+  if (data.detail) {
+    return {
+      status: true,
+      message: data.detail,
+    };
+  } else {
+    return {
+      status: false,
+      message: data.detail,
+    };
+  }
 };
 
 const guidedStatus = async (state, formData) => {
