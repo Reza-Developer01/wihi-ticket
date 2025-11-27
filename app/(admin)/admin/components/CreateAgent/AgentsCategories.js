@@ -5,8 +5,11 @@ import { createCategoryAgent, deleteCategoryAgent } from "@/actions/agent";
 import { Modal } from "@/app/(main)/components/Modal";
 import { useState, useRef, useEffect, useActionState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const AgentsCategories = ({ agentsCategory }) => {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false); // dropdown
   const [isModalOpen, setIsModalOpen] = useState(false); // modal
   const [selected, setSelected] = useState(null);
@@ -26,8 +29,12 @@ const AgentsCategories = ({ agentsCategory }) => {
     if (!stateCategoryAgent || Object.keys(stateCategoryAgent).length === 0)
       return;
 
-    if (stateCategoryAgent?.status) toast.success(stateCategoryAgent?.message);
-    else toast.error(stateCategoryAgent?.message);
+    if (stateCategoryAgent?.status) {
+      toast.success(stateCategoryAgent?.message);
+      router.refresh();
+    } else {
+      toast.error(stateCategoryAgent?.message);
+    }
   }, [stateCategoryAgent]);
 
   useEffect(() => {
@@ -35,7 +42,7 @@ const AgentsCategories = ({ agentsCategory }) => {
 
     if (deleteState.status) {
       toast.success(deleteState.message);
-      // اینجا می‌توانیم لیست را هم بروزرسانی کنیم
+      router.refresh();
     } else {
       toast.error(deleteState.message);
     }
@@ -80,7 +87,7 @@ const AgentsCategories = ({ agentsCategory }) => {
 
         {/* Dropdown */}
         {isOpen && (
-          <div className="custom-shadow absolute top-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
+          <div className="custom-shadow absolute top-[50px] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
             <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
               {agentsCategory?.length > 0 ? (
                 agentsCategory.map((item) => (
