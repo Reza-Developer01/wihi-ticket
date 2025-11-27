@@ -1,25 +1,19 @@
-"use client";
-
 import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import AgentBottomPage from "../../components/AgentBottomPage";
 import Header from "@/app/(main)/components/Header";
-import SuccessfullyStatus from "../../components/SuccessfullyStatus";
+import AgentBottomPage from "../../components/AgentBottomPage";
+import ChangeStatusClient from "../../components/ChangeStatusClient";
 
-const ChangeStatusPage = () => {
-  const searchParams = useSearchParams();
-  const ticketNumber = searchParams.get("ticket");
-
+export default function ChangeStatusPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
       <Header showBackButton={true} />
       <AgentBottomPage pb="pb-[49px]">
         <div className="container">
-          <SuccessfullyStatus ticketNumber={ticketNumber} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <ChangeStatusClient />
+          </Suspense>
         </div>
       </AgentBottomPage>
-    </Suspense>
+    </>
   );
-};
-
-export default ChangeStatusPage;
+}
