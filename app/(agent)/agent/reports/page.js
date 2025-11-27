@@ -24,7 +24,7 @@ const page = async () => {
           <ReportsFilter />
 
           {/* information */}
-          <ReportsBanner data={data} />
+          <ReportsBanner data={data.full_reports} />
         </div>
       </section>
     </AdminBottomPage>
