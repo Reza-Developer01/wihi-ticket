@@ -12,8 +12,10 @@ import toast from "react-hot-toast";
 import { toJalaali } from "jalaali-js";
 import SubmitButton from "../SubmitButton";
 import AuthorizationCheckbox from "./AuthorizationCheckbox";
+import { useRouter } from "next/navigation";
 
 const CreateAgentForm = ({ agentsCategory }) => {
+  const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
   const [formData, setFormData] = useState({
@@ -44,8 +46,10 @@ const CreateAgentForm = ({ agentsCategory }) => {
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
 
-    if (state?.status) toast.success(state?.message);
-    else toast.error(state?.message);
+    if (state?.status) {
+      toast.success(state?.message);
+      router.push("/");
+    } else toast.error(state?.message);
   }, [state]);
 
   return (
