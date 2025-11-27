@@ -1,10 +1,10 @@
 import Items from "./Items";
 
-const InformationSection = () => {
+const InformationSection = ({ getInfo }) => {
   return (
     <section className="mt-[38px] mb-[29px]">
       <div className="container">
-        <Items />
+        <Items getInfo={getInfo} />
       </div>
     </section>
   );
