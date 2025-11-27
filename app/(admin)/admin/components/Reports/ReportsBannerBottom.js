@@ -1,7 +1,6 @@
 import ReportsBannerBottomItem from "./ReportsBannerBottomItem";
 
 const ReportsBannerBottom = ({ data }) => {
-  console.log(data);
   return (
     <div className="flex flex-wrap gap-[15px] *:grow">
       <div

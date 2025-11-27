@@ -23,7 +23,7 @@ const page = async () => {
     <>
       <AdminHeader />
 
-      <InformationSection data={data} />
+      <InformationSection data={data.limited_reports} />
 
       <AdminBottomPage pb="pb-9">
         <PagesLinks data={data} />
