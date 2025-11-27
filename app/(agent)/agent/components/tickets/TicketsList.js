@@ -45,9 +45,17 @@ const TicketsList = ({ tickets, filters, user }) => {
   return (
     <>
       <div className="flex flex-col gap-y-6">
-        {filteredTickets.slice(0, visibleCount).map((ticket) => (
-          <TicketList key={ticket.ticket_number} data={ticket} />
-        ))}
+        {total === 0 ? (
+          <span className="text-[#808392] text-center font-medium text-xs/[18px] tracking-[-0.12px]">
+            تیکتی برای نمایش وجود ندارد
+          </span>
+        ) : (
+          filteredTickets
+            .slice(0, visibleCount)
+            .map((ticket) => (
+              <TicketList key={ticket.ticket_number} data={ticket} />
+            ))
+        )}
       </div>
 
       <div className="flex items-center justify-center gap-x-1">
@@ -65,9 +73,6 @@ const TicketsList = ({ tickets, filters, user }) => {
             </svg>
           </button>
         ) : (
-          // <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
-          //   همهٔ درخواست‌ها نمایش داده شد
-          // </span>
           <></>
         )}
       </div>
