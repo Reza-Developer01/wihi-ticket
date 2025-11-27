@@ -17,7 +17,7 @@ const page = async () => {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
 
-  const issues = await getFetch("service-issues/", {
+  const service = await getFetch("service-tickets/", {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
 
@@ -30,7 +30,7 @@ const page = async () => {
       />
 
       <BottomSection pb="49px">
-        <RequestCreateForm categories={categories} issues={issues} />
+        <RequestCreateForm categories={categories} service={service} />
       </BottomSection>
     </>
   );

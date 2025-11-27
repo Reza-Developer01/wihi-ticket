@@ -6,11 +6,11 @@ const createRequest = async (state, formData) => {
   const title = formData.get("title");
   const description = formData.get("description");
   const category = formData.get("category");
-  const issue = formData.get("issue");
+  const service = formData.get("service");
   const file = formData.get("file");
   const token = cookies().get("access_token")?.value;
 
-  if (!title || !description || !category || !issue) {
+  if (!title || !description || !category || !service) {
     return {
       status: false,
       message: "پر کردن تمام موارد الزامی است.",
@@ -21,7 +21,7 @@ const createRequest = async (state, formData) => {
   body.append("title", title);
   body.append("description", description);
   body.append("category", category);
-  body.append("issue", issue);
+  body.append("service", service);
 
   if (file && file.size > 0) {
     body.append("file", file);

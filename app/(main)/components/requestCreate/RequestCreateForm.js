@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Input from "../Input";
 
-const RequestCreateForm = ({ categories, issues }) => {
+const RequestCreateForm = ({ categories, service }) => {
   const [state, formAction] = useActionState(createRequest, {});
   const [openIssues, setOpenIssues] = useState(false);
   const [hasFile, setHasFile] = useState(false);
@@ -41,12 +41,12 @@ const RequestCreateForm = ({ categories, issues }) => {
 
       {openIssues && (
         <DropDown
-          options={issues}
+          options={service}
           placeholder="انتخاب سرویس"
           labelKey="name"
           valueKey="id"
           onChange={(value) => console.log("Category selected:", value)}
-          name="issue"
+          name="service"
         />
       )}
 
