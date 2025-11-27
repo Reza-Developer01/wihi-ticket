@@ -183,30 +183,31 @@ const createCategoryAgent = async (state, formData) => {
 const deleteCategoryAgent = async (state, formData) => {
   const id = formData.get("id");
 
-  console.log(id);
-
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
 
-  const data = await postFetch(
-    `users/agents-categories/${id}/`,
-    { id },
-    { Authorization: token ? `Bearer ${token}` : undefined }
+  const res = await fetch(
+    `http://preview.kft.co.com/ticket/api/users/agents-categories/${id}/`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: token ? `Bearer ${token}` : undefined,
+        "Content-Type": "application/json",
+      },
+    }
   );
 
-  console.log(data);
-
-  // if (data) {
-  //   return {
-  //     status: true,
-  //     message: "دسته بندی کارشناس با موفقیت حذف شد.",
-  //   };
-  // } else {
-  //   return {
-  //     status: false,
-  //     message: "حذف دسته‌بندی موفقیت‌آمیز نبود.",
-  //   };
-  // }
+  if (res.ok) {
+    return {
+      status: true,
+      message: "دسته‌بندی کارشناس با موفقیت حذف شد.",
+    };
+  } else {
+    return {
+      status: false,
+      message: "حذف دسته‌بندی موفقیت‌آمیز نبود.",
+    };
+  }
 };
 
 const assignAgent = async (ticket_number, assigned_to_id) => {
