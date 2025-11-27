@@ -35,6 +35,7 @@ const Messages = async ({ request }) => {
         };
     }
   };
+  console.log(request);
 
   const { bg, text, message } = getStatusStyle(request.status);
 
@@ -42,14 +43,18 @@ const Messages = async ({ request }) => {
     <div className="relative h-[520px]">
       {/* head */}
       <div className="flex items-center justify-between mb-[15px]">
-        <button
-          type="button"
-          className={`flex items-center justify-center w-[100px] h-[30px] ${bg} ${text} font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]`}
-        >
-          {message}
-        </button>
+        {request.status !== "closed" && (
+          <button
+            type="button"
+            className={`flex items-center justify-center w-[100px] h-[30px] ${bg} ${text} font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]`}
+          >
+            {message}
+          </button>
+        )}
 
-        <CloseTicket ticketNumber={request.ticket_number} />
+        {request.status !== "closed" && (
+          <CloseTicket ticketNumber={request.ticket_number} />
+        )}
       </div>
 
       {/* body */}
