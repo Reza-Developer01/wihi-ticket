@@ -132,6 +132,7 @@ const guidedStatus = async (state, formData) => {
   const assigned_to_id = formData.get("assigned_to_id");
   const call_request_number = formData.get("call_request_number");
   const status = formData.get("status");
+  const comment = formData.get("comment");
 
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
@@ -150,11 +151,17 @@ const guidedStatus = async (state, formData) => {
     }
   );
 
-  console.log(data);
-  return {
-    status: false,
-    message: data.detail,
-  };
+  if (data) {
+    return {
+      status: true,
+      message: data.message,
+    };
+  } else {
+    return {
+      status: false,
+      message: "خطا",
+    };
+  }
 };
 
 export { requestCall, changeStatus, guidedStatus };

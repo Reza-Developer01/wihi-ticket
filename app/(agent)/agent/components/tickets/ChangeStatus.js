@@ -27,6 +27,7 @@ const ChangeStatus = ({
   // مدال‌ها
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGuidedModalOpen, setIsGuidedModalOpen] = useState(false);
+  const [isGuidedReasonModalOpen, setIsGuidedReasonModalOpen] = useState(false);
 
   // منوی انتخاب کارشناس داخل مدال
   const [isAgentOpen, setIsAgentOpen] = useState(false);
@@ -166,6 +167,51 @@ const ChangeStatus = ({
         </Modal>
       )}
 
+      {isGuidedReasonModalOpen && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            چرایی هدایــت درخواست تماس
+          </h4>
+
+          <form action={formActionGuided} className="flex flex-col">
+            <textarea
+              name="comment"
+              className="custom-shadow w-[240px] h-[150px] mx-auto pt-[15px] pr-[15px] text-[#404040] text-xs/[16.8px] tracking-[-0.12px] bg-white border border-[#EFF0F6] rounded-[10px] outline-none"
+              placeholder="دلیل هدایت درخواست تماس را بنویسید"
+            />
+
+            <input
+              type="hidden"
+              name="call_request_number"
+              value={call_request_number}
+            />
+            <input type="hidden" name="status" value="Guided" />
+            <input
+              type="hidden"
+              name="assigned_to_id"
+              value={selectedAgent?.id || ""}
+            />
+
+            <div className="flex flex-col gap-y-6">
+              <button
+                type="submit"
+                className="flex items-center justify-center w-[239px] h-12 mx-auto mt-6 leading-6 text-[#404040] bg-[#DBDBDB] rounded-[10px] tracking-[-0.12px]"
+              >
+                تایید
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsGuidedReasonModalOpen(false)}
+                className="flex items-center justify-center w-full text-xs/[16.8px] text-[#6C7278] tracking-[-0.12px]"
+              >
+                منصرف شدم
+              </button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
       {/* مدال هدایت شده */}
       {isGuidedModalOpen && (
         <Modal>
@@ -202,6 +248,8 @@ const ChangeStatus = ({
                         onClick={() => {
                           setSelectedAgent(agent);
                           setIsAgentOpen(false);
+                          setIsGuidedModalOpen(false); // بستن مدال انتخاب کارشناس
+                          setIsGuidedReasonModalOpen(true);
                         }}
                         className={`cursor-pointer hover:text-black pb-3 ${
                           selectedAgent?.id === agent.id
