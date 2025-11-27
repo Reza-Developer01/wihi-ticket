@@ -8,13 +8,15 @@ import {
   useActionState,
   useTransition,
 } from "react";
+import { Modal } from "../Modal";
+// اگر Modal کامپوننت جدا داری، می‌تونی این import رو فعال کنی
+// import Modal from "../Modal";
 
 const ChangeStatusDropDown = ({
   status: initialStatus,
   call_request_number,
+  comment_guided,
 }) => {
-  console.log("call_request_number =>", call_request_number);
-
   const statusMap = {
     callـqueue: {
       bg: "bg-[#FF770033]",
@@ -40,23 +42,31 @@ const ChangeStatusDropDown = ({
 
   const formRef = useRef(null);
 
-  const [state, formAction] = useActionState(changeStatus, {});
+  // refs برای مراحل بعدی (input داخل مدال، container مدال برای click outside)
+  const inputRef = useRef(null);
+  const modalRef = useRef(null);
 
-  useEffect(() => {
-    console.log("STATE FROM ACTION:", state);
-  }, [state]);
+  const [state, formAction] = useActionState(changeStatus, {});
   const [isPending, startTransition] = useTransition();
 
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
 
   const current = statusMap[currentStatus];
-  const isEditable = currentStatus === "callـqueue";
 
+  // ========== قدم 1: کلیک‌پذیری برای callـqueue و Guided ==========
+  const isEditable =
+    currentStatus === "callـqueue" || currentStatus === "Guided";
+
+  // state برای dropdown (مثل قبل)
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  // state برای باز/بسته بودن مودال مخصوص Guided (قدم 2)
+  const [isGuidedModalOpen, setIsGuidedModalOpen] = useState(false);
+
   const options = [{ value: "cancelled", label: "لغو کردن" }];
 
+  // مدیریت کلیک بیرون برای dropdown (همان منطق قبلی)
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -74,81 +84,119 @@ const ChangeStatusDropDown = ({
     if (option.value === "cancelled") {
       const form = formRef.current;
 
-      // مقداردهی به فیلدهای فرم
       form.querySelector("input[name='comment']").value = "";
       form.querySelector("input[name='call_request_number']").value =
         call_request_number;
       form.querySelector("input[name='status']").value = "cancelled";
 
-      // اجرای اکشن
       startTransition(() => {
         form.requestSubmit();
       });
-
-      setTimeout(() => {
-        if (state?.status === false) {
-          console.log("خطا:", state.message);
-        } else {
-          console.log("با موفقیت انجام شد");
-        }
-      }, 0);
     }
   };
 
   return (
-    <div ref={dropdownRef} className="relative w-full">
-      <button
-        type="button"
-        disabled={!isEditable}
-        onClick={() => isEditable && setIsOpen(!isOpen)}
-        className={`flex items-center ${
-          currentStatus === "callـqueue" ? "justify-between" : "justify-center"
-        } w-full h-12 px-[19px] rounded-[10px] ${current.bg}`}
-      >
-        <div></div>
+    <>
+      <div ref={dropdownRef} className="relative w-full">
+        <button
+          type="button"
+          disabled={!isEditable}
+          onClick={() => {
+            if (!isEditable) return;
 
-        <span
-          className={`font-medium text-sm/[19.6px] ${current.text} truncate`}
+            // ========== قدم 2: باز کردن modal برای Guided ==========
+            if (currentStatus === "Guided") {
+              setIsGuidedModalOpen(true);
+            } else {
+              // حالت قبلی برای callـqueue: باز/بستن دراپ‌دان
+              setIsOpen((s) => !s);
+            }
+          }}
+          className={`flex items-center ${
+            currentStatus === "callـqueue"
+              ? "justify-between"
+              : "justify-center"
+          } w-full h-12 px-[19px] rounded-[10px] ${current.bg}`}
         >
-          {current.message}
-        </span>
+          <div></div>
 
-        {isEditable && (
-          <div className="flex items-center justify-center border-r border-r-white pr-[11px] h-[30px]">
-            <svg
-              className={`w-5 h-5 text-white transition-transform duration-200 ${
-                isOpen ? "rotate-180" : ""
-              }`}
-            >
-              <use href="#arrow-down-2" />
-            </svg>
+          <span
+            className={`font-medium text-sm/[19.6px] ${current.text} truncate`}
+          >
+            {current.message}
+          </span>
+
+          {currentStatus === "callـqueue" && (
+            <div className="flex items-center justify-center border-r border-r-white pr-[11px] h-[30px]">
+              <svg
+                className={`w-5 h-5 text-white transition-transform duration-200 ${
+                  isOpen ? "rotate-180" : ""
+                }`}
+              >
+                <use href="#arrow-down-2" />
+              </svg>
+            </div>
+          )}
+        </button>
+
+        {currentStatus === "callـqueue" && isOpen && (
+          <div className="absolute bottom-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
+            <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
+              {options.map((option) => (
+                <li
+                  key={option.value}
+                  onClick={() => handleSelect(option)}
+                  className="cursor-pointer hover:text-black pb-3"
+                >
+                  {option.label}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
-      </button>
 
-      {isEditable && isOpen && (
-        <div className="absolute bottom-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
-          <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
-            {options.map((option) => (
-              <li
-                key={option.value}
-                onClick={() => handleSelect(option)}
-                className="cursor-pointer hover:text-black pb-3"
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* فرم اکشن (همانند قبل) */}
+        <form ref={formRef} action={formAction} className="hidden">
+          <input type="hidden" name="comment" />
+          <input type="hidden" name="call_request_number" />
+          <input type="hidden" name="status" />
+        </form>
+      </div>
+
+      {/* ========== Placeholder Modal برای Guided (قدم 2 کامل) ========== */}
+      {isGuidedModalOpen && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            مشاهده جزئیات
+          </h4>
+
+          <div
+            className="font-light text-xs h-[150px]"
+            style={{ boxShadow: "0px -3px 6px 0px #F4F5FA99 inset" }}
+          >
+            <p className="pt-2.5 pl-2.5 pr-2">{comment_guided}</p>
+          </div>
+
+          <div className="flex flex-col gap-y-6">
+            <button
+              onClick={() => setIsGuidedModalOpen(false)}
+              type="button"
+              className="flex items-center justify-center w-full h-12 bg-[#D9D9D9] text-[#404040] rounded-[10px] mt-6 font-medium"
+            >
+              مشاهده
+            </button>
+
+            <button
+              onClick={() => setIsGuidedModalOpen(false)}
+              type="button"
+              className="text-[#6C7278] text-xs"
+            >
+              متوجـــه شدم
+            </button>
+          </div>
+        </Modal>
       )}
-
-      {/* 🔥 فرم واقعی + hidden inputs (ضروری برای اجرای سرور اکشن) */}
-      <form ref={formRef} action={formAction} className="hidden">
-        <input type="hidden" name="comment" />
-        <input type="hidden" name="call_request_number" />
-        <input type="hidden" name="status" />
-      </form>
-    </div>
+    </>
   );
 };
 

@@ -110,6 +110,7 @@ const CallDetail = ({ call, categories, services, issues }) => {
       <ChangeStatusDropDown
         status={call.status}
         call_request_number={call.call_request_number}
+        comment_guided={call.comment_guided}
       />
     </div>
   );

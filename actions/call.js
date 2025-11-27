@@ -143,8 +143,9 @@ const guidedStatus = async (state, formData) => {
     `callrequests/${call_request_number}/assign/`,
     {
       assigned_to_id,
-      call_request_number,
-      status,
+      // call_request_number,
+      // status,
+      comment,
     },
     {
       Authorization: token ? `Bearer ${token}` : undefined,
