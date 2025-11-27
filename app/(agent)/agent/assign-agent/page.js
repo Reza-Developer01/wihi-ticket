@@ -2,9 +2,12 @@ import Header from "@/app/(main)/components/Header";
 import AgentBottomPage from "../components/AgentBottomPage";
 import dynamic from "next/dynamic";
 
-const ClientAssignAgent = dynamic(() => import("./ClientAssignAgent"), {
-  ssr: false,
-});
+const ClientAssignAgent = dynamic(
+  () => import("../components/ClientAssignAgent"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Page() {
   return (
