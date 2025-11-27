@@ -1,25 +1,20 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import Successfully from "../components/Successfully";
-import AgentBottomPage from "../components/AgentBottomPage";
 import Header from "@/app/(main)/components/Header";
+import AgentBottomPage from "../components/AgentBottomPage";
+import dynamic from "next/dynamic";
 
-const page = () => {
-  const searchParams = useSearchParams();
-  const ticketNumber = searchParams.get("ticket");
+const ClientAssignAgent = dynamic(() => import("./ClientAssignAgent"), {
+  ssr: false,
+});
 
+export default function Page() {
   return (
     <>
       <Header showBackButton={true} />
-
       <AgentBottomPage pb="pb-[49px]">
         <div className="container">
-          <Successfully ticketNumber={ticketNumber} />
+          <ClientAssignAgent />
         </div>
       </AgentBottomPage>
     </>
   );
-};
-
-export default page;
+}
