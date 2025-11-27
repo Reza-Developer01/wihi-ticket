@@ -11,6 +11,7 @@ import SubTitle from "../SubTitle";
 import { createLegalUser } from "@/actions/user";
 import toast from "react-hot-toast";
 import UserPlans from "./UserPlans";
+import { useRouter } from "next/navigation";
 
 const CreateUserLegal = () => {
   const [hasFile, setHasFile] = useState(false);
@@ -35,6 +36,7 @@ const CreateUserLegal = () => {
     economic_code: "",
     national_id: "",
   });
+  const router = useRouter();
   const fileRef = useRef(null);
   const [selectedPlan, setSelectedPlan] = useState(1);
 
@@ -48,8 +50,10 @@ const CreateUserLegal = () => {
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
 
-    if (state?.status) toast.success(state?.message);
-    else toast.error(state?.message);
+    if (state?.status) {
+      toast.success(state?.message);
+      router.push("/");
+    } else toast.error(state?.message);
   }, [state]);
 
   return (

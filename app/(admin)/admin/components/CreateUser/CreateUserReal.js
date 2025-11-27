@@ -11,6 +11,7 @@ import SubTitle from "../SubTitle";
 import { createRealUser } from "@/actions/user";
 import toast from "react-hot-toast";
 import UserPlans from "./UserPlans";
+import { useRouter } from "next/navigation";
 
 const CreateUserReal = () => {
   const [hasFile, setHasFile] = useState(false);
@@ -31,6 +32,7 @@ const CreateUserReal = () => {
     password: "",
     rePassword: "",
   });
+  const router = useRouter();
   const fileRef = useRef(null);
   const [selectedPlan, setSelectedPlan] = useState(1);
 
@@ -44,8 +46,10 @@ const CreateUserReal = () => {
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
 
-    if (state?.status) toast.success(state?.message);
-    else toast.error(state?.message);
+    if (state?.status) {
+      toast.success(state?.message);
+      router.push("/");
+    } else toast.error(state?.message);
   }, [state]);
 
   return (
