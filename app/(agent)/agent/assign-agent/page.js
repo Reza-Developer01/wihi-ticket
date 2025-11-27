@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Header from "@/app/(main)/components/Header";
 import AgentBottomPage from "../components/AgentBottomPage";
 import ClientAssignAgent from "../components/ClientAssignAgent";
@@ -8,7 +9,9 @@ export default function Page() {
       <Header showBackButton={true} />
       <AgentBottomPage pb="pb-[49px]">
         <div className="container">
-          <ClientAssignAgent />
+          <Suspense fallback={<div>Loading...</div>}>
+            <ClientAssignAgent />
+          </Suspense>
         </div>
       </AgentBottomPage>
     </>
