@@ -139,7 +139,7 @@ const guidedStatus = async (state, formData) => {
   console.log({ assigned_to_id, call_request_number, status });
 
   const data = await postFetch(
-    `callrequests/${call_request_number}/change_status/`,
+    `callrequests/${call_request_number}/assign/`,
     {
       assigned_to_id,
       call_request_number,
