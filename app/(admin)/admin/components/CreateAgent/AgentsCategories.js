@@ -24,6 +24,7 @@ const AgentsCategories = ({ agentsCategory }) => {
   const [isPending, startTransition] = useTransition();
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     if (!stateCategoryAgent || Object.keys(stateCategoryAgent).length === 0)
@@ -58,6 +59,22 @@ const AgentsCategories = ({ agentsCategory }) => {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!isModalOpen) return; // فقط وقتی مدال بازه گوش بده
+
+    const handleClickOutside = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
 
   return (
     <>
@@ -128,72 +145,77 @@ const AgentsCategories = ({ agentsCategory }) => {
       {/* Modal */}
       {isModalOpen && (
         <Modal>
-          <h4 className="text-[#8C8C8C] text-xs/[16.8px] font-medium text-center mb-[22px]">
-            تعریف دستــه بندی کارشناس
-          </h4>
+          <div ref={modalRef}>
+            <h4 className="text-[#8C8C8C] text-xs/[16.8px] font-medium text-center mb-[22px]">
+              تعریف دستــه بندی کارشناس
+            </h4>
 
-          <div
-            className="flex items-center w-full h-[46px] border border-[#EDF1F3] rounded-[10px]"
-            style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
-          >
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="عنوان دسته بندی"
-              className="text-[#8C8C8C] pr-3.5 pl-2.5 outline-none text-xs/[16.8px] font-medium grow"
-            />
-
-            <button
-              type="button"
-              onClick={() => {
-                const fd = new FormData();
-                fd.append("name", inputRef.current.value);
-
-                startTransition(() => {
-                  formActionCategoryAgent(fd);
-                });
-
-                setIsModalOpen(false);
-              }}
-              className="flex items-center justify-center w-[62px] h-full border-r border-r-[#EDF1F3] text-xs"
+            <div
+              className="flex items-center w-full h-[46px] border border-[#EDF1F3] rounded-[10px]"
+              style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
             >
-              Add
-            </button>
-          </div>
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="عنوان دسته بندی"
+                className="text-[#8C8C8C] pr-3.5 pl-2.5 outline-none text-xs/[16.8px] font-medium grow"
+              />
 
-          <ul className="flex flex-col gap-y-2.5 mt-4">
-            {agentsCategory?.length > 0 ? (
-              agentsCategory.map((item) => (
-                <li key={item.id} className="flex items-center justify-between">
-                  <span className="text-[#8C8C8C] text-sm/[19.6px]">
-                    {item.name}
-                  </span>
+              <button
+                type="button"
+                onClick={() => {
+                  const fd = new FormData();
+                  fd.append("name", inputRef.current.value);
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
+                  startTransition(() => {
+                    formActionCategoryAgent(fd);
+                  });
 
-                      const fd = new FormData();
-                      fd.append("id", item.id);
+                  setIsModalOpen(false);
+                }}
+                className="flex items-center justify-center w-[62px] h-full border-r border-r-[#EDF1F3] text-xs"
+              >
+                Add
+              </button>
+            </div>
 
-                      startTransition(() => {
-                        deleteCategoryAction(fd);
-                      });
-                    }}
+            <ul className="flex flex-col gap-y-2.5 mt-4">
+              {agentsCategory?.length > 0 ? (
+                agentsCategory.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex items-center justify-between"
                   >
-                    <svg className="w-5 h-5 text-red-500">
-                      <use href="#delete" />
-                    </svg>
-                  </button>
+                    <span className="text-[#8C8C8C] text-sm/[19.6px]">
+                      {item.name}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        const fd = new FormData();
+                        fd.append("id", item.id);
+
+                        startTransition(() => {
+                          deleteCategoryAction(fd);
+                        });
+                      }}
+                    >
+                      <svg className="w-5 h-5 text-red-500">
+                        <use href="#delete" />
+                      </svg>
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li className="text-gray-400 text-center py-4">
+                  دسته‌بندی‌ای موجود نیست
                 </li>
-              ))
-            ) : (
-              <li className="text-gray-400 text-center py-4">
-                دسته‌بندی‌ای موجود نیست
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </div>
         </Modal>
       )}
     </>

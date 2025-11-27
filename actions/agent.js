@@ -189,10 +189,12 @@ const deleteCategoryAgent = async (state, formData) => {
   const token = (await cookieStore).get("access_token")?.value;
 
   const data = await postFetch(
-    `users/agents-categories/${id}`,
+    `users/agents-categories/${id}/`,
     { id },
     { Authorization: token ? `Bearer ${token}` : undefined }
   );
+
+  console.log(data);
 
   // if (data) {
   //   return {
