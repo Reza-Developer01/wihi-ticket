@@ -15,15 +15,24 @@ const RequestsList = ({ requestsList }) => {
   return (
     <>
       <div className="flex flex-col gap-y-[15px] mb-6">
-        {requestsList.slice(0, visibleCount).map((item) => (
-          <RequestsListItem key={item.ticket_number} {...item} />
-        ))}
+        {total === 0 ? (
+          <span className="text-[#808392] text-center font-medium text-xs/[18px] tracking-[-0.12px]">
+            تیکتی برای نمایش وجود ندارد
+          </span>
+        ) : (
+          requestsList
+            .slice(0, visibleCount)
+            .map((item) => (
+              <RequestsListItem key={item.ticket_number} {...item} />
+            ))
+        )}
       </div>
-      <div className="flex items-center justify-center gap-x-1 mb-6">
-        {remaining > 0 ? (
+
+      {total > 0 && remaining > 0 && (
+        <div className="flex items-center justify-center gap-x-1">
           <button
             onClick={handleLoadMore}
-            className="flex items-center gap-x-1"
+            className="flex items-center gap-x-1 mb-6"
           >
             <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
               مشاهده {remaining} درخواست
@@ -33,12 +42,8 @@ const RequestsList = ({ requestsList }) => {
               <use href="#arrow-left-3" />
             </svg>
           </button>
-        ) : (
-          <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
-            همهٔ درخواست‌ها نمایش داده شد
-          </span>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
