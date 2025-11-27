@@ -79,30 +79,64 @@ const checkOtp = async (state, formData) => {
 
 const getMe = async () => {
   const cookieStore = cookies();
-  const token = cookieStore.get("access_token")?.value;
+  let token = cookieStore.get("access_token")?.value;
 
   if (!token) {
-    return {
-      authentication: false,
-      user: null,
-    };
+    token = await refreshToken();
+    if (!token) {
+      return { authenticated: false, user: null };
+    }
   }
 
   const data = await getFetch("users/me/", {
     Authorization: `Bearer ${token}`,
   });
 
-  if (data.authenticated) {
-    return {
-      authenticated: true,
-      user: data.user,
-    };
-  } else {
-    return {
-      authentication: false,
-      user: null,
-    };
+  if (data.code === "token_not_valid") {
+    token = await refreshToken();
+
+    if (!token) {
+      return { authenticated: false, user: null };
+    }
+
+    // دوباره درخواست getMe
+    const retryData = await getFetch("users/me/", {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (retryData.authenticated) {
+      return { authenticated: true, user: retryData.user };
+    }
+
+    return { authenticated: false, user: null };
   }
+
+  if (data.authenticated) {
+    return { authenticated: true, user: data.user };
+  }
+
+  return { authenticated: false, user: null };
+};
+
+const refreshToken = async () => {
+  const cookieStore = cookies();
+  const refresh = cookieStore.get("refresh_token")?.value;
+
+  if (!refresh) return null;
+
+  const data = await postFetch("users/refresh/", { refresh });
+
+  if (data.access) {
+    // ست کردن access جدید
+    cookieStore.set("access_token", data.access, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60,
+    });
+    return data.access;
+  }
+
+  return null;
 };
 
 export { login, checkOtp, getMe };

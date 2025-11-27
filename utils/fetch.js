@@ -1,6 +1,7 @@
 const getFetch = async (url, headers = {}) => {
   const res = await fetch(`http://preview.kft.co.com/ticket/api/${url}`, {
     cache: "no-store",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -19,6 +20,7 @@ const getFetch = async (url, headers = {}) => {
 const postFetch = async (url, body, headers = {}) => {
   const res = await fetch(`http://preview.kft.co.com/ticket/api/${url}`, {
     cache: "no-store",
+    credentials: "include",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
