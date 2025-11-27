@@ -15,13 +15,22 @@ const CallsList = ({ callsList }) => {
   return (
     <>
       <div className="flex flex-col gap-y-[15px] mb-6">
-        {callsList.slice(0, visibleCount).map((item) => (
-          <CallsListItem key={item.call_request_number} {...item} />
-        ))}
+        {total === 0 ? (
+          <span className="text-[#808392] text-center font-medium text-xs/[18px] tracking-[-0.12px]">
+            درخواستی برای نمایش وجود ندارد
+          </span>
+        ) : (
+          callsList
+            .slice(0, visibleCount)
+            .map((item) => (
+              <CallsListItem key={item.call_request_number} {...item} />
+            ))
+        )}
       </div>
 
-      <div className="flex items-center justify-center gap-x-1 mb-6">
-        {remaining > 0 ? (
+      {/* دکمه Load More */}
+      {total > 0 && remaining > 0 && (
+        <div className="flex items-center justify-center gap-x-1 mb-6">
           <button
             onClick={handleLoadMore}
             className="flex items-center gap-x-1"
@@ -34,12 +43,8 @@ const CallsList = ({ callsList }) => {
               <use href="#arrow-left-3" />
             </svg>
           </button>
-        ) : (
-          <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
-            همهٔ درخواست‌ها نمایش داده شد
-          </span>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };

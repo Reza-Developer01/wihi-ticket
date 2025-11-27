@@ -29,7 +29,7 @@ const page = async () => {
         showBackButton={true}
       />
 
-      <BottomSection pb="31px">
+      <BottomSection pb="31px" height="249">
         <CallsList callsList={getCallsList} />
 
         <div className="flex flex-col items-center gap-y-[15px] mt-[15px]">

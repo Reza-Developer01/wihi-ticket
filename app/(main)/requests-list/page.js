@@ -27,7 +27,7 @@ const page = async () => {
         showBackButton={true}
       />
 
-      <BottomSection pb="25px">
+      <BottomSection pb="25px" height="249">
         <RequestsList requestsList={getRequestsList} />
 
         <Button href="/request-create" text="ثبت تیکت جدید" />
