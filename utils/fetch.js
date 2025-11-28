@@ -1,5 +1,7 @@
+const BASE_URL = "http://preview.kft.co.com/ticket/api";
+
 const getFetch = async (url, headers = {}) => {
-  const res = await fetch(`http://preview.kft.co.com/ticket/api/${url}`, {
+  const res = await fetch(`${BASE_URL}/${url}`, {
     cache: "no-store",
     credentials: "include",
     headers: {
@@ -9,16 +11,15 @@ const getFetch = async (url, headers = {}) => {
     },
   });
 
-  if (res.ok) {
-    const data = res.json();
-    return data;
-  } else {
-    throw new Error(`مشکل در دریافت اطلاعات ${res.status}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch: ${res.status}`);
   }
+
+  return await res.json();
 };
 
 const postFetch = async (url, body, headers = {}) => {
-  const res = await fetch(`http://preview.kft.co.com/ticket/api/${url}`, {
+  const res = await fetch(`${BASE_URL}/${url}`, {
     cache: "no-store",
     credentials: "include",
     method: "POST",
@@ -29,6 +30,10 @@ const postFetch = async (url, body, headers = {}) => {
     },
     body: JSON.stringify(body),
   });
+
+  if (!res.ok) {
+    throw new Error(`Failed to post: ${res.status}`);
+  }
 
   return await res.json();
 };
