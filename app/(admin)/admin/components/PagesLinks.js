@@ -10,12 +10,14 @@ const PagesLinks = ({ data }) => {
             subTitle="جدیدترین ها"
             hasLabel={true}
             labelTitle="مشاهد آرشیو"
+            href="/requests-list"
           />
           <PagesLink
             title="تماس ها"
             subTitle="جدیدترین ها"
             hasLabel={true}
             labelTitle="مشاهد آرشیو"
+            href="/call"
           />
           <PagesLink title="گزارشات" href="admin/reports" />
           <PagesLink

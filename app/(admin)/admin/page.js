@@ -26,7 +26,7 @@ const page = async () => {
       <InformationSection data={data.limited_reports} />
 
       <AdminBottomPage pb="pb-9">
-        <PagesLinks data={data} />
+        <PagesLinks data={data.full_reports} />
 
         <AdminFooter />
       </AdminBottomPage>
