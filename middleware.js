@@ -5,6 +5,7 @@ export function middleware(req) {
   const role = req.cookies.get("role")?.value;
   const pathname = req.nextUrl.pathname;
 
+  // --- 1. NOT LOGGED IN ---
   if (!token) {
     if (!pathname.startsWith("/auth")) {
       return NextResponse.redirect(new URL("/auth", req.url));
@@ -12,28 +13,29 @@ export function middleware(req) {
     return NextResponse.next();
   }
 
-  if (role === "admin" && pathname === "/") {
-    return NextResponse.redirect(new URL("/admin", req.url));
-  }
-
+  // --- 2. ADMIN RULES ---
   if (role === "admin") {
+    if (pathname === "/") {
+      return NextResponse.redirect(new URL("/admin", req.url));
+    }
     return NextResponse.next();
   }
 
+  // --- 3. AGENT RULES (only /agent allowed) ---
+  if (role === "agent") {
+    if (!pathname.startsWith("/agent")) {
+      return NextResponse.redirect(new URL("/agent", req.url));
+    }
+    return NextResponse.next();
+  }
+
+  // --- 4. CUSTOMER RULES ---
   if (pathname.startsWith("/auth")) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
   if (pathname.startsWith("/admin")) {
-    if (role !== "admin") {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-  }
-
-  if (pathname.startsWith("/agent")) {
-    if (role !== "agent") {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   if (
