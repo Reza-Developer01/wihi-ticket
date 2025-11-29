@@ -26,6 +26,7 @@ const LoginForm = () => {
     if (state?.status === "error") {
       toast.error(state?.message);
     } else {
+      console.log(state.code);
       sessionStorage.setItem("username", state?.username);
       toast.success(state?.message);
       router.push("/auth/check-otp");
