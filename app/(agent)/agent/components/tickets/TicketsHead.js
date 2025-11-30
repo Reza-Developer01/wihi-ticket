@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "../Modal";
 
-const TicketsHead = ({ setFilters }) => {
+const TicketsHead = ({ setFilters, setSearch }) => {
+  // 👈 فقط این اضافه شد
   const [openFilter, setOpenFilter] = useState(false);
 
   const [filters, setLocalFilters] = useState({
@@ -42,6 +43,7 @@ const TicketsHead = ({ setFilters }) => {
           type="text"
           placeholder="جستجــــو کنید ..."
           className="w-[150px] h-[35px] text-[#808392] font-medium text-[10px]/3.5 bg-[#EFF0F6] pr-[15px] outline-none rounded-[10px]"
+          onChange={(e) => setSearch(e.target.value)} // 👈 فقط این اضافه شد
         />
       </div>
 

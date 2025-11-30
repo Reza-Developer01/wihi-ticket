@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import TicketList from "./TicketList";
 
-const TicketsList = ({ tickets, filters, user }) => {
+const TicketsList = ({ tickets, filters, user, search }) => {
   const [filteredTickets, setFilteredTickets] = useState(tickets);
   const [visibleCount, setVisibleCount] = useState(3);
 
@@ -24,9 +24,21 @@ const TicketsList = ({ tickets, filters, user }) => {
       result.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
     }
 
+    // 👈 فقط این بخش برای جستجو اضافه شد
+    if (search) {
+      const s = search.toLowerCase();
+      result = result.filter(
+        (t) =>
+          t.title?.toLowerCase().includes(s) ||
+          t.description?.toLowerCase().includes(s) ||
+          t.owner_name?.toLowerCase().includes(s) ||
+          String(t.ticket_number).includes(s)
+      );
+    }
+
     setFilteredTickets(result);
     setVisibleCount(3);
-  }, [filters, tickets]);
+  }, [filters, tickets, search]); // 👈 فقط search اضافه شد
 
   const total = filteredTickets.length;
   const remaining = total - visibleCount;

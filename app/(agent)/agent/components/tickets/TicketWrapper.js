@@ -8,10 +8,18 @@ import Button from "@/app/(main)/components/Button";
 const TicketsWrapper = ({ tickets, user }) => {
   const [filters, setFilters] = useState({});
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
-      <TicketsHead setFilters={setFilters} />
-      <TicketsList tickets={tickets} filters={filters} user={user} />
+      <TicketsHead setFilters={setFilters} setSearch={setSearch} />
+      <TicketsList
+        tickets={tickets}
+        filters={filters}
+        search={search}
+        user={user}
+      />
+
       {/* <Button href="/agent/tickets/create" text="ثبت تیکت جدید" /> */}
     </>
   );
