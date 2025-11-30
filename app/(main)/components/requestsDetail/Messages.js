@@ -35,9 +35,19 @@ const Messages = async ({ request }) => {
         };
     }
   };
-  console.log(request);
 
   const { bg, text, message } = getStatusStyle(request.status);
+
+  const allMessages = [
+    {
+      id: "first_message",
+      message: request.first_message,
+      sender_name: request.owner_name,
+      created_at: request.created_at,
+      file: request.file,
+    },
+    ...request.messages,
+  ];
 
   return (
     <div className="relative h-[520px]">
@@ -51,7 +61,6 @@ const Messages = async ({ request }) => {
             {message}
           </button>
         )}
-
         {request.status !== "closed" && (
           <CloseTicket ticketNumber={request.ticket_number} />
         )}
@@ -59,10 +68,8 @@ const Messages = async ({ request }) => {
 
       {/* body */}
       <div className="flex flex-col overflow-y-auto gap-y-[25px] h-[calc(100%-54px)]">
-        {/* item */}
-        {request.messages.map((item) => (
+        {allMessages.map((item) => (
           <div key={item.id} className="flex flex-col gap-y-2.5 *:w-[245px]">
-            {/* text */}
             {item.file ? (
               <>
                 <div className="custom-shadow flex items-center h-12 pr-2.5 bg-white border border-[#F1F1F7] rounded-[10px]">
@@ -102,9 +109,7 @@ const Messages = async ({ request }) => {
               </div>
             )}
 
-            {/* info */}
             <div className="flex items-center justify-between text-[#8C8C8C]">
-              {/* right */}
               <div className="flex items-center gap-x-1">
                 <svg className="w-2.5 h-2.5">
                   <use href="#profile" />
@@ -113,7 +118,6 @@ const Messages = async ({ request }) => {
                   {item.sender_name}
                 </span>
               </div>
-
               <div className="flex items-center gap-x-1 font-light text-[10px]/[14px] tracking-[-0.12px]">
                 <span>
                   {new Date(item.created_at).toLocaleTimeString("fa-IR")}
