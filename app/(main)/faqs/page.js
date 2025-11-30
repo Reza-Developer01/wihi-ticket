@@ -16,7 +16,9 @@ const page = () => {
       />
 
       <BottomSection pb="40px">
-        <FaqList />
+        <div className="container">
+          <FaqList />
+        </div>
       </BottomSection>
     </>
   );

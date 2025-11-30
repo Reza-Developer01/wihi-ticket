@@ -28,11 +28,13 @@ const page = async () => {
       />
 
       <BottomSection pb="49px">
-        <CallRequestForm
-          categories={categories}
-          services={services}
-          phones={phones.phones}
-        />
+        <div className="container">
+          <CallRequestForm
+            categories={categories}
+            services={services}
+            phones={phones.phones}
+          />
+        </div>
       </BottomSection>
     </>
   );

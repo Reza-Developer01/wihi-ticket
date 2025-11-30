@@ -32,9 +32,11 @@ const page = async () => {
       <Plans currentPlan={user?.plan?.name} />
 
       <BottomSection pb="36px">
-        <Selectors />
+        <div className="container">
+          <Selectors />
 
-        <Footer />
+          <Footer />
+        </div>
       </BottomSection>
     </>
   );

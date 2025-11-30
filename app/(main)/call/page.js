@@ -30,10 +30,11 @@ const page = async () => {
       />
 
       <BottomSection pb="31px" height="249">
-        <CallsList callsList={getCallsList} />
+        <div className="container">
+          <CallsList callsList={getCallsList} />
 
-        <div className="flex flex-col items-center gap-y-[15px] mt-[15px]">
-          {/* <button className="flex items-center gap-x-1">
+          <div className="flex flex-col items-center gap-y-[15px] mt-[15px]">
+            {/* <button className="flex items-center gap-x-1">
             <span className="text-[#808392] font-medium text-xs/[18px] tracking-[-0.12px]">
               مشاهده {getCallsList?.count ?? 0} درخواست
             </span>
@@ -43,7 +44,8 @@ const page = async () => {
             </svg>
           </button> */}
 
-          <Button href="/call-request" text="درخواست تماس" />
+            <Button href="/call-request" text="درخواست تماس" />
+          </div>
         </div>
       </BottomSection>
     </>

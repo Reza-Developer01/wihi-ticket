@@ -37,14 +37,16 @@ const page = async ({ params }) => {
       <Header showBackButton={true} mb="mb-0" />
 
       <BottomSection pb="41px">
-        <CallDetail
-          call={getCall}
-          categories={categories}
-          services={services}
-          phones={phones}
-          role={user.role}
-          agentsList={agentsList}
-        />
+        <div className="container">
+          <CallDetail
+            call={getCall}
+            categories={categories}
+            services={services}
+            phones={phones}
+            role={user.role}
+            agentsList={agentsList}
+          />
+        </div>
       </BottomSection>
     </>
   );

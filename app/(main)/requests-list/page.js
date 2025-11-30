@@ -28,9 +28,11 @@ const page = async () => {
       />
 
       <BottomSection pb="25px" height="249">
-        <RequestsList requestsList={getRequestsList} />
+        <div className="container">
+          <RequestsList requestsList={getRequestsList} />
 
-        <Button href="/request-create" text="ثبت تیکت جدید" />
+          <Button href="/request-create" text="ثبت تیکت جدید" />
+        </div>
       </BottomSection>
     </>
   );

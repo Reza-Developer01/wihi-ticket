@@ -24,18 +24,20 @@ const page = async ({ params }) => {
       <Header showBackButton={true} />
 
       <BottomSection pb="49px">
-        <div className="flex flex-col gap-y-[15px]">
-          <Messages
-            request={getRequest}
-            comment_guided={getRequest.comment_guided}
-          />
+        <div className="container">
+          <div className="flex flex-col gap-y-[15px]">
+            <Messages
+              request={getRequest}
+              comment_guided={getRequest.comment_guided}
+            />
 
-          <MessageInput
-            requestStatus={getRequest.status}
-            ticketNumber={getRequest.ticket_number}
-            id={id}
-            comment_cancelled={getRequest.comment_cancelled}
-          />
+            <MessageInput
+              requestStatus={getRequest.status}
+              ticketNumber={getRequest.ticket_number}
+              id={id}
+              comment_cancelled={getRequest.comment_cancelled}
+            />
+          </div>
         </div>
       </BottomSection>
     </>

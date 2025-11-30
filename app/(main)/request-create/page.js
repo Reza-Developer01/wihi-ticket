@@ -30,7 +30,9 @@ const page = async () => {
       />
 
       <BottomSection pb="49px">
-        <RequestCreateForm categories={categories} service={service} />
+        <div className="container">
+          <RequestCreateForm categories={categories} service={service} />
+        </div>
       </BottomSection>
     </>
   );
