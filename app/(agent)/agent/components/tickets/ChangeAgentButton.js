@@ -36,7 +36,7 @@ const ChangeAgentButton = ({ agents, ticket_number, hasPermission }) => {
             setOpen((prev) => !prev);
           }
         }}
-        className="flex items-center justify-between gap-x-[13px] w-[150px] h-[30px] px-3 bg-[#292D321A] text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]"
+        className="flex items-center justify-between gap-x-[13px] w-[160px] h-[30px] px-3 bg-[#292D321A] text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]"
       >
         {hasPermission ? selectedAgent : "شما به این مورد دسترسی ندارید"}
 
