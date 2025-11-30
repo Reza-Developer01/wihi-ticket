@@ -30,7 +30,7 @@ const page = async () => {
             </p>
           </div>
 
-          <Button href="/requests-list" text="مشاهده تیکت" />
+          <Button href={`/requests-list/${ticketId}/`} text="مشاهده تیکت" />
         </div>
       </BottomSection>
     </>

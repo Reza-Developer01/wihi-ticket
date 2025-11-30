@@ -1,6 +1,11 @@
+"use client";
+import { useState } from "react";
 import CloseTicket from "./CloseTicket";
+import { Modal } from "../Modal";
 
-const Messages = async ({ request }) => {
+const Messages = ({ request, comment_guided }) => {
+  const [openModal, setOpenModal] = useState(false);
+
   const getStatusStyle = (status) => {
     switch (status) {
       case "open":
@@ -56,17 +61,56 @@ const Messages = async ({ request }) => {
         {request.status !== "closed" && (
           <button
             type="button"
+            onClick={() => {
+              if (request.status === "Guided") {
+                setOpenModal(true);
+              }
+            }}
             className={`flex items-center justify-center w-[100px] h-[30px] ${bg} ${text} font-medium text-[10px]/3.5 tracking-[-0.12px] rounded-[7px]`}
           >
             {message}
           </button>
         )}
+
         {request.status !== "closed" && (
           <CloseTicket ticketNumber={request.ticket_number} />
         )}
       </div>
 
-      {/* body */}
+      {openModal && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            مشاهده جزئیات
+          </h4>
+
+          <div
+            className="font-light text-xs h-[150px]"
+            style={{ boxShadow: "0px -3px 6px 0px #F4F5FA99 inset" }}
+          >
+            <p className="pt-2.5 pl-2.5 pr-2">{comment_guided}</p>
+          </div>
+
+          <div className="flex flex-col gap-y-6">
+            <button
+              onClick={() => setOpenModal(false)}
+              type="button"
+              className="flex items-center justify-center w-full h-12 bg-[#D9D9D9] text-[#404040] rounded-[10px] mt-6 font-medium"
+            >
+              مشاهده
+            </button>
+
+            <button
+              onClick={() => setOpenModal(false)}
+              type="button"
+              className="text-[#6C7278] text-xs"
+            >
+              متوجـــه شدم
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {/* body — بدون هیچ تغییری */}
       <div className="flex flex-col overflow-y-auto gap-y-[25px] h-[calc(100%-54px)]">
         {allMessages.map((item) => (
           <div key={item.id} className="flex flex-col gap-y-2.5 *:w-[245px]">

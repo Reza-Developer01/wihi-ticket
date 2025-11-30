@@ -10,8 +10,8 @@ const pollSystem = async (state, formData) => {
   const token = (await cookieStore).get("access_token")?.value;
   const ticket_id = (await cookieStore).get("ticket_id")?.value;
 
-  if (!rating || rating === "0" || !comment) {
-    return { status: false, message: "پر کردن تمام موارد اجباری است." };
+  if (!rating || rating === "0") {
+    return { status: false, message: "پر کردن امتیاز اجباری است." };
   }
 
   const data = await postFetch(

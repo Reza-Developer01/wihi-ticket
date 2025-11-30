@@ -25,7 +25,10 @@ const page = async ({ params }) => {
 
       <BottomSection pb="49px">
         <div className="flex flex-col gap-y-[15px]">
-          <Messages request={getRequest} />
+          <Messages
+            request={getRequest}
+            comment_guided={getRequest.comment_guided}
+          />
 
           <MessageInput
             requestStatus={getRequest.status}
