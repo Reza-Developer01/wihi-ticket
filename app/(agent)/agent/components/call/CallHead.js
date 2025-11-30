@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "../Modal";
 
-const CallHead = ({ setFilters }) => {
+const CallHead = ({ setFilters, setSearch }) => {
+  // 👈 فقط اضافه شد
   const [openFilter, setOpenFilter] = useState(false);
 
   const [filters, setLocalFilters] = useState({
@@ -38,10 +39,12 @@ const CallHead = ({ setFilters }) => {
           </svg>
         </button>
 
+        {/* 👈 اضافه شد */}
         <input
           type="text"
           placeholder="جستجــــو کنید ..."
           className="w-[150px] h-[35px] text-[#808392] font-medium text-[10px]/3.5 bg-[#EFF0F6] pr-[15px] outline-none rounded-[10px]"
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 

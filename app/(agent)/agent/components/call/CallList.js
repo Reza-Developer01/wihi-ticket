@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const CallList = ({ calls }) => {
+const CallList = ({ calls, search }) => {
   const getStatusStyle = (status) => {
     switch (status) {
       case "callـqueue":
@@ -36,9 +36,30 @@ const CallList = ({ calls }) => {
     }
   };
 
+  let filteredCalls = [...calls];
+
+  if (search) {
+    const s = search.toLowerCase();
+    filteredCalls = filteredCalls.filter(
+      (c) =>
+        c.title?.toLowerCase().includes(s) ||
+        c.description?.toLowerCase().includes(s) ||
+        c.owner_name?.toLowerCase().includes(s) ||
+        String(c.call_request_number).includes(s)
+    );
+  }
+
+  if (filteredCalls.length === 0) {
+    return (
+      <div className="text-center text-[#808392] mt-4 font-medium text-xs/[18px] tracking-[-0.12px]">
+        تماسی برای نمایش وجود ندارد
+      </div>
+    );
+  }
+
   return (
     <>
-      {calls.map((data) => {
+      {filteredCalls.map((data) => {
         const { bg, text, message } = getStatusStyle(data.status);
 
         return (

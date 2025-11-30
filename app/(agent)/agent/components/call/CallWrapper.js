@@ -7,12 +7,14 @@ import CallList from "./CallList";
 const CallWrapper = ({ calls, user }) => {
   const [filters, setFilters] = useState({});
 
+  // 👈 اضافه شد
+  const [search, setSearch] = useState("");
+
   return (
     <>
-      {/* <TicketsHead setFilters={setFilters} /> */}
-      <CallHead setFilters={setFilters} />
-      <CallList calls={calls} filters={filters} user={user} />
-      {/* <TicketsList tickets={tickets} filters={filters} user={user} /> */}
+      {/* 👈 فقط prop مربوط به search اضافه شد */}
+      <CallHead setFilters={setFilters} setSearch={setSearch} />
+      <CallList calls={calls} filters={filters} search={search} user={user} />
     </>
   );
 };
