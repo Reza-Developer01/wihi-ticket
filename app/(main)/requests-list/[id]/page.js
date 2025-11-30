@@ -31,6 +31,7 @@ const page = async ({ params }) => {
             requestStatus={getRequest.status}
             ticketNumber={getRequest.ticket_number}
             id={id}
+            comment_cancelled={getRequest.comment_cancelled}
           />
         </div>
       </BottomSection>

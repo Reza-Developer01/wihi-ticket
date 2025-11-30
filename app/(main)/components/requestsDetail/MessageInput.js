@@ -5,9 +5,16 @@ import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Modal } from "../Modal";
 
-const MessageInput = ({ requestStatus, ticketNumber, id }) => {
+const MessageInput = ({
+  requestStatus,
+  ticketNumber,
+  id,
+  comment_cancelled,
+}) => {
+  console.log({ requestStatus, ticketNumber, id, comment_cancelled });
   const [state, formAction] = useActionState(sendMessage, {});
   const [openModal, setOpenModal] = useState(false);
+  const [openCancelModal, setOpenCancelModal] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [hasFile, setHasFile] = useState(false);
@@ -45,7 +52,15 @@ const MessageInput = ({ requestStatus, ticketNumber, id }) => {
       } rounded-[10px]`}
     >
       <div className="flex items-center justify-center w-full h-full">
-        {requestStatus === "closed" && <p className="text-center text-[#FF0000] leading-[22.4px] font-semibold tracking-[-0.12px]">درخواست بسته شده</p>}
+        {requestStatus === "closed" && (
+          <button
+            type="button"
+            onClick={() => setOpenCancelModal(true)}
+            className="text-center text-[#FF0000] leading-[22.4px] font-semibold tracking-[-0.12px]"
+          >
+            درخواست بسته شده
+          </button>
+        )}
 
         {requestStatus !== "closed" && (
           <>
@@ -163,6 +178,39 @@ const MessageInput = ({ requestStatus, ticketNumber, id }) => {
           </Modal>
         )}
       </div>
+
+      {openCancelModal && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            مشاهده جزئیات
+          </h4>
+
+          <div
+            className="font-light text-xs h-[150px]"
+            style={{ boxShadow: "0px -3px 6px 0px #F4F5FA99 inset" }}
+          >
+            <p className="pt-2.5 pl-2.5 pr-2">{comment_cancelled}</p>
+          </div>
+
+          <div className="flex flex-col gap-y-6">
+            <button
+              onClick={() => setOpenCancelModal(false)}
+              type="button"
+              className="flex items-center justify-center w-full h-12 bg-[#FF000033] text-[#FF0000] rounded-[10px] mt-6 font-medium"
+            >
+              مشاهده
+            </button>
+
+            <button
+              onClick={() => setOpenCancelModal(false)}
+              type="button"
+              className="text-[#6C7278] text-xs"
+            >
+              متوجـــه شدم
+            </button>
+          </div>
+        </Modal>
+      )}
     </form>
   );
 };
