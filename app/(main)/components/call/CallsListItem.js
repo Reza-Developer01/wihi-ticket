@@ -51,7 +51,7 @@ const CallsListItem = ({
       <div className="flex items-center justify-between pl-5 pr-[18px] pt-[13px] mb-2">
         {/* right side */}
         <div className="flex flex-col font-medium text-[8px]/[11.2px] tracking-[-0.12px]">
-          <span className="text-[#B9BBC9]">شماره تیکت</span>
+          <span className="text-[#B9BBC9]">شماره درخواست</span>
           <span className="text-[#808392]">{call_request_number}</span>
         </div>
 
