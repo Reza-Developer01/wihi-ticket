@@ -297,6 +297,19 @@ export default async function RootLayout({ children }) {
               fill="#FF0000"
             />
           </symbol>
+          <symbol
+            id="arrow-down"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 15 15"
+            fill="none"
+          >
+            <path
+              d="M11.875 5.3125C11.875 5.3125 9.285 9.6875 7.5 9.6875C5.71562 9.6875 3.125 5.3125 3.125 5.3125"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </symbol>
         </svg>
         {children}
         <HotToast />

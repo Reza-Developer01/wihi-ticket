@@ -5,8 +5,16 @@ import Input from "../Input";
 import TextArea from "../TextArea";
 import { useMemo } from "react";
 import ChangeStatusDropDown from "./ChangeStatusDropDown";
+import ChangeStatus from "@/app/(agent)/agent/components/tickets/ChangeStatus";
 
-const CallDetail = ({ call, categories, services, issues }) => {
+const CallDetail = ({
+  call,
+  categories,
+  services,
+  issues,
+  role,
+  agentsList,
+}) => {
   console.log(call);
   const categoryName = useMemo(() => {
     return categories.find((c) => c.id === call.category)?.name || "-";
@@ -107,12 +115,22 @@ const CallDetail = ({ call, categories, services, issues }) => {
       </div>
 
       {/* وضعیت --- فعلاً طبق گفته تو خالی می‌ذارم */}
-      <ChangeStatusDropDown
-        status={call.status}
-        call_request_number={call.call_request_number}
-        comment_guided={call.comment_guided}
-        comment_cancelled={call.comment_cancelled}
-      />
+      {role !== "admin" && (
+        <ChangeStatusDropDown
+          status={call.status}
+          call_request_number={call.call_request_number}
+          comment_guided={call.comment_guided}
+          comment_cancelled={call.comment_cancelled}
+        />
+      )}
+
+      {role === "admin" && (
+        <ChangeStatus
+          call_request_number={call.call_request_number}
+          initialStatus={call.status}
+          agentsList={agentsList}
+        />
+      )}
     </div>
   );
 };
