@@ -18,6 +18,7 @@ const CallRequestForm = ({ categories, services, phones }) => {
   const [contactSelected, setContactSelected] = useState(false);
   const [hasFile, setHasFile] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [serviceSelected, setServiceSelected] = useState(false);
 
   // const [filteredServices, setFilteredServices] = useState([]);
   // const [filteredContacts, setFilteredContacts] = useState([]);
@@ -65,25 +66,25 @@ const CallRequestForm = ({ categories, services, phones }) => {
       />
 
       {categorySelected && (
-        <>
-          <DropDown
-            options={services}
-            placeholder="انتخاب سرویس"
-            labelKey="name"
-            valueKey="id"
-            onChange={() => {}}
-            name="service"
-          />
+        <DropDown
+          options={services}
+          placeholder="انتخاب سرویس"
+          labelKey="name"
+          valueKey="id"
+          onChange={(value) => setServiceSelected(true)}
+          name="service"
+        />
+      )}
 
-          <DropDown
-            options={phones}
-            placeholder="انتخاب شماره تماس"
-            labelKey="phone_numbers"
-            valueKey="id"
-            onChange={(value) => setContactSelected(true)}
-            name="phone_number"
-          />
-        </>
+      {serviceSelected && (
+        <DropDown
+          options={phones}
+          placeholder="انتخاب شماره تماس"
+          labelKey="phone_numbers"
+          valueKey="id"
+          onChange={(value) => setContactSelected(true)}
+          name="phone_number"
+        />
       )}
 
       {contactSelected && (
