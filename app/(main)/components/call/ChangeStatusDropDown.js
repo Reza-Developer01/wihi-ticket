@@ -16,6 +16,7 @@ const ChangeStatusDropDown = ({
   status: initialStatus,
   call_request_number,
   comment_guided,
+  comment_cancelled,
 }) => {
   const statusMap = {
     callـqueue: {
@@ -49,6 +50,7 @@ const ChangeStatusDropDown = ({
   const [state, formAction] = useActionState(changeStatus, {});
   const [isPending, startTransition] = useTransition();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
 
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
 
@@ -119,15 +121,13 @@ const ChangeStatusDropDown = ({
       <div ref={dropdownRef} className="relative w-full">
         <button
           type="button"
-          disabled={!isEditable}
+          disabled={!isEditable && currentStatus !== "cancelled"}
           onClick={() => {
-            if (!isEditable) return;
-
-            // ========== قدم 2: باز کردن modal برای Guided ==========
             if (currentStatus === "Guided") {
               setIsGuidedModalOpen(true);
+            } else if (currentStatus === "cancelled") {
+              setIsCancelledModalOpen(true);
             } else {
-              // حالت قبلی برای callـqueue: باز/بستن دراپ‌دان
               setIsOpen((s) => !s);
             }
           }}
@@ -253,6 +253,39 @@ const ChangeStatusDropDown = ({
               </button>
             </div>
           </form>
+        </Modal>
+      )}
+
+      {isCancelledModalOpen && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            مشاهده جزئیات
+          </h4>
+
+          <div
+            className="font-light text-xs h-[150px]"
+            style={{ boxShadow: "0px -3px 6px 0px #F4F5FA99 inset" }}
+          >
+            <p className="pt-2.5 pl-2.5 pr-2">{comment_cancelled}</p>
+          </div>
+
+          <div className="flex flex-col gap-y-6">
+            <button
+              onClick={() => setIsCancelledModalOpen(false)}
+              type="button"
+              className="flex items-center justify-center w-full h-12 bg-[#D9D9D9] text-[#404040] rounded-[10px] mt-6 font-medium"
+            >
+              مشاهده
+            </button>
+
+            <button
+              onClick={() => setIsCancelledModalOpen(false)}
+              type="button"
+              className="text-[#6C7278] text-xs"
+            >
+              متوجـــه شدم
+            </button>
+          </div>
         </Modal>
       )}
     </>
