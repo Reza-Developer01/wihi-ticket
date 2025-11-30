@@ -90,7 +90,7 @@ const CallRequestForm = ({ categories, services, phones }) => {
       {contactSelected && (
         <Input
           type="text"
-          name="extension"
+          name="extension_phone_number_input"
           placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
         />
       )}

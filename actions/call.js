@@ -10,7 +10,7 @@ const requestCall = async (state, formData) => {
   const category = formData.get("category");
   const service = formData.get("service");
   const phone_number = formData.get("phone_number");
-  const extension = formData.get("extension");
+  const extension_phone_number_input = formData.get("extension_phone_number_input");
   const file = formData.get("file");
 
   console.log({
@@ -19,7 +19,7 @@ const requestCall = async (state, formData) => {
     category,
     service,
     phone_number,
-    extension,
+    extension_phone_number_input,
     file,
   });
 
@@ -45,7 +45,7 @@ const requestCall = async (state, formData) => {
   body.append("description", description);
   body.append("category", category);
   body.append("phone_number", phone_number);
-  body.append("extension", extension);
+  body.append("extension_phone_number_input", extension_phone_number_input);
 
   if (service) {
     body.append("service", service);

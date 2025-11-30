@@ -22,7 +22,7 @@ const page = async ({ params }) => {
   const getCall = await getFetch(`callrequests/${id}/`, headers);
   const categories = await getFetch("category-callrequests/", headers);
   const services = await getFetch("service-callrequests/", headers);
-  const issues = await getFetch("service-issues-callrequests/", headers);
+  const phones = await getFetch(`users/phones/`, headers);
 
   let agentsList;
 
@@ -41,7 +41,7 @@ const page = async ({ params }) => {
           call={getCall}
           categories={categories}
           services={services}
-          issues={issues}
+          phones={phones}
           role={user.role}
           agentsList={agentsList}
         />

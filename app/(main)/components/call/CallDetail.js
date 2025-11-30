@@ -11,7 +11,7 @@ const CallDetail = ({
   call,
   categories,
   services,
-  issues,
+  phones,
   role,
   agentsList,
 }) => {
@@ -23,10 +23,6 @@ const CallDetail = ({
   const serviceName = useMemo(() => {
     return services.find((s) => s.id === call.service)?.name || "-";
   }, [services, call]);
-
-  const issueName = useMemo(() => {
-    return issues.find((i) => i.id === call.issue)?.name || "-";
-  }, [issues, call]);
   const fileExists = call.file !== null && call.file !== undefined;
 
   return (
@@ -38,7 +34,7 @@ const CallDetail = ({
           labelKey="name"
           valueKey="id"
           name="category"
-          defaultValue={categories.find((c) => c.id === call.category)}
+          defaultValue={call.category} // <-- فقط id
         />
         <div className="absolute inset-0 z-10 cursor-default"></div>
       </div>
@@ -50,27 +46,28 @@ const CallDetail = ({
           labelKey="name"
           valueKey="id"
           name="service"
-          defaultValue={services.find((s) => s.id === call.service)}
+          defaultValue={call.service}
         />
         <div className="absolute inset-0 z-10 cursor-default"></div>
       </div>
 
       <div className="relative">
         <DropDown
-          options={issues}
+          options={phones.phones} // ← فقط همین!
           placeholder="انتخاب شماره تماس"
-          labelKey="name"
+          labelKey="phone_numbers" // چون name نداریم
           valueKey="id"
-          name="issue"
-          defaultValue={issues.find((i) => i.id === call.issue)}
+          name="phone_number"
+          defaultValue={call.phone_number_detail.id}
         />
+
         <div className="absolute inset-0 z-10 cursor-default"></div>
       </div>
 
       <Input
         type="text"
-        name="phone_number"
-        value={call.phone_number}
+        name="extension_phone_number_input"
+        value={call.phone_number_detail.extension}
         readOnly={true}
         placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
       />
