@@ -9,7 +9,9 @@ const MessagesHead = async ({
   ticket_number,
   getTicketHistory,
   status,
+  request,
 }) => {
+  console.log("REQ :", request);
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
@@ -24,18 +26,28 @@ const MessagesHead = async ({
 
   return (
     <div className="flex items-center justify-between mb-[15px]">
-      <ChangeAgentButton
-        hasPermission={hasPermission}
-        agents={agents}
-        ticket_number={ticket_number}
-      />
+      <div className="flex flex-col gap-y-[7px] w-full">
+        <div className="flex items-center justify-between w-full">
+          <ChangeAgentButton
+            hasPermission={hasPermission}
+            agents={agents}
+            ticket_number={ticket_number}
+          />
 
-      <ChangeStatusButton
-        message={message}
-        ticket_number={ticket_number}
-        getTicketHistory={getTicketHistory}
-        status={status}
-      />
+          <ChangeStatusButton
+            message={message}
+            ticket_number={ticket_number}
+            getTicketHistory={getTicketHistory}
+            status={status}
+          />
+        </div>
+
+        {request.status === "Guided" && (
+          <span className="text-[#404040] font-medium text-[10px]">
+            هدایت شده توسط “{request.agent_guided}”
+          </span>
+        )}
+      </div>
     </div>
   );
 };

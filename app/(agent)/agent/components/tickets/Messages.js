@@ -64,6 +64,7 @@ const Messages = ({ request, getTicketHistory, status }) => {
         ticket_number={request.ticket_number}
         getTicketHistory={getTicketHistory}
         status={status}
+        request={request}
       />
 
       {/* body */}
