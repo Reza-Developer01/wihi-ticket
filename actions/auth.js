@@ -1,73 +1,90 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getFetch, postFetch } from "@/utils/fetch";
+
+const decodeJwt = (token) => {
+  try {
+    const payload = token.split(".")[1];
+    return JSON.parse(Buffer.from(payload, "base64").toString());
+  } catch {
+    return null;
+  }
+};
+
+const setAuthCookies = (tokens) => {
+  const cookieStore = cookies();
+  console.log(tokens);
+
+  const accessPayload = decodeJwt(tokens.access);
+  const refreshPayload = decodeJwt(tokens.refresh);
+
+  const now = Math.floor(Date.now() / 1000);
+  const accessMaxAge = accessPayload?.exp ? accessPayload.exp - now : 3600;
+  const refreshMaxAge = refreshPayload?.exp
+    ? refreshPayload.exp - now
+    : 7 * 24 * 3600;
+
+  // Access Token
+  cookieStore.set("access_token", tokens.access, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: accessMaxAge,
+  });
+
+  // Refresh Token
+  cookieStore.set("refresh_token", tokens.refresh, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: refreshMaxAge,
+  });
+};
 
 const login = async (state, formData) => {
   const username = formData.get("username");
   const password = formData.get("password");
 
-  if (username === "" || password === "") {
-    return {
-      status: "error",
-      message: "پر کردن تمام موارد ، اجباری است.",
-    };
+  if (!username || !password) {
+    return { status: "error", message: "پر کردن تمام موارد اجباری است." };
   }
 
   const data = await postFetch("users/login/", { username, password });
 
-  console.log(data);
-
   if (data.non_field_errors) {
-    return {
-      status: "error",
-      message: data.non_field_errors,
-    };
-  } else {
-    return data;
+    return { status: "error", message: data.non_field_errors };
   }
+
+  return data;
 };
 
 const checkOtp = async (state, formData) => {
   let code = formData.get("code");
+
   code = code
     .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
     .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
 
-  if (code === "") {
-    return {
-      status: "error",
-      message: "پر کردن تمام موارد ، اجباری است.",
-    };
+  if (!code) {
+    return { status: "error", message: "پر کردن تمام موارد اجباری است." };
   }
 
   const data = await postFetch("users/verify-otp/", { code });
 
-  console.log(data);
-
   if (data.non_field_errors) {
-    return {
-      status: "error",
-      message: data.non_field_errors,
-    };
+    return { status: "error", message: data.non_field_errors };
   }
 
-  const cookieStore = cookies();
-  cookieStore.set("access_token", data.tokens.access, {
-    httpOnly: true,
-    path: "/",
-    maxAge: 60 * 60,
-  });
+  setAuthCookies(data.tokens);
 
-  cookieStore.set("refresh_token", data.tokens.refresh, {
-    httpOnly: true,
+  cookies().set("role", data.user.role, {
     path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-
-  cookieStore.set("role", data.user.role, {
-    path: "/",
-    maxAge: 60 * 60,
+    secure: true,
+    sameSite: "lax",
+    maxAge: 3600,
   });
 
   return {
@@ -77,15 +94,43 @@ const checkOtp = async (state, formData) => {
   };
 };
 
+const refreshToken = async () => {
+  const cookieStore = cookies();
+  let refresh = cookieStore.get("refresh_token")?.value;
+  console.log(refresh);
+
+  if (!refresh) {
+    const raw = headers().get("cookie") || "";
+    refresh = raw
+      .split("; ")
+      .find((c) => c.startsWith("refresh_token="))
+      ?.split("=")[1];
+  }
+
+  if (!refresh) return null;
+
+  const data = await postFetch("token/refresh/", { refresh });
+  console.log(data);
+
+  if (data.access) {
+    setAuthCookies({
+      access: data.access,
+      refresh,
+    });
+
+    return data.access;
+  }
+
+  return null;
+};
+
 const getMe = async () => {
   const cookieStore = cookies();
   let token = cookieStore.get("access_token")?.value;
 
   if (!token) {
     token = await refreshToken();
-    if (!token) {
-      return { authenticated: false, user: null };
-    }
+    if (!token) return { authenticated: false, user: null };
   }
 
   const data = await getFetch("users/me/", {
@@ -94,49 +139,24 @@ const getMe = async () => {
 
   if (data.code === "token_not_valid") {
     token = await refreshToken();
+    if (!token) return { authenticated: false, user: null };
 
-    if (!token) {
-      return { authenticated: false, user: null };
-    }
-
-    // دوباره درخواست getMe
-    const retryData = await getFetch("users/me/", {
+    const retry = await getFetch("users/me/", {
       Authorization: `Bearer ${token}`,
     });
 
-    if (retryData.authenticated) {
-      return { authenticated: true, user: retryData.user };
+    if (retry?.authenticated) {
+      return { authenticated: true, user: retry.user };
     }
 
     return { authenticated: false, user: null };
   }
 
-  if (data.authenticated) {
+  if (data?.authenticated) {
     return { authenticated: true, user: data.user };
   }
 
   return { authenticated: false, user: null };
-};
-
-const refreshToken = async () => {
-  const cookieStore = cookies();
-  const refresh = cookieStore.get("refresh_token")?.value;
-
-  if (!refresh) return null;
-
-  const data = await postFetch("users/refresh/", { refresh });
-
-  if (data.access) {
-    // ست کردن access جدید
-    cookieStore.set("access_token", data.access, {
-      httpOnly: true,
-      path: "/",
-      maxAge: 60 * 60,
-    });
-    return data.access;
-  }
-
-  return null;
 };
 
 export { login, checkOtp, getMe };

@@ -48,6 +48,7 @@ const ChangeStatusDropDown = ({
 
   const [state, formAction] = useActionState(changeStatus, {});
   const [isPending, startTransition] = useTransition();
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const [currentStatus, setCurrentStatus] = useState(initialStatus);
 
@@ -79,20 +80,38 @@ const ChangeStatusDropDown = ({
 
   const handleSelect = (option) => {
     setIsOpen(false);
-    setCurrentStatus(option.value);
+    // setCurrentStatus(option.value);
 
     if (option.value === "cancelled") {
-      const form = formRef.current;
+      // const form = formRef.current;
 
-      form.querySelector("input[name='comment']").value = "";
-      form.querySelector("input[name='call_request_number']").value =
-        call_request_number;
-      form.querySelector("input[name='status']").value = "cancelled";
+      // form.querySelector("input[name='comment']").value = "";
+      // form.querySelector("input[name='call_request_number']").value =
+      //   call_request_number;
+      // form.querySelector("input[name='status']").value = "cancelled";
 
-      startTransition(() => {
-        form.requestSubmit();
-      });
+      // startTransition(() => {
+      //   form.requestSubmit();
+      // });
+      setIsCancelModalOpen(true);
     }
+  };
+
+  const handleCancelSubmit = () => {
+    const form = formRef.current;
+
+    form.querySelector("input[name='comment']").value = "";
+    form.querySelector("input[name='call_request_number']").value =
+      call_request_number;
+    form.querySelector("input[name='status']").value = "cancelled";
+
+    startTransition(() => {
+      form.requestSubmit();
+    });
+
+    // بستن modal و تغییر وضعیت دکمه اصلی
+    setIsCancelModalOpen(false);
+    setCurrentStatus("cancelled");
   };
 
   return (
@@ -194,6 +213,46 @@ const ChangeStatusDropDown = ({
               متوجـــه شدم
             </button>
           </div>
+        </Modal>
+      )}
+
+      {isCancelModalOpen && (
+        <Modal>
+          <h4 className="mb-6 text-[#FF0000] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            بستن درخواست
+          </h4>
+
+          <form action={formAction} className="flex flex-col">
+            <textarea
+              name="comment"
+              className="custom-shadow w-[240px] h-[150px] mx-auto pt-[15px] pr-[15px] text-[#404040] text-xs/[16.8px] tracking-[-0.12px] bg-white border border-[#EFF0F6] rounded-[10px] outline-none"
+              placeholder="دلیل بستن درخواست خود را بنویسد"
+            ></textarea>
+            <input
+              type="hidden"
+              name="ticket_number"
+              value={call_request_number}
+            />
+            <input type="hidden" name="status" value="closed" />
+
+            <div className="flex flex-col gap-y-6">
+              <button
+                type="button"
+                onClick={handleCancelSubmit}
+                className="flex items-center justify-center w-[239px] h-12 mx-auto mt-6 leading-6 text-white bg-[#FF0000] rounded-[10px] tracking-[-0.12px]"
+              >
+                تایید
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsCancelModalOpen(false)}
+                className="flex items-center justify-center w-full text-xs/[16.8px] text-[#6C7278] tracking-[-0.12px]"
+              >
+                منصرف شدم
+              </button>
+            </div>
+          </form>
         </Modal>
       )}
     </>
