@@ -210,14 +210,14 @@ const deleteCategoryAgent = async (state, formData) => {
   }
 };
 
-const assignAgent = async (ticket_number, assigned_to_id) => {
+const assignAgent = async (comment, ticket_number, assigned_to_id) => {
   console.log({ ticket_number, assigned_to_id });
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
 
   const data = await postFetch(
     `tickets/${ticket_number}/assign/`,
-    { assigned_to_id },
+    { comment, assigned_to_id },
     {
       Authorization: token ? `Bearer ${token}` : undefined,
     }

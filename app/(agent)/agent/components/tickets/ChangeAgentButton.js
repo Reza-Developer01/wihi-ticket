@@ -149,6 +149,7 @@ const ChangeAgentButton = ({ agents, ticket_number, hasPermission }) => {
 
               // 🔥 دقیقا همان ارسال ساده‌ای که گفتی
               const response = await assignAgent(
+                comment,
                 ticket_number,
                 selectedAgent.id
               );
