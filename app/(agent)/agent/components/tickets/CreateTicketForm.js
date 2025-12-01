@@ -7,27 +7,35 @@ import { useRouter } from "next/navigation";
 import { requestCall } from "@/actions/call";
 import DropDown from "@/app/(main)/components/DropDown";
 import TextArea from "@/app/(main)/components/TextArea";
-import SubmitButton from "@/app/(auth)/components/SubmitButton";
 import Input from "@/app/(auth)/components/Input";
 import ChangeStatus from "./ChangeStatus";
 
-const CreateTicketForm = ({
-  data,
-  categories,
-  services,
-  issues,
-  agentsList,
-  user,
-}) => {
-  console.log(agentsList);
+const CreateTicketForm = ({ data, agentsList, user }) => {
+  console.log("🟦 DATA RECEIVED IN FORM:", data);
+
   const router = useRouter();
   const [state, formAction] = useActionState(requestCall, {});
 
+  const [category, setCategory] = useState(data?.category_detail?.id || null);
+  const [service, setService] = useState(data?.service_detail?.id || null);
+
+  console.log({ category, service });
+
+  const [phoneNumber, setPhoneNumber] = useState(
+    data?.phone_number_detail?.id || null
+  );
+  const [extension, setExtension] = useState(
+    data?.phone_number_detail?.extension || ""
+  );
+  const [title, setTitle] = useState(data?.title || "");
+  const [description, setDescription] = useState(data?.description || "");
+  const [hasFile, setHasFile] = useState(!!data?.file);
+
   const [categorySelected, setCategorySelected] = useState(false);
   const [contactSelected, setContactSelected] = useState(false);
-  const [hasFile, setHasFile] = useState(false);
 
-  const handleCategoryChange = () => {
+  const handleCategoryChange = (value) => {
+    setCategory(value);
     setCategorySelected(true);
     setContactSelected(false);
   };
@@ -44,70 +52,70 @@ const CreateTicketForm = ({
   }, [state, router]);
 
   useEffect(() => {
-    if (data?.file) {
-      setHasFile(true);
-    }
+    if (data?.category) setCategory(data.category);
+    if (data?.service) setService(data.service);
   }, [data]);
 
   return (
-    // action={formAction}
     <div className="flex flex-col gap-y-[15px]">
       <DropDown
-        options={categories}
-        placeholder="انتخاب دسته بندی"
+        options={data.category_detail ? [data.category_detail] : []}
         labelKey="name"
         valueKey="id"
-        onChange={(value) => handleCategoryChange(value)}
-        name="category"
-        value={data?.category} // مقدار انتخاب شده از سرور
-        defaultValue={data?.category}
+        value={category}
+        onChange={setCategory}
       />
 
       <DropDown
-        options={services}
-        placeholder="انتخاب سرویس"
+        options={data.service_detail ? [data.service_detail] : []}
         labelKey="name"
         valueKey="id"
-        onChange={() => {}}
-        name="service"
-        value={data?.service}
-        defaultValue={data?.service}
+        value={service}
+        onChange={setService}
       />
 
+      {/* شماره تماس */}
       <DropDown
-        options={issues}
+        options={data.phone_number_detail ? [data.phone_number_detail] : []}
         placeholder="انتخاب شماره تماس"
-        labelKey="name"
+        labelKey="phone_numbers"
         valueKey="id"
-        onChange={() => setContactSelected(true)}
-        name="issue"
-        value={data?.issue}
-        defaultValue={data?.issue}
+        name="phone_number"
+        value={phoneNumber}
+        onChange={setPhoneNumber}
+        defaultValue={phoneNumber}
       />
 
+      {/* داخلی */}
       <Input
         type="text"
         name="phone_number"
-        defaultValue={data?.phone_number}
+        value={extension}
+        onChange={(e) => setExtension(e.target.value)}
         placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
         placeholderColor=""
       />
 
+      {/* عنوان */}
       <Input
         type="text"
         name="title"
-        defaultValue={data?.title}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         placeholder="عنوان درخواست را وارد کنید"
         placeholderColor=""
       />
 
+      {/* توضیحات */}
       <TextArea
         height="220px"
         placeholder="شرح در درخواست را وارد کنید"
         name="description"
-        defaultValue={data?.description}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
 
+      {/* فایل */}
       <div
         className={`custom-shadow relative flex items-center w-full h-12 rounded-[10px] overflow-hidden transition-all duration-300 ${
           hasFile ? "bg-[#00C96B33]" : "bg-[#EFF0F6]"

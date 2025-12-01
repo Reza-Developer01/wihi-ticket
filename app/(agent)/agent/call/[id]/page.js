@@ -12,23 +12,11 @@ const page = async ({ params }) => {
   const { user } = await getMe();
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
-  console.log(`token : ${token}`);
 
   const getCall = await getFetch(`callrequests/${params.id}`, {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
-
-  const categories = await getFetch("category-callrequests", {
-    Authorization: token ? `Bearer ${token}` : undefined,
-  });
-
-  const services = await getFetch("service-callrequests", {
-    Authorization: token ? `Bearer ${token}` : undefined,
-  });
-
-  const issues = await getFetch("service-issues", {
-    Authorization: token ? `Bearer ${token}` : undefined,
-  });
+  console.log("GET CALL : ", getCall);
 
   let agentsList;
 
@@ -47,9 +35,6 @@ const page = async ({ params }) => {
       <div className="container">
         <div className="flex flex-col gap-y-[25px] px-6">
           <CreateTicketForm
-            categories={categories}
-            services={services}
-            issues={issues}
             data={getCall}
             agentsList={agentsList}
             user={user}
