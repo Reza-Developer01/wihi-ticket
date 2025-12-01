@@ -43,6 +43,7 @@ const page = async ({ params }) => {
               requestStatus={getRequest.status}
               ticketNumber={getRequest.ticket_number}
               id={id}
+              getRequest={getRequest}
             />
           </div>
 
