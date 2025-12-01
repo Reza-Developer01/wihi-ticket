@@ -179,7 +179,7 @@ const MessageInput = ({
         )}
       </div>
 
-      {openCancelModal && (
+      {openCancelModal && comment_cancelled && (
         <Modal>
           <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
             مشاهده جزئیات
