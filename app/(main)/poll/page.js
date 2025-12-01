@@ -16,7 +16,9 @@ const page = () => {
       />
 
       <BottomSection pb="55px">
-        <PollForm />
+        <div className="container">
+          <PollForm />
+        </div>
       </BottomSection>
     </>
   );

@@ -19,18 +19,20 @@ const page = async () => {
       <Header showBackButton={true} />
 
       <BottomSection pb="63px">
-        <div className="flex flex-col gap-y-6">
-          <Image src={successfully} alt="successfully" />
+        <div className="container">
+          <div className="flex flex-col gap-y-6">
+            <Image src={successfully} alt="successfully" className="mx-auto" />
 
-          <div className="flex items-center justify-center h-[150px]">
-            <p className="text-[#0D0D1B] font-bold text-lg/[27px] tracking-[-0.12px]">
-              ارسال درخواست با موفقیت ثبت شده به شماره تیکت{" "}
-              <span className="text-[#2DD2D2]">“ {ticketId} ”</span> نتیجـــه
-              اعلام خواهــد شد
-            </p>
+            <div className="flex items-center justify-center h-[150px]">
+              <p className="text-[#0D0D1B] font-bold text-lg/[27px] tracking-[-0.12px]">
+                ارسال درخواست با موفقیت ثبت شده به شماره تیکت{" "}
+                <span className="text-[#2DD2D2]">“ {ticketId} ”</span> نتیجـــه
+                اعلام خواهــد شد
+              </p>
+            </div>
+
+            <Button href={`/requests-list/${ticketId}/`} text="مشاهده تیکت" />
           </div>
-
-          <Button href={`/requests-list/${ticketId}/`} text="مشاهده تیکت" />
         </div>
       </BottomSection>
     </>
