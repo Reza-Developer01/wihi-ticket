@@ -11,34 +11,22 @@ import Input from "@/app/(auth)/components/Input";
 import ChangeStatus from "./ChangeStatus";
 
 const CreateTicketForm = ({ data, agentsList, user }) => {
-  console.log("🟦 DATA RECEIVED IN FORM:", data);
-
   const router = useRouter();
   const [state, formAction] = useActionState(requestCall, {});
 
-  const [category, setCategory] = useState(data?.category_detail?.id || null);
-  const [service, setService] = useState(data?.service_detail?.id || null);
+  const [extension, setExtension] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [hasFile, setHasFile] = useState(false);
 
-  console.log({ category, service });
-
-  const [phoneNumber, setPhoneNumber] = useState(
-    data?.phone_number_detail?.id || null
-  );
-  const [extension, setExtension] = useState(
-    data?.phone_number_detail?.extension || ""
-  );
-  const [title, setTitle] = useState(data?.title || "");
-  const [description, setDescription] = useState(data?.description || "");
-  const [hasFile, setHasFile] = useState(!!data?.file);
-
-  const [categorySelected, setCategorySelected] = useState(false);
-  const [contactSelected, setContactSelected] = useState(false);
-
-  const handleCategoryChange = (value) => {
-    setCategory(value);
-    setCategorySelected(true);
-    setContactSelected(false);
-  };
+  useEffect(() => {
+    if (data) {
+      setExtension(data?.phone_number_detail?.extension || "");
+      setTitle(data?.title || "");
+      setDescription(data?.description || "");
+      setHasFile(!!data?.file);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
@@ -51,49 +39,49 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
     }
   }, [state, router]);
 
-  useEffect(() => {
-    if (data?.category) setCategory(data.category);
-    if (data?.service) setService(data.service);
-  }, [data]);
-
   return (
     <div className="flex flex-col gap-y-[15px]">
-      <DropDown
-        options={data.category_detail ? [data.category_detail] : []}
-        labelKey="name"
-        valueKey="id"
-        value={category}
-        onChange={setCategory}
-      />
+      {/* دسته بندی فقط نمایش */}
+      <div className="custom-shadow relative flex items-center justify-between w-full h-12 rounded-[10px] overflow-hidden border border-[#EDF1F3] px-4">
+        <div></div>
+        <span className="font-semibold text-xs/[16.8px] text-[#8C8C8C] tracking-[-0.12px]">
+          {data?.category_detail?.name || "دسته بندی موجود نیست"}
+        </span>
+        <svg className="w-[15px] h-[15px] text-[#A8A8A8]">
+          <use href="#arrow-down" />
+        </svg>
+      </div>
 
-      <DropDown
-        options={data.service_detail ? [data.service_detail] : []}
-        labelKey="name"
-        valueKey="id"
-        value={service}
-        onChange={setService}
-      />
+      {/* سرویس فقط نمایش */}
+      <div className="custom-shadow relative flex items-center justify-between w-full h-12 rounded-[10px] overflow-hidden border border-[#EDF1F3] px-4">
+        <div></div>
+        <span className="font-semibold text-xs/[16.8px] text-[#8C8C8C] tracking-[-0.12px]">
+          {data?.service_detail?.name || "سرویس موجود نیست"}
+        </span>
+        <svg className="w-[15px] h-[15px] text-[#A8A8A8]">
+          <use href="#arrow-down" />
+        </svg>
+      </div>
 
-      {/* شماره تماس */}
-      <DropDown
-        options={data.phone_number_detail ? [data.phone_number_detail] : []}
-        placeholder="انتخاب شماره تماس"
-        labelKey="phone_numbers"
-        valueKey="id"
-        name="phone_number"
-        value={phoneNumber}
-        onChange={setPhoneNumber}
-        defaultValue={phoneNumber}
-      />
+      {/* شماره تماس فقط نمایش */}
+      <div className="custom-shadow relative flex items-center justify-between w-full h-12 rounded-[10px] overflow-hidden border border-[#EDF1F3] px-4">
+        <div></div>
+        <span className="font-semibold text-xs/[16.8px] text-[#8C8C8C] tracking-[-0.12px]">
+          {data?.phone_number_detail?.phone_numbers || "-"}
+        </span>
+        <svg className="w-[15px] h-[15px] text-[#A8A8A8]">
+          <use href="#arrow-down" />
+        </svg>
+      </div>
 
       {/* داخلی */}
       <Input
         type="text"
-        name="phone_number"
+        name="extension"
         value={extension}
         onChange={(e) => setExtension(e.target.value)}
         placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
-        placeholderColor=""
+        disabled={true}
       />
 
       {/* عنوان */}
@@ -103,16 +91,17 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="عنوان درخواست را وارد کنید"
-        placeholderColor=""
+        disabled={true}
       />
 
       {/* توضیحات */}
       <TextArea
         height="220px"
-        placeholder="شرح در درخواست را وارد کنید"
+        placeholder="شرح درخواست را وارد کنید"
         name="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        disabled={true}
       />
 
       {/* فایل */}
@@ -124,15 +113,15 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
         <button
           type="button"
           className="flex items-center justify-between grow pr-6 pl-[15px]"
+          disabled={true}
         >
           <span
             className={`font-semibold text-xs/[16.8px] ${
               hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
             } tracking-[-0.12px]`}
           >
-            {hasFile ? "فایل انتخاب شد" : "فایل آپلودی وجــــود ندارد"}
+            {hasFile ? "فایل انتخاب شد" : "فایل آپلودی وجود ندارد"}
           </span>
-
           <svg
             className={`w-[25px] h-[25px] ${
               hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
@@ -145,22 +134,12 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
         <input
           type="file"
           name="file"
-          className="absolute w-full h-full text-transparent cursor-pointer"
-          disabled={hasFile}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            if (file.size > 50 * 1024 * 1024) {
-              alert("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
-              e.target.value = "";
-              setHasFile(false);
-            } else {
-              setHasFile(true);
-            }
-          }}
+          className="absolute w-full h-full text-transparent cursor-not-allowed"
+          disabled={true}
         />
       </div>
 
+      {/* تغییر وضعیت */}
       <ChangeStatus
         call_request_number={data.call_request_number}
         initialStatus={data.status}
