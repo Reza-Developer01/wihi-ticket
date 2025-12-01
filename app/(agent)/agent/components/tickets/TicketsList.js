@@ -7,9 +7,9 @@ const TicketsList = ({ tickets, filters, user, search }) => {
   const [filteredTickets, setFilteredTickets] = useState(tickets);
   const [visibleCount, setVisibleCount] = useState(3);
 
-  const canSeeList =
-    user?.role === "agent" &&
-    user?.permissions?.some((p) => p.slug === "view_all_tickets");
+  // const canSeeList =
+  //   user?.role === "agent" &&
+  //   user?.permissions?.some((p) => p.slug === "view_all_tickets");
 
   useEffect(() => {
     let result = [...tickets];
@@ -24,7 +24,6 @@ const TicketsList = ({ tickets, filters, user, search }) => {
       result.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
     }
 
-    // 👈 فقط این بخش برای جستجو اضافه شد
     if (search) {
       const s = search.toLowerCase();
       result = result.filter(
@@ -46,13 +45,13 @@ const TicketsList = ({ tickets, filters, user, search }) => {
   const handleLoadMore = () =>
     setVisibleCount((prev) => Math.min(prev + 10, total));
 
-  if (!canSeeList) {
-    return (
-      <div className="text-center text-[#808392] mt-4">
-        شما دسترسی مشاهده همهٔ تیکت‌ها را ندارید.
-      </div>
-    );
-  }
+  // if (!canSeeList) {
+  //   return (
+  //     <div className="text-center text-[#808392] mt-4">
+  //       شما دسترسی مشاهده همهٔ تیکت‌ها را ندارید.
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

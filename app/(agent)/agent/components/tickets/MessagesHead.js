@@ -44,7 +44,7 @@ const MessagesHead = async ({
 
         {request.status === "Guided" && (
           <span className="text-[#404040] font-medium text-[10px]">
-            هدایت شده توسط “{request.agent_guided}”
+            هدایت شده توسط “{request.agent_guided_name}”
           </span>
         )}
       </div>
