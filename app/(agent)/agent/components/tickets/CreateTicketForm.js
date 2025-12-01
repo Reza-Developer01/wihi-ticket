@@ -17,6 +17,7 @@ const CreateTicketForm = ({
   services,
   issues,
   agentsList,
+  user,
 }) => {
   console.log(agentsList);
   const router = useRouter();
@@ -156,6 +157,7 @@ const CreateTicketForm = ({
         call_request_number={data.call_request_number}
         initialStatus={data.status}
         agentsList={agentsList}
+        user={user}
       />
     </div>
   );
