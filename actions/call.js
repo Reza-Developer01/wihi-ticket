@@ -10,7 +10,9 @@ const requestCall = async (state, formData) => {
   const category = formData.get("category");
   const service = formData.get("service");
   const phone_number = formData.get("phone_number");
-  const extension_phone_number_input = formData.get("extension_phone_number_input");
+  const extension_phone_number_input = formData.get(
+    "extension_phone_number_input"
+  );
   const file = formData.get("file");
 
   console.log({
@@ -112,7 +114,7 @@ const changeStatus = async (state, formData) => {
   const data = await postFetch(
     `callrequests/${call_request_number}/change_status/`,
     {
-      comment: "",
+      comment,
       call_request_number,
       status,
     },
