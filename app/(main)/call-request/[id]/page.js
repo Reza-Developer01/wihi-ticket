@@ -45,6 +45,7 @@ const page = async ({ params }) => {
             phones={phones}
             role={user.role}
             agentsList={agentsList}
+            user={user}
           />
         </div>
       </BottomSection>

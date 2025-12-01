@@ -40,11 +40,13 @@ const ChangeStatus = ({
   const [state, formAction] = useActionState(changeStatus, {});
   const [stateGuided, formActionGuided] = useActionState(guidedStatus, {});
 
-  const hasCloseCall = user.permissions.some((p) => p.slug === "close_call");
-  const hasCallStatus = user.permissions.some(
+  const permissions = user?.permissions || [];
+
+  const hasCloseCall = permissions.some((p) => p.slug === "close_call");
+  const hasCallStatus = permissions.some(
     (p) => p.slug === "change_call_status"
   );
-  const hasCanAssign = user.permissions.some(
+  const hasCanAssign = permissions.some(
     (p) => p.slug === "can_assign_callrequests"
   );
 

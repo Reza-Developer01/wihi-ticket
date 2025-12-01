@@ -14,6 +14,7 @@ const CallDetail = ({
   phones,
   role,
   agentsList,
+  user,
 }) => {
   console.log(call);
   const categoryName = useMemo(() => {
@@ -126,6 +127,7 @@ const CallDetail = ({
           call_request_number={call.call_request_number}
           initialStatus={call.status}
           agentsList={agentsList}
+          user={user}
         />
       )}
     </div>
