@@ -82,20 +82,20 @@ const ChangeStatusDropDown = ({
 
   const handleSelect = (option) => {
     setIsOpen(false);
-    // setCurrentStatus(option.value);
 
     if (option.value === "cancelled") {
-      // const form = formRef.current;
+      const form = formRef.current;
 
-      // form.querySelector("input[name='comment']").value = "";
-      // form.querySelector("input[name='call_request_number']").value =
-      //   call_request_number;
-      // form.querySelector("input[name='status']").value = "cancelled";
+      form.querySelector("input[name='comment']").value = "";
+      form.querySelector("input[name='call_request_number']").value =
+        call_request_number;
+      form.querySelector("input[name='status']").value = "cancelled";
 
-      // startTransition(() => {
-      //   form.requestSubmit();
-      // });
-      setIsCancelModalOpen(true);
+      startTransition(() => {
+        form.requestSubmit();
+      });
+
+      setCurrentStatus("cancelled");
     }
   };
 
