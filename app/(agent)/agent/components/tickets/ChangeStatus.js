@@ -144,7 +144,7 @@ const ChangeStatus = ({
               isOpen ? "rotate-180" : ""
             }`}
           >
-            <use href="#arrow-down" />
+            <use href="#arrow-down-2" />
           </svg>
         </div>
       </button>
