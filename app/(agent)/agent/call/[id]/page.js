@@ -33,7 +33,7 @@ const page = async ({ params }) => {
   return (
     <AgentBottomPage mt="mt-[79px]" pb="pb-[24px]">
       <div className="container">
-        <div className="flex flex-col gap-y-[25px] px-6">
+        <div className="flex flex-col gap-y-[25px]">
           <CreateTicketForm
             data={getCall}
             agentsList={agentsList}

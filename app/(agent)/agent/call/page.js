@@ -28,7 +28,7 @@ const page = async () => {
   return (
     <AgentBottomPage mt="mt-[79px]" pb="pb-[24px]" height="79">
       <div className="container">
-        <div className="flex flex-col gap-y-[25px] px-6">
+        <div className="flex flex-col gap-y-[25px]">
           {/* <TicketsWrapper tickets={tickets} user={user} /> */}
           <CallWrapper calls={calls} user={user} />
         </div>
