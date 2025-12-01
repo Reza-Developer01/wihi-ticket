@@ -39,6 +39,7 @@ const MessagesHead = async ({
             ticket_number={ticket_number}
             getTicketHistory={getTicketHistory}
             status={status}
+            user={user}
           />
         </div>
 

@@ -24,6 +24,7 @@ const ChangeStatusButton = ({
   ticket_number,
   getTicketHistory,
   status,
+  user,
 }) => {
   console.log({ ticket_number, getTicketHistory, status });
 
@@ -74,6 +75,16 @@ const ChangeStatusButton = ({
     }
   };
 
+  const hasChangeTicketStatus = user.permissions.some(
+    (p) => p.slug === "change_ticket_status"
+  );
+
+  const hasCloseTicket = user.permissions.some(
+    (p) => p.slug === "close_ticket"
+  );
+
+  console.log("hasCloseTicket : ", hasCloseTicket);
+
   return (
     <>
       <button
@@ -104,15 +115,31 @@ const ChangeStatusButton = ({
             open ? "opacity-100 visible" : "opacity-0 invisible"
           } absolute top-[calc(100%+4px)] right-0 left-0 flex flex-col gap-y-3 py-3 w-full bg-white border border-[#EDF1F3] rounded-[7px] transition-all`}
         >
-          {[...Object.keys(statusMap), "مشاهده تغییرات"].map((item) => (
-            <span
-              key={item}
-              onClick={() => handleSelect(item)}
-              className="cursor-pointer hover:bg-gray-100 text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] px-2 py-1 rounded-[5px] transition"
-            >
-              {item}
-            </span>
-          ))}
+          {[...Object.keys(statusMap), "مشاهده تغییرات"]
+            .filter((item) => {
+              if (
+                !hasChangeTicketStatus &&
+                (item === "در دست بررسی" || item === "منتظر پاسخ")
+              ) {
+                return false;
+              }
+
+              // اگه مجوز بستن درخواست نداریم، گزینه "بسته شده" رو حذف کن
+              if (!hasCloseTicket && item === "بسته شده") {
+                return false;
+              }
+
+              return true;
+            })
+            .map((item) => (
+              <span
+                key={item}
+                onClick={() => handleSelect(item)}
+                className="cursor-pointer hover:bg-gray-100 text-[#404040] font-medium text-[10px]/3.5 tracking-[-0.12px] px-2 py-1 rounded-[5px] transition"
+              >
+                {item}
+              </span>
+            ))}
         </div>
 
         {showHistory && (
