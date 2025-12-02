@@ -60,7 +60,7 @@ const RequestCreateForm = ({ categories, service }) => {
 
       <TextArea
         height="220px"
-        placeholder="شرح درخاست را وارد کنید"
+        placeholder="شرح درخواست را وارد کنید"
         name="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
