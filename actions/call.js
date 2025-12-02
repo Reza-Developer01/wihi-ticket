@@ -99,40 +99,42 @@ const changeStatus = async (state, formData) => {
   const call_request_number = formData.get("call_request_number");
   const status = formData.get("status");
 
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("access_token")?.value;
+  const token = cookies().get("access_token")?.value;
 
   console.log({ comment, call_request_number, status });
 
-  // if (!comment) {
-  //   return {
-  //     status: false,
-  //     message: "پر کردن تمام موارد الزامی است.",
-  //   };
-  // }
+  const body = { status };
+  if (comment) {
+    body.comment = comment;
+  }
 
-  const data = await postFetch(
-    `callrequests/${call_request_number}/change_status/`,
-    {
-      comment,
-      call_request_number,
-      status,
-    },
-    {
-      Authorization: token ? `Bearer ${token}` : undefined,
+  try {
+    const data = await postFetch(
+      `callrequests/${call_request_number}/change_status/`,
+      body,
+      {
+        Authorization: token ? `Bearer ${token}` : undefined,
+      }
+    );
+
+    console.log(data);
+
+    if (data.detail) {
+      return {
+        status: true,
+        message: data.detail,
+      };
+    } else {
+      return {
+        status: false,
+        message: data.detail ?? "خطا در تغییر وضعیت",
+      };
     }
-  );
-
-  console.log(data);
-  if (data.detail) {
-    return {
-      status: true,
-      message: data.detail,
-    };
-  } else {
+  } catch (error) {
+    console.error("Error in changeStatus:", error);
     return {
       status: false,
-      message: data.detail,
+      message: "ارسال درخواست با خطا مواجه شد.",
     };
   }
 };
