@@ -31,7 +31,7 @@ const page = async () => {
 
       <Plans currentPlan={user?.plan?.name} />
 
-      <BottomSection pb="36px">
+      <BottomSection pb="36px" height="476">
         <div className="container">
           <Selectors />
 

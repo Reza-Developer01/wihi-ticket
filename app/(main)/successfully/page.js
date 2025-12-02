@@ -18,7 +18,7 @@ const page = async () => {
     <>
       <Header showBackButton={true} />
 
-      <BottomSection pb="63px">
+      <BottomSection pb="63px" height="191">
         <div className="container">
           <div className="flex flex-col gap-y-6">
             <Image src={successfully} alt="successfully" className="mx-auto" />

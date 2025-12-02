@@ -27,7 +27,7 @@ const page = async () => {
 
       <InformationSection getInfo={getInfo.limited_reports} />
 
-      <AgentBottomPage pb="pb-9">
+      <AgentBottomPage pb="pb-9" height="415">
         <PagesLinks user={user} />
 
         <AgentFooter />

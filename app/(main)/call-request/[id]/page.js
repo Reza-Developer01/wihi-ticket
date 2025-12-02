@@ -36,7 +36,7 @@ const page = async ({ params }) => {
     <>
       <Header showBackButton={true} mb="mb-0" />
 
-      <BottomSection pb="41px">
+      <BottomSection pb="41px" height="159">
         <div className="container">
           <CallDetail
             call={getCall}

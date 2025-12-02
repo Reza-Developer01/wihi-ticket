@@ -29,7 +29,7 @@ const page = async () => {
         showBackButton={true}
       />
 
-      <BottomSection pb="49px">
+      <BottomSection pb="49px" height="249">
         <div className="container">
           <RequestCreateForm categories={categories} service={service} />
         </div>

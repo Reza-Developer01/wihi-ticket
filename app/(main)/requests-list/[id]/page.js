@@ -23,7 +23,7 @@ const page = async ({ params }) => {
     <>
       <Header showBackButton={true} />
 
-      <BottomSection pb="49px">
+      <BottomSection pb="49px" height="191">
         <div className="container">
           <div className="flex flex-col gap-y-[15px]">
             <Messages

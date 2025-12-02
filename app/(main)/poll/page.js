@@ -15,7 +15,7 @@ const page = () => {
         showBackButton={true}
       />
 
-      <BottomSection pb="55px">
+      <BottomSection pb="55px" height="249">
         <div className="container">
           <PollForm />
         </div>
