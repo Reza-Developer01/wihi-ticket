@@ -25,12 +25,17 @@ const setAuthCookies = (tokens) => {
     ? refreshPayload.exp - now
     : 7 * 24 * 3600;
 
+  // بررسی اینکه سرور HTTPS واقعی دارد یا نه
+  const isSecure =
+    process.env.NODE_ENV === "production" &&
+    (process.env.USE_HTTPS === "true" ||
+      headers().get("x-forwarded-proto") === "https");
+
   const cookieOptions = {
     httpOnly: true,
     path: "/",
-    maxAge: 3600,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isSecure,
+    sameSite: isSecure ? "none" : "lax",
   };
 
   // Access Token
@@ -45,10 +50,11 @@ const setAuthCookies = (tokens) => {
     maxAge: refreshMaxAge,
   });
 
+  // Role
   cookieStore.set("role", tokens.user?.role || "", {
     path: "/",
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isSecure,
+    sameSite: isSecure ? "none" : "lax",
     maxAge: 3600,
   });
 };
@@ -89,10 +95,16 @@ const checkOtp = async (state, formData) => {
 
   setAuthCookies(data.tokens);
 
+  // استفاده از همان منطق isSecure برای role
+  const isSecure =
+    process.env.NODE_ENV === "production" &&
+    (process.env.USE_HTTPS === "true" ||
+      headers().get("x-forwarded-proto") === "https");
+
   cookies().set("role", data.user.role, {
     path: "/",
-    secure: true,
-    sameSite: "lax",
+    secure: isSecure,
+    sameSite: isSecure ? "none" : "lax",
     maxAge: 3600,
   });
 
