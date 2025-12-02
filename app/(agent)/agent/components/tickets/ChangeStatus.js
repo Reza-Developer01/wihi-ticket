@@ -42,13 +42,14 @@ const ChangeStatus = ({
 
   const permissions = user?.permissions || [];
 
-  const hasCloseCall = permissions.some((p) => p.slug === "close_call");
-  const hasCallStatus = permissions.some(
-    (p) => p.slug === "change_call_status"
-  );
-  const hasCanAssign = permissions.some(
-    (p) => p.slug === "can_assign_callrequests"
-  );
+  const hasCloseCall =
+    user.role === "admin" || permissions.some((p) => p.slug === "close_call");
+  const hasCallStatus =
+    user.role === "admin" ||
+    permissions.some((p) => p.slug === "change_call_status");
+  const hasCanAssign =
+    user.role === "admin" ||
+    permissions.some((p) => p.slug === "can_assign_callrequests");
 
   const visibleStatusOptions = statusOptions.filter((option) => {
     if (option.value === "cancelled") return hasCloseCall;
