@@ -239,8 +239,6 @@ const ChangeStatus = ({
                         onClick={() => {
                           setSelectedAgent(agent);
                           setIsAgentOpen(false);
-                          setIsGuidedModalOpen(false);
-                          setIsGuidedReasonModalOpen(true);
                         }}
                         className={`cursor-pointer hover:text-black pb-3 ${
                           selectedAgent?.id === agent.id
@@ -254,6 +252,31 @@ const ChangeStatus = ({
                   </ul>
                 </div>
               )}
+            </div>
+            <div className="flex flex-col gap-y-6">
+              <button
+                type="button"
+                onClick={() => {
+                  if (!selectedAgent)
+                    return toast.error("لطفا یک کارشناس انتخاب کنید");
+                  setIsGuidedModalOpen(false);
+                  setIsGuidedReasonModalOpen(true);
+                }}
+                className="flex items-center justify-center w-full h-12 mx-auto mt-6 leading-6 text-white bg-[#20CFCF] rounded-[10px] tracking-[-0.12px]"
+              >
+                تایید
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setIsGuidedModalOpen(false);
+                  setSelectedAgent(null);
+                }}
+                className="flex items-center justify-center w-full text-xs/[16.8px] text-[#6C7278] tracking-[-0.12px]"
+              >
+                منصرف شدم
+              </button>
             </div>
           </form>
         </Modal>
