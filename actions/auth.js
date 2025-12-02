@@ -25,22 +25,31 @@ const setAuthCookies = (tokens) => {
     ? refreshPayload.exp - now
     : 7 * 24 * 3600;
 
+  const cookieOptions = {
+    httpOnly: true,
+    path: "/",
+    maxAge: 3600,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  };
+
   // Access Token
   cookieStore.set("access_token", tokens.access, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
+    ...cookieOptions,
     maxAge: accessMaxAge,
   });
 
   // Refresh Token
   cookieStore.set("refresh_token", tokens.refresh, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
+    ...cookieOptions,
     maxAge: refreshMaxAge,
+  });
+
+  cookieStore.set("role", tokens.user?.role || "", {
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 3600,
   });
 };
 
