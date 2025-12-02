@@ -1,8 +1,8 @@
 import Image from "next/image";
-import changeStatus from "@/public/images/svgs/change-status.svg"
+import changeStatus from "@/public/images/svgs/change-status.svg";
 import Link from "next/link";
 
-const SuccessfullyStatus = ({ ticketNumber }) => {
+const SuccessfullyStatus = ({ ticketNumber, status }) => {
   return (
     <div className="flex flex-col gap-y-6">
       <Image src={changeStatus} alt="successfully agent" />
@@ -10,7 +10,7 @@ const SuccessfullyStatus = ({ ticketNumber }) => {
       <div className="flex items-center justify-center w-full h-[150px] text-[#0D0D1B] text-center font-bold text-lg/[27px] tracking-[-0.12px]">
         <p>
           تیکت <span className="text-[#2DD2D2]">“ {ticketNumber} ”</span> با
-          موفقیت تغییر وضعیت به منتظر پاسخ کاربر  قرار گرفت
+          موفقیت تغییر وضعیت به {status} قرار گرفت
         </p>
       </div>
 

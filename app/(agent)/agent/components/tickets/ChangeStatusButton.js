@@ -44,10 +44,19 @@ const ChangeStatusButton = ({
       return;
     }
 
-    if (value === "منتظر پاسخ") {
-      router.push(`change-status?ticket=${ticket_number}`);
-      // return;
+    if (value === "منتظر پاسخ" || value === "در دست بررسی") {
+      router.push(`change-status?ticket=${ticket_number}&status=${value}`);
     }
+
+    // if (value === "منتظر پاسخ") {
+    //   router.push(`change-status?ticket=${ticket_number}`);
+    //   // return;
+    // }
+
+    // if (value === "در دست بررسی") {
+    //   router.push(`change-status?ticket=${ticket_number}`);
+    //   // return;
+    // }
 
     // اگر کاربر از منوی اصلی روی "بسته شده" زد → فقط مدال را باز کن
     if (value === "بسته شده" && !force) {
