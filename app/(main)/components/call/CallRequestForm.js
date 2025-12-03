@@ -20,6 +20,10 @@ const CallRequestForm = ({ categories, services, phones }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [serviceSelected, setServiceSelected] = useState(false);
 
+  const [extensionPhone, setExtensionPhone] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   // const [filteredServices, setFilteredServices] = useState([]);
   // const [filteredContacts, setFilteredContacts] = useState([]);
 
@@ -92,6 +96,8 @@ const CallRequestForm = ({ categories, services, phones }) => {
           type="text"
           name="extension_phone_number_input"
           placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
+          value={extensionPhone}
+          onChange={(e) => setExtensionPhone(e.target.value)}
         />
       )}
 
@@ -99,12 +105,16 @@ const CallRequestForm = ({ categories, services, phones }) => {
         type="text"
         name="title"
         placeholder="عنوان درخواست را وارد کنید"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
 
       <TextArea
         height="220px"
         placeholder="شرح در درخواست را وارد کنید"
         name="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
 
       <div
