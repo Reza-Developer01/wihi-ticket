@@ -67,13 +67,21 @@ const login = async (state, formData) => {
     return { status: "error", message: "پر کردن تمام موارد اجباری است." };
   }
 
-  const data = await postFetch("users/login/", { username, password });
-
-  if (data.non_field_errors) {
-    return { status: "error", message: data.non_field_errors };
+  let data;
+  try {
+    data = await postFetch("users/login/", { username, password });
+  } catch (err) {
+    return {
+      status: "error",
+      message: err?.response?.non_field_errors?.[0] || "کاربری با این مشخصات یافت نشد",
+    };
   }
 
-  return data;
+  if (data.non_field_errors) {
+    return { status: "error", message: data.non_field_errors[0] };
+  }
+
+  return { status: "success", ...data };
 };
 
 const checkOtp = async (state, formData) => {
