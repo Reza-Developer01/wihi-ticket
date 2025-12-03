@@ -111,7 +111,7 @@ const CallRequestForm = ({ categories, services, phones }) => {
 
       <TextArea
         height="220px"
-        placeholder="شرح در درخواست را وارد کنید"
+        placeholder="شرح درخواست را وارد کنید"
         name="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}

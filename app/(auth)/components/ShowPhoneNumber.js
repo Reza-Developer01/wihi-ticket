@@ -6,7 +6,8 @@ const ShowPhoneNumber = () => {
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
-    const storedPhone = sessionStorage.getItem("phone");
+    const storedPhone = sessionStorage.getItem("username");
+    console.log(storedPhone);
     if (storedPhone) setPhone(storedPhone);
   }, []);
 
