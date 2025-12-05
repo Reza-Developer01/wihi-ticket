@@ -28,7 +28,7 @@ const AgentsList = ({ data }) => {
           {/* body */}
           <div className="flex flex-col gap-y-px mt-2">
             <Link
-              href={`/requests-list/${item.id}`}
+              href={`agents-list/${item.id}`}
               className="font-medium text-xs/[19.6px] tracking-[-0.12px] text-[#8C8C8C]"
             >
               {item.full_name}
