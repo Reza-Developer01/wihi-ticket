@@ -9,7 +9,8 @@ const createAgent = async (state, formData) => {
   const register_date = formData.get("register_date");
   const email = formData.get("email");
   let phone = formData.get("phone");
-  const category_agent = formData.get("category_agent");
+  let categories = formData.get("category_agent");
+  categories = categories ? JSON.parse(categories).map((c) => c.id) : [];
   const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
@@ -31,7 +32,7 @@ const createAgent = async (state, formData) => {
     !register_date ||
     !email ||
     !phone ||
-    !category_agent ||
+    !categories ||
     !username ||
     !password
   ) {
@@ -56,7 +57,7 @@ const createAgent = async (state, formData) => {
       register_date,
       email,
       phone,
-      category_agent,
+      categories,
       username,
       password,
       permissions,

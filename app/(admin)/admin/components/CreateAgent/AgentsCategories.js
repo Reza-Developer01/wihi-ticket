@@ -10,8 +10,8 @@ import { useRouter } from "next/navigation";
 const AgentsCategories = ({ agentsCategory }) => {
   const router = useRouter();
 
-  const [isOpen, setIsOpen] = useState(false); // dropdown
-  const [isModalOpen, setIsModalOpen] = useState(false); // modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [stateCategoryAgent, formActionCategoryAgent] = useActionState(
     createCategoryAgent,
     {}
@@ -57,24 +57,18 @@ const AgentsCategories = ({ agentsCategory }) => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
     if (!isModalOpen) return;
-
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         setIsModalOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isModalOpen]);
 
   const toggleCategory = (item) => {
@@ -97,7 +91,6 @@ const AgentsCategories = ({ agentsCategory }) => {
               ? selectedCategories.map((c) => c.name).join(" ، ")
               : "انتخاب دسته بندی کارشناس"}
           </p>
-
           <button
             type="button"
             className="flex items-center justify-center w-[62px] h-full border-r border-r-[#EDF1F3]"
@@ -119,7 +112,7 @@ const AgentsCategories = ({ agentsCategory }) => {
                 agentsCategory.map((item) => (
                   <li
                     key={item.id}
-                    className={`cursor-pointer flex items-center justify-between pb-3 ${
+                    className={`cursor-pointer flex items-center justify-center pb-3 ${
                       selectedCategories.some((c) => c.id === item.id)
                         ? "text-black font-semibold"
                         : ""
@@ -127,7 +120,6 @@ const AgentsCategories = ({ agentsCategory }) => {
                     onClick={() => toggleCategory(item)}
                   >
                     {item.name}
-
                     {selectedCategories.some((c) => c.id === item.id) && (
                       <svg className="w-4 h-4 text-green-500">
                         <use href="#check" />
@@ -152,6 +144,7 @@ const AgentsCategories = ({ agentsCategory }) => {
           تعریف دستــه بندی جدید
         </button>
 
+        {/* ✅ این hidden input برای فرم اصلی */}
         <input
           type="hidden"
           name="category_agent"
@@ -166,6 +159,7 @@ const AgentsCategories = ({ agentsCategory }) => {
               تعریف دستــه بندی کارشناس
             </h4>
 
+            {/* ایجاد دسته‌بندی جدید */}
             <div
               className="flex items-center w-full h-[46px] border border-[#EDF1F3] rounded-[10px]"
               style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
@@ -176,17 +170,14 @@ const AgentsCategories = ({ agentsCategory }) => {
                 placeholder="عنوان دسته بندی"
                 className="text-[#8C8C8C] pr-3.5 pl-2.5 outline-none text-xs/[16.8px] font-medium grow"
               />
-
               <button
                 type="button"
                 onClick={() => {
                   const fd = new FormData();
                   fd.append("name", inputRef.current.value);
-
                   startTransition(() => {
                     formActionCategoryAgent(fd);
                   });
-
                   setIsModalOpen(false);
                 }}
                 className="flex items-center justify-center w-[62px] h-full border-r border-r-[#EDF1F3] text-xs"
@@ -208,25 +199,32 @@ const AgentsCategories = ({ agentsCategory }) => {
               </button>
             </div>
 
+            {/* فقط امکان حذف دسته‌بندی‌ها */}
             <ul className="flex flex-col gap-y-2.5 mt-4">
               {agentsCategory?.length > 0 ? (
                 agentsCategory.map((item) => (
                   <li
                     key={item.id}
-                    className={`cursor-pointer flex items-center justify-between pb-3 ${
-                      selectedCategories.some((c) => c.id === item.id)
-                        ? "text-black font-semibold"
-                        : ""
-                    }`}
-                    onClick={() => toggleCategory(item)}
+                    className="flex items-center justify-between pb-3"
                   >
-                    {item.name}
+                    <span className="text-[#8C8C8C] font-medium">
+                      {item.name}
+                    </span>
 
-                    {selectedCategories.some((c) => c.id === item.id) && (
-                      <svg className="w-4 h-4 text-green-500">
-                        <use href="#check" />
+                    {/* دکمه حذف */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const fd = new FormData();
+                        fd.append("id", item.id);
+                        startTransition(() => deleteCategoryAction(fd));
+                      }}
+                      className="text-red-500 text-xs"
+                    >
+                      <svg className="w-5 h-5">
+                        <use href="#delete" />
                       </svg>
-                    )}
+                    </button>
                   </li>
                 ))
               ) : (
