@@ -12,7 +12,6 @@ const AgentsCategories = ({ agentsCategory }) => {
 
   const [isOpen, setIsOpen] = useState(false); // dropdown
   const [isModalOpen, setIsModalOpen] = useState(false); // modal
-  const [selected, setSelected] = useState(null);
   const [stateCategoryAgent, formActionCategoryAgent] = useActionState(
     createCategoryAgent,
     {}
@@ -25,6 +24,8 @@ const AgentsCategories = ({ agentsCategory }) => {
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const modalRef = useRef(null);
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
     if (!stateCategoryAgent || Object.keys(stateCategoryAgent).length === 0)
@@ -61,7 +62,7 @@ const AgentsCategories = ({ agentsCategory }) => {
   }, []);
 
   useEffect(() => {
-    if (!isModalOpen) return; // فقط وقتی مدال بازه گوش بده
+    if (!isModalOpen) return;
 
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -76,16 +77,25 @@ const AgentsCategories = ({ agentsCategory }) => {
     };
   }, [isModalOpen]);
 
+  const toggleCategory = (item) => {
+    setSelectedCategories((prev) =>
+      prev.some((c) => c.id === item.id)
+        ? prev.filter((c) => c.id !== item.id)
+        : [...prev, item]
+    );
+  };
+
   return (
     <>
       <div className="relative" ref={dropdownRef}>
-        {/* Select box */}
         <div
           className="input-shadow flex items-center justify-between w-full h-[46px] border border-[#EDF1F3] rounded-[10px] overflow-hidden cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           <p className="pr-12 font-medium text-xs/[16.8px] tracking-[-0.12px] text-[#8C8C8C]">
-            {selected ? selected.name : "انتخاب دسته بندی کارشناس"}
+            {selectedCategories.length > 0
+              ? selectedCategories.map((c) => c.name).join(" ، ")
+              : "انتخاب دسته بندی کارشناس"}
           </p>
 
           <button
@@ -102,7 +112,6 @@ const AgentsCategories = ({ agentsCategory }) => {
           </button>
         </div>
 
-        {/* Dropdown */}
         {isOpen && (
           <div className="custom-shadow absolute top-[50px] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
             <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
@@ -110,15 +119,20 @@ const AgentsCategories = ({ agentsCategory }) => {
                 agentsCategory.map((item) => (
                   <li
                     key={item.id}
-                    className={`cursor-pointer hover:text-black pb-3 ${
-                      selected?.id === item.id ? "text-black font-semibold" : ""
+                    className={`cursor-pointer flex items-center justify-between pb-3 ${
+                      selectedCategories.some((c) => c.id === item.id)
+                        ? "text-black font-semibold"
+                        : ""
                     }`}
-                    onClick={() => {
-                      setSelected(item);
-                      setIsOpen(false);
-                    }}
+                    onClick={() => toggleCategory(item)}
                   >
                     {item.name}
+
+                    {selectedCategories.some((c) => c.id === item.id) && (
+                      <svg className="w-4 h-4 text-green-500">
+                        <use href="#check" />
+                      </svg>
+                    )}
                   </li>
                 ))
               ) : (
@@ -130,7 +144,6 @@ const AgentsCategories = ({ agentsCategory }) => {
           </div>
         )}
 
-        {/* Button: New Category */}
         <button
           type="button"
           className="flex items-center justify-center w-full text-[#8C8C8C] font-medium text-xs/[16.8px] mt-4"
@@ -139,10 +152,13 @@ const AgentsCategories = ({ agentsCategory }) => {
           تعریف دستــه بندی جدید
         </button>
 
-        <input type="hidden" name="category_agent" value={selected?.id || ""} />
+        <input
+          type="hidden"
+          name="category_agent"
+          value={JSON.stringify(selectedCategories)}
+        />
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <Modal>
           <div ref={modalRef}>
@@ -181,7 +197,7 @@ const AgentsCategories = ({ agentsCategory }) => {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  class="size-6"
+                  className="size-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -197,29 +213,20 @@ const AgentsCategories = ({ agentsCategory }) => {
                 agentsCategory.map((item) => (
                   <li
                     key={item.id}
-                    className="flex items-center justify-between"
+                    className={`cursor-pointer flex items-center justify-between pb-3 ${
+                      selectedCategories.some((c) => c.id === item.id)
+                        ? "text-black font-semibold"
+                        : ""
+                    }`}
+                    onClick={() => toggleCategory(item)}
                   >
-                    <span className="text-[#8C8C8C] text-sm/[19.6px]">
-                      {item.name}
-                    </span>
+                    {item.name}
 
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-
-                        const fd = new FormData();
-                        fd.append("id", item.id);
-
-                        startTransition(() => {
-                          deleteCategoryAction(fd);
-                        });
-                      }}
-                    >
-                      <svg className="w-5 h-5 text-red-500">
-                        <use href="#delete" />
+                    {selectedCategories.some((c) => c.id === item.id) && (
+                      <svg className="w-4 h-4 text-green-500">
+                        <use href="#check" />
                       </svg>
-                    </button>
+                    )}
                   </li>
                 ))
               ) : (
