@@ -32,7 +32,7 @@ const AgentsList = ({ data }) => {
               href={`/requests-list/${2}`}
               className="font-medium text-xs/[19.6px] tracking-[-0.12px] text-[#8C8C8C]"
             >
-              زهــــرا امینـــــــــــــــــــــــــــــــی
+              {item.full_name}
             </Link>
             <p className="w-[213px] line-clamp-1 font-medium text-[8px]/[11.2px] tracking-[-0.12px] text-[#B9BBC9]">
               ادمین بخش های{" "}
@@ -57,7 +57,7 @@ const AgentsList = ({ data }) => {
         </div>
       ))}
 
-      <Button href="#" text="افزودن کارشناس" />
+      <Button href="create-agent" text="افزودن کارشناس" />
     </div>
   );
 };

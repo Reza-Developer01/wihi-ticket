@@ -12,7 +12,7 @@ const page = async () => {
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
-  const getAgentsList = await getFetch("users/agents/", {
+  const getAgentsList = await getFetch("users/agents-list/", {
     Authorization: `Bearer ${token}`,
   });
 

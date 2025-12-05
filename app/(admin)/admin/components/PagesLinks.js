@@ -24,7 +24,7 @@ const PagesLinks = ({ data }) => {
             title="افزودن کارشناس"
             hasLabel={true}
             labelTitle={`${data.number_agent} | کارشناس`}
-            href="/admin/create-agent"
+            href="/admin/agents-list"
           />
           <PagesLink
             title="افزودن کاربــــر"

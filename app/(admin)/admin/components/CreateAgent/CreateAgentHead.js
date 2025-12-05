@@ -11,7 +11,7 @@ const CreateAgentHead = () => {
       </div>
 
       {/* arrow */}
-      <Link href="/">
+      <Link href="agents-list">
         <svg className="w-6 h-6 text-[#1A1C1E]">
           <use href="#arrow-narrow-left" />
         </svg>
