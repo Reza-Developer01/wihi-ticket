@@ -99,3 +99,12 @@ body {
     background-color: #20CFCF;
     border: none;
 }
+
+.custom__jalali+input {
+    position: absolute;
+    width: 100%;
+    height: 46px;
+    top: -20px;
+    outline: none;
+    opacity: 0;
+}

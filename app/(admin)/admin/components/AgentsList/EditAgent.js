@@ -9,7 +9,7 @@ import SubTitle from "../SubTitle";
 
 import { editAgent } from "@/actions/agent";
 import toast from "react-hot-toast";
-import { toJalaali } from "jalaali-js";
+import { toGregorian, toJalaali } from "jalaali-js";
 import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import AgentsCategories from "../CreateAgent/AgentsCategories";
@@ -19,10 +19,11 @@ const EditAgent = ({ agentsCategory, agent }) => {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    register_date: "",
+    register_date: null,
     email: "",
     phone: "",
     username: "",
@@ -31,6 +32,24 @@ const EditAgent = ({ agentsCategory, agent }) => {
   });
 
   const [permissions, setPermissions] = useState([]);
+
+  useEffect(() => {
+    if (agent) {
+      const [jy, jm, jd] = agent.register_date.split("-").map(Number);
+      const { gy, gm, gd } = toGregorian(jy, jm, jd);
+      setFormData({
+        first_name: agent.first_name || "",
+        last_name: agent.last_name || "",
+        register_date: new Date(gy, gm - 1, gd),
+        email: agent.email || "",
+        phone: agent.phone || "",
+        username: agent.username || "",
+        password: "",
+        rePassword: "",
+      });
+    }
+  }, [agent]);
+
   const handlePermissionChange = (key, checked) => {
     setPermissions((prev) =>
       checked ? [...prev, key] : prev.filter((item) => item !== key)
@@ -53,25 +72,18 @@ const EditAgent = ({ agentsCategory, agent }) => {
     } else toast.error(state?.message);
   }, [state]);
 
-  useEffect(() => {
-    if (agent) {
-      setFormData({
-        first_name: agent.first_name || "",
-        last_name: agent.last_name || "",
-        register_date: agent.register_date || "",
-        email: agent.email || "",
-        phone: agent.phone || "",
-        username: agent.username || "",
-        password: "",
-        rePassword: "",
-      });
-    }
-  }, [agent]);
+  const formattedJalaali = formData.register_date
+    ? `${toJalaali(formData.register_date).jy}-${String(
+        toJalaali(formData.register_date).jm
+      ).padStart(2, "0")}-${String(
+        toJalaali(formData.register_date).jd
+      ).padStart(2, "0")}`
+    : "";
 
   return (
     <form action={formAction}>
       <div className="flex flex-col gap-y-4">
-        <input type="hidden" name="id" value={agent.id} />
+        <input type="hidden" name="id" value={agent?.id || ""} />
 
         {/* نام و نام خانوادگی */}
         <div className="flex items-center gap-x-4">
@@ -90,36 +102,36 @@ const EditAgent = ({ agentsCategory, agent }) => {
           />
         </div>
 
-        {/* تاریخ */}
+        {/* DatePicker */}
         <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
 
-          <div
-            className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]"
-            style={{ textAlignLast: "left" }}
-          >
+          <div className="relative w-full">
+            {formData.register_date && (
+              <span className="custom__jalali absolute left-3 top-1/2 -translate-y-1/2 text-[#1A1C1E] pointer-events-none font-medium text-sm">
+                {formattedJalaali}
+              </span>
+            )}
+
             <DatePicker
               value={formData.register_date}
-              onChange={(e) => {
-                const d = new Date(e.value);
-                const { jy, jm, jd } = toJalaali(d);
-
-                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
-                  jd
-                ).padStart(2, "0")}`;
-
-                setFormData((prev) => ({ ...prev, register_date: jDate }));
-              }}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  register_date: new Date(e.value),
+                }))
+              }
               round="x2"
-              defaultValue={new Date()}
+              className="w-full"
             />
 
+            {/* input مخفی برای submit */}
             <input
               type="hidden"
               name="register_date"
-              value={formData.register_date}
+              value={formattedJalaali}
             />
           </div>
         </div>
@@ -151,8 +163,8 @@ const EditAgent = ({ agentsCategory, agent }) => {
         />
 
         <AgentsCategories
-          agentsCategory={agent} // اطلاعات کاربر
-          allCategories={agentsCategory} // آرایه کامل دسته‌بندی‌ها
+          agentsCategory={agent}
+          allCategories={agentsCategory}
         />
 
         <div className="w-full *:mb-0 *:mt-5">
@@ -173,7 +185,7 @@ const EditAgent = ({ agentsCategory, agent }) => {
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
           <svg
             className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowPass((value) => !value)}
+            onClick={() => setShowPass((v) => !v)}
           >
             <use href="#eye-off" />
           </svg>
@@ -193,7 +205,7 @@ const EditAgent = ({ agentsCategory, agent }) => {
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
           <svg
             className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowRePass((value) => !value)}
+            onClick={() => setShowRePass((v) => !v)}
           >
             <use href="#eye-off" />
           </svg>
