@@ -1,10 +1,16 @@
-const AuthorizationCheckboxItem = ({ title, permKey, onChangePermission }) => {
+const AuthorizationCheckboxItem = ({
+  title,
+  permKey,
+  onChangePermission,
+  checked,
+}) => {
   return (
     <li>
       <label className="checkbox flex items-center gap-3.5 cursor-pointer">
         <input
           type="checkbox"
           className="checkbox__input"
+          checked={checked}
           onChange={(e) => onChangePermission(permKey, e.target.checked)}
         />
         <span className="checkbox__marker">

@@ -1,8 +1,7 @@
 import AuthorizationCheckboxItem from "./AuthorizationCheckboxItem";
 
-const AuthorizationCheckbox = ({ onChangePermission }) => {
-  const permissions = [
-    // { key: "send_otp", title: "ارسال کد یکبار مصرف" },
+const AuthorizationCheckbox = ({ onChangePermission, permissions }) => {
+  const allPermissions = [
     { key: "view_all_tickets", title: "مشاهده همه تیکت ها" },
     { key: "view_all_calls", title: "مشاهده همه درخواست تماس" },
     { key: "view_reports", title: "مشاهده گزارشات" },
@@ -16,21 +15,17 @@ const AuthorizationCheckbox = ({ onChangePermission }) => {
       key: "can_assign_callrequests",
       title: "امکان هدایت درخواست تماس به کارشناس",
     },
-    // { key: "assign_ticket_admin", title: "امکان هدایت تیکت به مدیر سیستم" },
-    // {
-    //   key: "assign_call_admin",
-    //   title: "امکان هدایت درخواست تماس به مدیر سیستم",
-    // },
   ];
 
   return (
     <ul className="flex flex-col gap-y-3.5">
-      {permissions.map((item) => (
+      {allPermissions.map((item) => (
         <AuthorizationCheckboxItem
           key={item.key}
           title={item.title}
           permKey={item.key}
           onChangePermission={onChangePermission}
+          checked={permissions.includes(item.key)}
         />
       ))}
     </ul>
