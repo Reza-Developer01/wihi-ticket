@@ -14,6 +14,7 @@ import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import AgentsCategories from "../CreateAgent/AgentsCategories";
 import AuthorizationCheckbox from "../CreateAgent/AuthorizationCheckbox";
+import OperationAdmin from "./OperationAdmin";
 
 const EditAgent = ({ agentsCategory, agent }) => {
   const router = useRouter();
@@ -237,6 +238,7 @@ const EditAgent = ({ agentsCategory, agent }) => {
           value={JSON.stringify(permissions)}
         />
 
+        <OperationAdmin />
         <SubmitButton title="ویرایش کارشناس" />
       </div>
     </form>
