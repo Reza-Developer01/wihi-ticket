@@ -7,7 +7,7 @@ import { useState, useRef, useEffect, useActionState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const AgentsCategories = ({ agentsCategory }) => {
+const AgentsCategories = ({ agentsCategory, allCategories }) => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +26,15 @@ const AgentsCategories = ({ agentsCategory }) => {
   const modalRef = useRef(null);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  useEffect(() => {
+    if (agentsCategory?.categories && allCategories?.length > 0) {
+      const preSelected = allCategories.filter((cat) =>
+        agentsCategory.categories.includes(cat.id)
+      );
+      setSelectedCategories(preSelected);
+    }
+  }, [agentsCategory, allCategories]);
 
   useEffect(() => {
     if (!stateCategoryAgent || Object.keys(stateCategoryAgent).length === 0)

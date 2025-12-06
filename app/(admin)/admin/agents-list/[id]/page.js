@@ -4,6 +4,7 @@ import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
 import SubTitle from "../../components/SubTitle";
 import CreateAgentForm from "../../components/CreateAgent/CreateAgentForm";
+import EditAgent from "../../components/AgentsList/EditAgent";
 
 export const metadata = {
   title: "جزییات کاربر",
@@ -18,6 +19,10 @@ const page = async ({ params }) => {
 
   const getAgent = await getFetch(`users/agents/${id}/`, headers);
   const getCategory = await getFetch(`users/agents-categories/`, headers);
+
+  const agent = { ...getAgent, id };
+
+  console.log("AGENT : ", agent);
 
   const { first_name, last_name, categories } = getAgent;
   const fullName = first_name + " " + last_name;
@@ -38,7 +43,7 @@ const page = async ({ params }) => {
         <div className="container">
           <SubTitle title="اطلاعات هویتــی کارشناس" w="w-[90px]" />
 
-          <CreateAgentForm agentsCategory={getCategory} />
+          <EditAgent agentsCategory={getCategory} agent={agent} />
         </div>
       </BottomSection>
     </>

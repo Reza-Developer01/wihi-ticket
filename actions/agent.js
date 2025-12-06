@@ -77,6 +77,77 @@ const createAgent = async (state, formData) => {
   }
 };
 
+const editAgent = async (state, formData) => {
+  const id = formData.get("id");
+  const first_name = formData.get("first_name");
+  const last_name = formData.get("last_name");
+  const register_date = formData.get("register_date");
+  const email = formData.get("email");
+  let phone = formData.get("phone");
+  let categories = formData.get("category_agent");
+  categories = categories ? JSON.parse(categories).map((c) => c.id) : [];
+  const username = formData.get("username");
+  const password = formData.get("password");
+  const rePassword = formData.get("rePassword");
+  const permissions = JSON.parse(formData.get("permissions") || "[]");
+
+  phone = phone.replace(/\D/g, "");
+  if (phone.startsWith("98")) phone = "0" + phone.slice(2);
+
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  if (
+    !first_name ||
+    !last_name ||
+    !register_date ||
+    !email ||
+    !phone ||
+    !categories ||
+    !username
+  ) {
+    return { status: false, message: "پر کردن تمام موارد الزامی است." };
+  }
+
+  if (password && password !== rePassword) {
+    return { status: false, message: "پسورد و تکرار پسورد باهم مطابقت ندارد." };
+  }
+
+  const payload = {
+    id,
+    first_name,
+    last_name,
+    register_date,
+    email,
+    phone,
+    categories,
+    username,
+    permissions,
+  };
+
+  if (password) payload.password = password;
+
+  const data = await fetch(
+    `http://preview.kft.co.com/ticket/api/users/agents/${id}/`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: token ? `Bearer ${token}` : undefined,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  ).then((res) => res.json());
+
+  console.log("DATA => ", data);
+
+  if (data) {
+    return { status: true, message: "کارشناس با موفقیت ویرایش شد." };
+  } else {
+    return { status: false, message: "ویرایش کارشناس با خطا مواجه شد." };
+  }
+};
+
 const createTicket = async (state, formData) => {
   const title = formData.get("title");
   const description = formData.get("description");
@@ -245,4 +316,5 @@ export {
   createCategoryAgent,
   deleteCategoryAgent,
   assignAgent,
+  editAgent,
 };
