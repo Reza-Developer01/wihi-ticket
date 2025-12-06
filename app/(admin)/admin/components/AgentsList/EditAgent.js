@@ -221,7 +221,7 @@ const EditAgent = ({ agentsCategory, agent }) => {
           value={JSON.stringify(permissions)}
         />
 
-        <SubmitButton title="افزودن کارشناس" />
+        <SubmitButton title="ویرایش کارشناس" />
       </div>
     </form>
   );

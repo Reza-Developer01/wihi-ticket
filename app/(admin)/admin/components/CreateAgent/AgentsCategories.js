@@ -5,10 +5,11 @@ import { createCategoryAgent, deleteCategoryAgent } from "@/actions/agent";
 import { Modal } from "@/app/(main)/components/Modal";
 import { useState, useRef, useEffect, useActionState } from "react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const AgentsCategories = ({ agentsCategory, allCategories }) => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -145,13 +146,15 @@ const AgentsCategories = ({ agentsCategory, allCategories }) => {
           </div>
         )}
 
-        <button
-          type="button"
-          className="flex items-center justify-center w-full text-[#8C8C8C] font-medium text-xs/[16.8px] mt-4"
-          onClick={() => setIsModalOpen(true)}
-        >
-          تعریف دستــه بندی جدید
-        </button>
+        {pathname === "/admin/create-agent" && (
+          <button
+            type="button"
+            className="flex items-center justify-center w-full text-[#8C8C8C] font-medium text-xs/[16.8px] mt-4"
+            onClick={() => setIsModalOpen(true)}
+          >
+            تعریف دستــه بندی جدید
+          </button>
+        )}
 
         {/* ✅ این hidden input برای فرم اصلی */}
         <input
