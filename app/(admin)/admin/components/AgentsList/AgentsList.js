@@ -18,8 +18,16 @@ const AgentsList = ({ data }) => {
             </div>
 
             {/* left side */}
-            <div className="flex items-center justify-center w-[60px] h-5 rounded-[5px] bg-[#5DFFFF33]">
-              <span className="font-semibold text-[8px]/[11.2px] tracking-[-0.12px] text-[#5DFFFF]">
+            <div
+              className={`flex items-center justify-center w-[60px] h-5 rounded-[5px] ${
+                item.is_active ? "bg-[#5DFFFF33]" : "bg-[#FF000033]"
+              }`}
+            >
+              <span
+                className={`font-semibold text-[8px]/[11.2px] tracking-[-0.12px] ${
+                  item.is_active ? "text-[#5DFFFF]" : "text-[#FF0000]"
+                }`}
+              >
                 فعال
               </span>
             </div>
