@@ -210,8 +210,8 @@ const AgentsCategories = ({ agentsCategory, allCategories }) => {
 
             {/* فقط امکان حذف دسته‌بندی‌ها */}
             <ul className="flex flex-col gap-y-2.5 mt-4">
-              {agentsCategory?.length > 0 ? (
-                agentsCategory.map((item) => (
+              {allCategories?.length > 0 ? (
+                allCategories.map((item) => (
                   <li
                     key={item.id}
                     className="flex items-center justify-between pb-3"

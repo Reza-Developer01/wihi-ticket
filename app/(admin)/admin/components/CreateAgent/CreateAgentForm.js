@@ -132,7 +132,10 @@ const CreateAgentForm = ({ agentsCategory }) => {
           style={{ direction: "ltr" }}
         />
 
-        <AgentsCategories agentsCategory={agentsCategory} />
+        <AgentsCategories
+          agentsCategory={{ categories: [] }}
+          allCategories={agentsCategory}
+        />
 
         <div className="w-full *:mb-0 *:mt-5">
           <SubTitle title="اطلاعات ورود کارشناس" w="w-[96px]" />
