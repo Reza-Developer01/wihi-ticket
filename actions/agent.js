@@ -125,6 +125,8 @@ const editAgent = async (state, formData) => {
     permissions,
   };
 
+  console.log("PAYLOAD : ", payload);
+
   if (password) payload.password = password;
 
   const data = await fetch(
