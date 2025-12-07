@@ -25,17 +25,20 @@ const MessageInput = ({
   useEffect(() => {
     if (requestStatus !== "closed") return;
 
-    const key = `ticket_${id}_redirected`;
+    const role = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("role="))
+      ?.split("=")[1];
 
-    const hasRedirected = localStorage.getItem(key);
+    if (role === "customer") {
+      const key = `ticket_${id}_redirected`;
+      const hasRedirected = localStorage.getItem(key);
 
-    if (hasRedirected) return; // دفعه دوم نذار ریدایرکت بشه
+      if (hasRedirected) return;
 
-    // ثبت دفعه اول
-    localStorage.setItem(key, "true");
-
-    // انجام ریدایرکت
-    router.push(`/poll`);
+      localStorage.setItem(key, "true");
+      router.push("/poll/");
+    }
   }, [requestStatus, id]);
 
   useEffect(() => {
