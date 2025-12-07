@@ -14,6 +14,10 @@ const pollSystem = async (state, formData) => {
     return { status: false, message: "پر کردن امتیاز اجباری است." };
   }
 
+  if (!comment || comment === "") {
+    return { status: false, message: "پر کردن کامنت اجباری است." };
+  }
+
   const data = await postFetch(
     "ticket-ratings/",
     { rating, comment, ticket: ticket_id },

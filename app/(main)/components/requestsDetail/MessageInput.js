@@ -4,6 +4,7 @@ import { sendMessage } from "@/actions/message";
 import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Modal } from "../Modal";
+import { useRouter } from "next/navigation";
 
 const MessageInput = ({
   requestStatus,
@@ -18,6 +19,24 @@ const MessageInput = ({
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [hasFile, setHasFile] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (requestStatus !== "closed") return;
+
+    const key = `ticket_${id}_redirected`;
+
+    const hasRedirected = localStorage.getItem(key);
+
+    if (hasRedirected) return; // دفعه دوم نذار ریدایرکت بشه
+
+    // ثبت دفعه اول
+    localStorage.setItem(key, "true");
+
+    // انجام ریدایرکت
+    router.push(`/poll`);
+  }, [requestStatus, id]);
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
