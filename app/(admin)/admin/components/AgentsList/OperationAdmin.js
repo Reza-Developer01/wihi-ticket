@@ -81,6 +81,12 @@ const OperationAdmin = ({ agentId }) => {
       setIsOpen(false);
       return;
     }
+
+    if (label === "گزارش عملکرد ( براساس میانگین پاسخ , تیکت و تماس و.. )") {
+      router.push(`/admin/${agentId}/reports-chart`);
+      setIsOpen(false);
+      return;
+    }
   };
 
   useEffect(() => {
