@@ -341,6 +341,45 @@ const changeAgentStatus = async (id, is_active) => {
   };
 };
 
+const getAgentChangeLogs = async (id) => {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  try {
+    const res = await fetch(
+      `http://preview.kft.co.com/ticket/api/users/agents/${id}/change-logs/`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store", // 📌 چون لاگ‌ها باید همیشه آپدیت شده باشند
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        status: false,
+        message: data?.message || "دریافت تاریخچه تغییرات با خطا مواجه شد.",
+      };
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  } catch (err) {
+    console.log("ERROR change logs:", err);
+    return {
+      status: false,
+      message: "مشکلی در ارتباط با سرور به وجود آمد.",
+    };
+  }
+};
+
 export {
   createAgent,
   createTicket,
@@ -349,4 +388,5 @@ export {
   assignAgent,
   editAgent,
   changeAgentStatus,
+  getAgentChangeLogs,
 };
