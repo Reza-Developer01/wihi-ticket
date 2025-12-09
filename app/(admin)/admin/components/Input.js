@@ -13,7 +13,7 @@ const Input = ({
       value={value}
       onChange={onChange}
       className="input-shadow w-full h-[46px] px-3.5 bg-white text-[#1A1C1E] font-medium text-sm/[19.6px] border border-[#EDF1F3] 
-        rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#1A1C1E]"
+        rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#8C8C8C]"
       {...rest}
     />
   );

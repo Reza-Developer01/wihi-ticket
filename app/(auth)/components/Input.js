@@ -7,7 +7,7 @@ const Input = ({
   placeholder,
   type,
   style,
-  placeholderColor = "#1A1C1E",
+  placeholderColor = "#8C8C8C",
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);

@@ -108,3 +108,7 @@ body {
     outline: none;
     opacity: 0;
 }
+
+.date-picker input {
+    color: #8C8C8C;
+}

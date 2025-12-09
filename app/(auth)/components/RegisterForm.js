@@ -19,7 +19,7 @@ const RegisterForm = () => {
           <svg className="absolute right-3.5 top-0 bottom-0 m-auto w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
-          <div className="date-picker w-full h-[46px] pl-3.5 pr-10 text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#1A1C1E]">
+          <div className="date-picker w-full h-[46px] pl-3.5 pr-10 text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C]">
             <DatePicker
               onChange={(e) => console.log(e)}
               round="x2"
@@ -33,7 +33,7 @@ const RegisterForm = () => {
           onChange={(phone) => setPhone(phone)}
           defaultCountry="ir"
           className="custom__input w-full h-[46px] text-sm/[19.6px] font-medium rounded-[10px] outline-none"
-          inputClassName="!h-full !pl-2.5 !bg-white !text-[#1A1C1E] placeholder:!text-[#1A1C1E] !text-left !grow !outline-none !shadow-none !ring-0 !p-0 !rounded-r-[10px] !border-[#EDF1F3]"
+          inputClassName="!h-full !pl-2.5 !bg-white !text-[#1A1C1E] placeholder:!text-[#8C8C8C] !text-left !grow !outline-none !shadow-none !ring-0 !p-0 !rounded-r-[10px] !border-[#EDF1F3]"
           countrySelectorStyleProps={{
             buttonClassName:
               "!w-[62px] !h-full !bg-transparent !rounded-l-[10px] !border-[#EDF1F3] flag__button",
@@ -42,7 +42,7 @@ const RegisterForm = () => {
           }}
           style={{ direction: "ltr" }}
         />
-        
+
         <Input
           type="password"
           placeholder="*******"
