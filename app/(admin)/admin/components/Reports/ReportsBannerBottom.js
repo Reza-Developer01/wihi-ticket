@@ -70,7 +70,11 @@ const ReportsBannerBottom = ({ data }) => {
       {bottomItems.map((item, idx) => (
         <div
           key={idx}
-          className={`flex flex-col items-center justify-center gap-y-[7px] ${item.width} h-[67px] bg-[${item.bg}] text-[${item.textColor}] rounded-[7px]`}
+          className={`flex flex-col items-center justify-center gap-y-[7px] ${item.width} h-[67px] rounded-[7px]`}
+          style={{
+            backgroundColor: item.bg,
+            color: item.textColor,
+          }}
         >
           <span className="inline-block h-[23px] font-extrabold text-2xl/[33.6px]">
             {item.value}

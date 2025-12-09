@@ -16,7 +16,7 @@ const ReportsFilter = ({ currentFilter, onFilterChange }) => {
           {items.map((item) => (
             <li
               key={item.id}
-              onClick={() => onFilterChange(item.id)}
+              // onClick={() => onFilterChange(item.id)}
               className={`flex items-center justify-center h-[25px] rounded-[7px] cursor-pointer transition-all
                 ${
                   currentFilter === item.id
