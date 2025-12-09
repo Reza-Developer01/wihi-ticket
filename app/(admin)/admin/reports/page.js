@@ -1,18 +1,16 @@
 import { getFetch } from "@/utils/fetch";
-import AdminBottomPage from "../components/AdminBottomPage";
-import ReportsBanner from "../components/Reports/ReportsBanner";
-import ReportsFilter from "../components/Reports/ReportsFilter";
 import { cookies } from "next/headers";
+import AdminBottomPage from "../components/AdminBottomPage";
+import ReportsFilter from "../components/Reports/ReportsFilter";
+import ReportsBanner from "../components/Reports/ReportsBanner";
 
-export const metadata = {
-  title: "ادمین - گزارشات",
-};
+const Page = async ({ searchParams }) => {
+  const filter = searchParams?.filter || "daily";
 
-const page = async () => {
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
-  const data = await getFetch("reports/", {
+  const data = await getFetch(`reports/?filter=${filter}`, {
     Authorization: `Bearer ${token}`,
   });
 
@@ -20,10 +18,10 @@ const page = async () => {
     <AdminBottomPage mt="mt-[79px] pb-[50px] h-[calc(100vh-79px)]">
       <section>
         <div className="container">
-          {/* filter */}
-          <ReportsFilter />
-
-          {/* information */}
+          <ReportsFilter
+            fullReports={data.full_reports}
+            currentFilter={filter}
+          />
           <ReportsBanner data={data.full_reports} />
         </div>
       </section>
@@ -31,4 +29,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Page;

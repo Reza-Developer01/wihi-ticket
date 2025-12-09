@@ -1,8 +1,22 @@
 import Image from "next/image";
-
 import ticket from "@/public/images/svgs/ticket.svg";
 
 const ReportsBannerTop = ({ data }) => {
+  const topItems = [
+    {
+      value: data.total_response_callrequests,
+      label: "تعداد کل پاسخگویی درخواست تــــــماس",
+      bg: "#9C01010D",
+      textColor: "#9C0101",
+    },
+    {
+      value: data.total_response_ticket,
+      label: "تعداد کل پاسخگویی درخواست تیکتینــگ",
+      bg: "#9C01010D",
+      textColor: "#9C0101",
+    },
+  ];
+
   return (
     <div className="reports__banner flex items-center justify-between">
       <div className="flex flex-col">
@@ -11,7 +25,6 @@ const ReportsBannerTop = ({ data }) => {
           alt="ticket"
           className="flex items-start mb-[15px]"
         />
-
         <div className="flex flex-col gap-y-[5px]">
           <span className="text-[#9C0101] text-[10px]/3.5 tracking-[-0.12px]">
             میانگیـــن پاسخگــویی
@@ -23,23 +36,19 @@ const ReportsBannerTop = ({ data }) => {
       </div>
 
       <div className="flex gap-x-[5px]">
-        <div className="flex flex-col items-center justify-center gap-y-[7px] w-[65px] h-[65px] bg-[#9C01010D] text-[#9C0101] rounded-[7px]">
-          <span className="flex h-[23px] font-extrabold text-2xl/[33.6px]">
-            {data.total_response_callrequests}
-          </span>
-          <span className="inline-block w-10 mx-auto font-medium text-[5px]/[7px] tracking-[-0.12px]">
-            تعداد کل پاسخگویی درخواست تــــــماس
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center justify-center gap-y-[7px] w-[65px] h-[65px] bg-[#9C01010D] text-[#9C0101] rounded-[7px]">
-          <span className="flex h-[23px] font-extrabold text-2xl/[33.6px]">
-            {data.total_response_ticket}
-          </span>
-          <span className="inline-block w-10 mx-auto font-medium text-[5px]/[7px] tracking-[-0.12px]">
-            تعداد کل پاسخگویی درخواست تیکتینــگ
-          </span>
-        </div>
+        {topItems.map((item, idx) => (
+          <div
+            key={idx}
+            className={`flex flex-col items-center justify-center gap-y-[7px] w-[65px] h-[65px] bg-[${item.bg}] text-[${item.textColor}] rounded-[7px]`}
+          >
+            <span className="flex h-[23px] font-extrabold text-2xl/[33.6px]">
+              {item.value}
+            </span>
+            <span className="inline-block w-10 mx-auto font-medium text-[5px]/[7px] tracking-[-0.12px]">
+              {item.label}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );
