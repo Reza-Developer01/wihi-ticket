@@ -2,26 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { getFetch } from "@/utils/fetch";
-import ReportsFilter from "../../components/Reports/ReportsFilter";
-import TicketChart from "../../components/charts-data/TicketChart";
-import CallChart from "../../components/charts-data/CallChart";
+import ReportsFilter from "./ReportsFilter";
+import ReportsBanner from "./ReportsBanner";
 
-const ReportsChartClient = ({ agentId, headers }) => {
-  const [filter, setFilter] = useState("daily");
+const ReportsPageClient = ({ initialFilter, token }) => {
+  const [filter, setFilter] = useState(initialFilter || "daily");
   const [customRange, setCustomRange] = useState({ from: null, to: null });
   const [data, setData] = useState(null);
 
   const fetchData = async (filterValue, range = {}) => {
-    let url = `reports/chart/${agentId}?filter=${filterValue}`;
-
+    let url = `reports/?filter=${filterValue}`;
     if (filterValue === "custom" && range.from && range.to) {
       const fromISO = range.from.toISOString().split("T")[0];
       const toISO = range.to.toISOString().split("T")[0];
       url += `&from=${fromISO}&to=${toISO}`;
     }
 
-    const result = await getFetch(url, headers);
-    setData(result.agents);
+    const result = await getFetch(url, {
+      Authorization: `Bearer ${token}`,
+    });
+    setData(result.full_reports);
   };
 
   useEffect(() => {
@@ -37,13 +37,9 @@ const ReportsChartClient = ({ agentId, headers }) => {
         onFilterChange={setFilter}
         onCustomDate={setCustomRange}
       />
-
-      <div className="flex flex-col gap-y-5">
-        <TicketChart ticket={data.tickets} />
-        <CallChart call={data.callrequests} />
-      </div>
+      <ReportsBanner data={data} />
     </>
   );
 };
 
-export default ReportsChartClient;
+export default ReportsPageClient;
