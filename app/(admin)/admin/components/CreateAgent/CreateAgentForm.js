@@ -195,7 +195,10 @@ const CreateAgentForm = ({ agentsCategory }) => {
           <SubTitle title="سطح دسترسی کارشناس" w="w-[96px]" />
         </div>
 
-        <AuthorizationCheckbox onChangePermission={handlePermissionChange} />
+        <AuthorizationCheckbox
+          onChangePermission={handlePermissionChange}
+          permissions={permissions}
+        />
 
         <input
           type="hidden"
