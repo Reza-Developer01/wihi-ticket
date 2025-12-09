@@ -26,9 +26,11 @@ const ReportsChartClient = ({ agentId, headers }) => {
 
   return (
     <>
-      <ReportsFilter onFilterChange={setFilter} />
-      <TicketChart ticket={data.tickets} />
-      <CallChart call={data.callrequests} />
+      <ReportsFilter currentFilter={filter} onFilterChange={setFilter} />
+      <div className="flex flex-col gap-y-5">
+        <TicketChart ticket={data.tickets} />
+        <CallChart call={data.callrequests} />
+      </div>
     </>
   );
 };

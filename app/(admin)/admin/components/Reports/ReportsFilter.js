@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-const ReportsFilter = ({ currentFilter }) => {
+const ReportsFilter = ({ currentFilter, onFilterChange }) => {
   const items = [
     { id: "daily", label: "روزانــه" },
     { id: "weekly", label: "هفتگی" },
@@ -16,6 +16,7 @@ const ReportsFilter = ({ currentFilter }) => {
           {items.map((item) => (
             <li
               key={item.id}
+              onClick={() => onFilterChange(item.id)}
               className={`flex items-center justify-center h-[25px] rounded-[7px] cursor-pointer transition-all
                 ${
                   currentFilter === item.id

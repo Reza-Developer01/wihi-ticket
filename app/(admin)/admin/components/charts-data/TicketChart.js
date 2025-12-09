@@ -13,55 +13,61 @@ import {
 } from "recharts";
 
 const TicketChart = ({ ticket }) => {
-  if (!ticket || ticket.length === 0) return null;
+  if (!ticket || !Array.isArray(ticket) || ticket.length === 0) return null;
 
-  const t = ticket[0];
+  const t = ticket[0] ?? {};
 
   const data = [
-    { name: "پاسخ", value: t.tickets_answered },
-    { name: "بسته شده", value: t.tickets_closed },
-    { name: "هدایت شده به کارشناس", value: t.tickets_guided },
-    { name: "هدایت شده توسط کارشناس", value: t.tickets_guided_status },
-    { name: "تغییر وضعیت داده شده", value: t.tickets_in_progress },
-    { name: "تعداد کل", value: t.total_replied_tickets_count },
+    { name: "پاسخ", value: Number(t.tickets_answered ?? 0) },
+    { name: "بسته شده", value: Number(t.tickets_closed ?? 0) },
+    { name: "هدایت شده به کارشناس", value: Number(t.tickets_guided ?? 0) },
+    {
+      name: "هدایت شده توسط کارشناس",
+      value: Number(t.tickets_guided_status ?? 0),
+    },
+    { name: "تغییر وضعیت داده شده", value: Number(t.tickets_in_progress ?? 0) },
+    { name: "تعداد کل", value: Number(t.total_replied_tickets_count ?? 0) },
   ];
 
-  // پیدا کردن بیشترین مقدار برای محور Y
   const maxValue = Math.max(...data.map((d) => d.value), 1);
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart
-        data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="name"
-          interval={0}
-          tick={({ x, y, payload }) => {
-            const words = payload.value.split(" ");
-            return words.map((word, index) => (
-              <text
-                key={index}
-                x={x}
-                y={y + index * 14 - -10} // ← 10px فاصله بالاتر
-                textAnchor="middle"
-                fontSize={12}
-              >
-                {word}
-              </text>
-            ));
-          }}
-        />
-        <YAxis domain={[1, maxValue]} allowDecimals={false} />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="value" fill="#8884d8">
-          <LabelList dataKey="value" position="top" />
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+    <>
+      <h2 className="text-[#2B2B2B] font-bold text-center">تیکت ها</h2>
+
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="name"
+            interval={0}
+            tick={({ x, y, payload }) => {
+              const words = payload.value.split(" ");
+              return words.map((word, index) => (
+                <text
+                  key={index}
+                  x={x}
+                  y={y + index * 14 - -10}
+                  textAnchor="middle"
+                  fontSize={12}
+                >
+                  {word}
+                </text>
+              ));
+            }}
+          />
+          <YAxis domain={[0, maxValue]} allowDecimals={false} />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#8884d8">
+            <LabelList dataKey="value" position="top" />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </>
   );
 };
 
