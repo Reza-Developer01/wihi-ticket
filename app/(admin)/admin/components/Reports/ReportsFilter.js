@@ -4,10 +4,13 @@ import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const ReportsFilter = ({ currentFilter, onFilterChange, onCustomDate }) => {
   const [range, setRange] = useState([]);
   const [showCustom, setShowCustom] = useState(false);
+  const pathname = usePathname();
 
   const handleClick = (id) => {
     if (typeof onFilterChange === "function") {
@@ -57,6 +60,14 @@ const ReportsFilter = ({ currentFilter, onFilterChange, onCustomDate }) => {
             ))}
           </ul>
         </div>
+
+        {pathname === "/admin/reports" && (
+          <Link href="/">
+            <svg className="w-6 h-6 text-[#1A1C1E]">
+              <use href="#arrow-narrow-left" />
+            </svg>
+          </Link>
+        )}
       </div>
 
       {showCustom && (
