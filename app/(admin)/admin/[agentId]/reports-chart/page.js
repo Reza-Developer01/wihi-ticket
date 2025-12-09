@@ -3,6 +3,8 @@ import Header from "@/app/(main)/components/Header";
 import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
 import TicketChart from "../../components/charts-data/TicketChart";
+import CallChart from "../../components/charts-data/CallChart";
+import ReportsFilter from "../../components/Reports/ReportsFilter";
 
 export const metadata = {
   title: "گزارشات کارشناس",
@@ -39,9 +41,11 @@ const ReportsChartPage = async ({ params }) => {
         showBackButton={true}
       />
 
-      <BottomSection pb="45px" height="249">
+      <BottomSection pb="45px" height="0">
         <div className="container">
+          <ReportsFilter />
           <TicketChart ticket={getData.agents.tickets} />
+          <CallChart call={getData.agents.callrequests} />
         </div>
       </BottomSection>
     </>

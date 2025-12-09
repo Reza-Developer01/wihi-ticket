@@ -59,3 +59,11 @@ body {
     color: #17C7C7;
     font-weight: 500;
 }
+
+.recharts-default-legend {
+    display: none;
+}
+
+.recharts-wrapper {
+    height: 400px !important;
+}

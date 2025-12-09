@@ -12,25 +12,28 @@ import {
   LabelList,
 } from "recharts";
 
-const TicketChart = ({ ticket }) => {
-  if (!ticket || ticket.length === 0) return null;
+const CallChart = ({ call }) => {
+  if (!call || call.length === 0) return null;
 
-  const t = ticket[0];
+  const c = call[0];
 
   const data = [
-    { name: "پاسخ", value: t.tickets_answered },
-    { name: "بسته شده", value: t.tickets_closed },
-    { name: "هدایت شده به کارشناس", value: t.tickets_guided },
-    { name: "هدایت شده توسط کارشناس", value: t.tickets_guided_status },
-    { name: "تغییر وضعیت داده شده", value: t.tickets_in_progress },
-    { name: "تعداد کل", value: t.total_replied_tickets_count },
+    { name: "پاسخ", value: c.callrequests_answered },
+    { name: "بسته شده", value: c.callrequests_closed },
+    { name: "هدایت شده به کارشناس", value: c.callrequests_guided },
+    { name: "هدایت شده توسط کارشناس", value: c.callrequests_guided_status },
+    { name: "تعداد کل", value: c.total_replied_callrequets_count },
   ];
 
   // پیدا کردن بیشترین مقدار برای محور Y
   const maxValue = Math.max(...data.map((d) => d.value), 1);
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer
+      width="100%"
+      height={300}
+      style={{ marginTop: "100px" }}
+    >
       <BarChart
         data={data}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
@@ -45,7 +48,7 @@ const TicketChart = ({ ticket }) => {
               <text
                 key={index}
                 x={x}
-                y={y + index * 14 - -10} // ← 10px فاصله بالاتر
+                y={y + index * 14 - -10} // ← فاصله بالاتر
                 textAnchor="middle"
                 fontSize={12}
               >
@@ -54,10 +57,10 @@ const TicketChart = ({ ticket }) => {
             ));
           }}
         />
-        <YAxis domain={[1, maxValue]} allowDecimals={false} />
+        <YAxis domain={[0, maxValue]} allowDecimals={false} />
         <Tooltip />
         <Legend />
-        <Bar dataKey="value" fill="#8884d8">
+        <Bar dataKey="value" fill="#82ca9d">
           <LabelList dataKey="value" position="top" />
         </Bar>
       </BarChart>
@@ -65,4 +68,4 @@ const TicketChart = ({ ticket }) => {
   );
 };
 
-export default TicketChart;
+export default CallChart;
