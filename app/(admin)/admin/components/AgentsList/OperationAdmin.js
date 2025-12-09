@@ -158,9 +158,16 @@ const OperationAdmin = ({ agentId }) => {
 
                   <div className="mt-3 space-y-2">
                     {Object.keys(log.changes.old).map((key) => {
-                      const oldValue = log.changes.old[key];
-                      const newValue = log.changes.new[key];
+                      let oldValue = log.changes.old[key];
+                      let newValue = log.changes.new[key];
                       const label = fieldLabels[key] || key;
+
+                      if (key === "username") {
+                        [oldValue, newValue] = [newValue, oldValue];
+                        console.log(
+                          `old value ${oldValue}, new value ${newValue}`
+                        );
+                      }
 
                       // فیلد permissions
                       if (key === "permissions") {
@@ -186,31 +193,20 @@ const OperationAdmin = ({ agentId }) => {
                         );
                       }
 
-                      // سایر فیلدها
                       return (
                         <div key={key} className="text-sm text-gray-700">
                           <span className="font-medium">{label}:</span>{" "}
-                          {key === "username" ? (
-                            <>
-                              <span className="text-red-500 line-through">
-                                {formatValue(newValue)}
-                              </span>{" "}
-                              <span className="mx-1 text-gray-600">←</span>
-                              <span className="text-green-600">
-                                {formatValue(oldValue)}
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="text-red-500 line-through">
-                                {formatValue(oldValue)}
-                              </span>{" "}
-                              <span className="mx-1 text-gray-600">←</span>
-                              <span className="text-green-600">
-                                {formatValue(newValue)}
-                              </span>
-                            </>
-                          )}
+                          <span className="text-red-500 line-through">
+                            {key === "username"
+                              ? formatValue(newValue)
+                              : formatValue(oldValue)}
+                          </span>{" "}
+                          <span className="mx-1 text-gray-600">←</span>
+                          <span className="text-green-600">
+                            {key === "username"
+                              ? formatValue(oldValue)
+                              : formatValue(newValue)}
+                          </span>
                         </div>
                       );
                     })}
