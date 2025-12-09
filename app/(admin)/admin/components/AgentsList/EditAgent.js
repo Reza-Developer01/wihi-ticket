@@ -238,7 +238,7 @@ const EditAgent = ({ agentsCategory, agent }) => {
           value={JSON.stringify(permissions)}
         />
 
-        <OperationAdmin />
+        <OperationAdmin agentId={agent.id} />
         <SubmitButton title="ویرایش کارشناس" />
       </div>
     </form>

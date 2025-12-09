@@ -1,12 +1,16 @@
 "use client";
 
+import { changeAgentStatus } from "@/actions/agent";
 import { Modal } from "@/app/(main)/components/Modal";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import toast from "react-hot-toast";
 
-const OperationAdmin = () => {
+const OperationAdmin = ({ agentId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   const options = [
     { label: "غیرفعالسازی" },
@@ -16,8 +20,19 @@ const OperationAdmin = () => {
     { label: "تاریخچــه تغییرات" },
   ];
 
-  const handleSelect = (label) => {
-    setIsModalOpen(true);
+  const handleSelect = async (label) => {
+    if (label === "فعالسازی" || label === "غیرفعالسازی") {
+      const status = label === "فعالسازی" ? true : false;
+
+      await changeAgentStatus(agentId, status);
+
+      toast.success(
+        status ? "کاربر با موفقیت فعال شد" : "کاربر با موفقیت غیرفعال شد"
+      );
+      router.push("/admin/agents-list");
+      // router.refresh();
+    }
+
     setIsOpen(false);
   };
 

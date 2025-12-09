@@ -28,7 +28,7 @@ const AgentsList = ({ data }) => {
                   item.is_active ? "text-[#5DFFFF]" : "text-[#FF0000]"
                 }`}
               >
-                فعال
+                {item.is_active ? "فعال" : "غیرفعال"}
               </span>
             </div>
           </div>

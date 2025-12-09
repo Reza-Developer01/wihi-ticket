@@ -312,6 +312,35 @@ const assignAgent = async (comment, ticket_number, assigned_to_id) => {
   }
 };
 
+const changeAgentStatus = async (id, is_active) => {
+  console.log({ id, is_active });
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  const res = await fetch(
+    `http://preview.kft.co.com/ticket/api/users/agents/${id}/`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: token ? `Bearer ${token}` : undefined,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ is_active }),
+    }
+  );
+
+  const data = await res.json();
+
+  console.log(data);
+
+  return {
+    status: res.ok,
+    message: res.ok
+      ? "وضعیت کارشناس با موفقیت تغییر کرد."
+      : data?.message || "تغییر وضعیت ناموفق بود.",
+  };
+};
+
 export {
   createAgent,
   createTicket,
@@ -319,4 +348,5 @@ export {
   deleteCategoryAgent,
   assignAgent,
   editAgent,
+  changeAgentStatus,
 };
