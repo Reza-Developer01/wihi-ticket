@@ -87,6 +87,12 @@ const OperationAdmin = ({ agentId }) => {
       setIsOpen(false);
       return;
     }
+
+    if (label === "گزارش عملکرد(براساس نظر سنجی)") {
+      router.push(`/admin/${agentId}/ratings`);
+      setIsOpen(false);
+      return;
+    }
   };
 
   useEffect(() => {

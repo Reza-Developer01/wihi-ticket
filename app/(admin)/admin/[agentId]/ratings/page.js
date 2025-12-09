@@ -2,13 +2,14 @@ import BottomSection from "@/app/(main)/components/BottomSection";
 import Header from "@/app/(main)/components/Header";
 import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
-import ReportsChartClient from "../../components/charts-data/ReportsChartClient";
+import RatingChart from "../../components/rating-chart/RatingChart";
 
 export const metadata = {
-  title: "گزارشات کارشناس",
+  title: "نظرسنجی کارشناس",
 };
 
-const ReportsChartPage = async ({ params }) => {
+const page = async ({ params }) => {
+  console.log(params);
   const { agentId } = params;
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
@@ -21,6 +22,9 @@ const ReportsChartPage = async ({ params }) => {
     .map((catId) => getCategory.find((c) => c.id === catId)?.name || "نامشخص")
     .join(" , ");
 
+  const getData = await getFetch(`ticket-ratings/by-agent/${agentId}`, headers);
+  console.log(getData);
+
   return (
     <>
       <Header
@@ -29,13 +33,13 @@ const ReportsChartPage = async ({ params }) => {
         showBackButton
       />
 
-      <BottomSection pb="45px" height="250">
+      <BottomSection pb="45px" height="0">
         <div className="container">
-          <ReportsChartClient agentId={agentId} headers={headers} />
+          <RatingChart data={getData} />
         </div>
       </BottomSection>
     </>
   );
 };
 
-export default ReportsChartPage;
+export default page;
