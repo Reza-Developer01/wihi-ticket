@@ -153,12 +153,21 @@ const CreateAgentForm = ({ agentsCategory }) => {
 
         {/* پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg
-            className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowPass((value) => !value)}
-          >
-            <use href="#eye-off" />
-          </svg>
+          {showPass ? (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowPass((value) => !value)}
+            >
+              <use href="#eye-on" />
+            </svg>
+          ) : (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowPass((value) => !value)}
+            >
+              <use href="#eye-off" />
+            </svg>
+          )}
 
           <input
             name="password"
@@ -166,19 +175,28 @@ const CreateAgentForm = ({ agentsCategory }) => {
             value={formData.password}
             onChange={handleChange}
             placeholder="*******"
-            className="text-left outline-none placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
+            className="text-left outline-none w-full placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
             style={{ direction: "ltr" }}
           />
         </div>
 
         {/* تکرار پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg
-            className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowRePass((value) => !value)}
-          >
-            <use href="#eye-off" />
-          </svg>
+          {showRePass ? (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowRePass((value) => !value)}
+            >
+              <use href="#eye-on" />
+            </svg>
+          ) : (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowRePass((value) => !value)}
+            >
+              <use href="#eye-off" />
+            </svg>
+          )}
 
           <input
             name="rePassword"
@@ -186,7 +204,7 @@ const CreateAgentForm = ({ agentsCategory }) => {
             value={formData.rePassword}
             onChange={handleChange}
             placeholder="*******"
-            className="text-left outline-none placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
+            className="text-left outline-none w-full placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
             style={{ direction: "ltr" }}
           />
         </div>

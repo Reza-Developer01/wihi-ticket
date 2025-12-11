@@ -4,7 +4,7 @@ import footerLogo from "@/public/images/footer-logo.svg";
 
 const AdminFooter = () => {
   return (
-    <section className="flex flex-col items-center justify-center gap-y-[5px]">
+    <section className="flex flex-col items-center justify-center gap-y-[5px] mt-16">
       <div className="flex items-center justify-center gap-x-px">
         <Image src={footerLogo} alt="footer logo" />
         <p className="text-[10px]/4">
