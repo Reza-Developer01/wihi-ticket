@@ -53,7 +53,7 @@ const UsersList = ({ data }) => {
           {/* body */}
           <div className="flex flex-col gap-y-px mt-2">
             <Link
-              href={`agents-list/${item.id}`}
+              href={`users-list/${item.id}`}
               className="font-medium text-xs/[19.6px] tracking-[-0.12px] text-[#8C8C8C]"
             >
               {item.first_name} {item.last_name}
