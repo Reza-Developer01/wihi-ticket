@@ -13,9 +13,10 @@ const page = async () => {
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
-  const categories = await getFetch("category-tickets/", {
+  const categories = await getFetch("users/agents-categories/", {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
+  console.log(categories);
 
   const service = await getFetch("service-tickets/", {
     Authorization: token ? `Bearer ${token}` : undefined,
