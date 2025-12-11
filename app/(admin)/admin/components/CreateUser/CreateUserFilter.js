@@ -1,10 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreateUserReal from "./CreateUserReal";
 import CreateUserLegal from "./CreateUserLegal";
+import { usePathname } from "next/navigation";
 
-const CreateUserFilter = () => {
+const CreateUserFilter = ({ userType, data }) => {
   const [activeTab, setActiveTab] = useState("real");
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (userType) {
+      // اگر real بود تب حقیقی و اگر legal بود تب حقوقی فعال شود
+      setActiveTab(userType === "real" ? "real" : "legal");
+    }
+  }, [userType]);
 
   const activeStyle =
     "filter-button__shadow grow bg-white font-medium text-sm/[21px] text-[#232447] border border-[#EFF0F680] h-full rounded-md tracking-[-0.64px]";
@@ -31,12 +40,12 @@ const CreateUserFilter = () => {
         </button>
       </div>
 
-      {/* CONTENT */}
-      <div className="mt-4">
-        {activeTab === "real" && <CreateUserReal />}
-
-        {activeTab === "legal" && <CreateUserLegal />}
-      </div>
+      {pathname === "/admin/create-user" ? (
+        <div className="mt-4">
+          {activeTab === "real" && <CreateUserReal />}
+          {activeTab === "legal" && <CreateUserLegal />}
+        </div>
+      ) : null}
     </>
   );
 };

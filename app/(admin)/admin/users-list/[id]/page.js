@@ -2,6 +2,8 @@ import BottomSection from "@/app/(main)/components/BottomSection";
 import Header from "@/app/(main)/components/Header";
 import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
+import SubTitle from "../../components/SubTitle";
+import CreateUserFilter from "../../components/CreateUser/CreateUserFilter";
 
 export const metadata = {
   title: "جزییات کاربر",
@@ -28,7 +30,11 @@ const page = async ({ params }) => {
       />
 
       <BottomSection pb="45px" height="249">
-        <div className="container"></div>
+        <div className="container">
+          <SubTitle title="اطلاعات هویتــی کاربر" w="w-[90px]" />
+
+          <CreateUserFilter userType={getUser.user_type} data={getUser} />
+        </div>
       </BottomSection>
     </>
   );
