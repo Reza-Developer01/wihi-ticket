@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 
-const OperationAdmin = ({ agentId }) => {
+const OperationAdmin = ({ agentId, getCategory }) => {
   const fieldLabels = {
     first_name: "نام",
     last_name: "نام خانوادگی",
@@ -19,6 +19,7 @@ const OperationAdmin = ({ agentId }) => {
     created_at: "تاریخ ایجاد",
     updated_at: "تاریخ بروزرسانی",
     permissions: "سطوح دسترسی",
+    categories: "دسته‌بندی‌ها",
   };
 
   const permissionLabels = {
@@ -56,10 +57,8 @@ const OperationAdmin = ({ agentId }) => {
 
   const handleSelect = async (label) => {
     if (label === "فعالسازی" || label === "غیرفعالسازی") {
-      const status = label === "فعالسازی" ? true : false;
-
+      const status = label === "فعالسازی";
       await changeAgentStatus(agentId, status);
-
       toast.success(
         status ? "کاربر با موفقیت فعال شد" : "کاربر با موفقیت غیرفعال شد"
       );
@@ -70,28 +69,21 @@ const OperationAdmin = ({ agentId }) => {
 
     if (label === "تاریخچــه تغییرات") {
       const logs = await getAgentChangeLogs(agentId);
-
       if (!logs.status) {
         toast.error(logs.message);
         return;
       }
-
       setLogsData(logs.data);
       setIsModalOpen(true);
-      setIsOpen(false);
       return;
     }
 
     if (label === "گزارش عملکرد ( براساس میانگین پاسخ , تیکت و تماس و.. )") {
       router.push(`/admin/${agentId}/reports-chart`);
-      setIsOpen(false);
-      return;
     }
 
     if (label === "گزارش عملکرد(براساس نظر سنجی)") {
       router.push(`/admin/${agentId}/ratings`);
-      setIsOpen(false);
-      return;
     }
   };
 
@@ -104,6 +96,77 @@ const OperationAdmin = ({ agentId }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const renderFieldChange = (key, oldValue, newValue) => {
+    const label = fieldLabels[key] || key;
+
+    if (key === "permissions") {
+      return (
+        <div key={key} className="text-sm text-gray-700">
+          <span className="font-medium">{label}:</span>
+          <div className="ml-2 mt-1 space-y-1">
+            {(oldValue || []).map(
+              (perm) =>
+                !newValue.includes(perm) && (
+                  <div key={perm} className="text-red-500 line-through">
+                    {permissionLabels[perm] || perm}
+                  </div>
+                )
+            )}
+            {(newValue || []).map(
+              (perm) =>
+                !oldValue.includes(perm) && (
+                  <div key={perm} className="text-green-600">
+                    {permissionLabels[perm] || perm}
+                  </div>
+                )
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (key === "categories") {
+      const oldCats = oldValue || [];
+      const newCats = newValue || [];
+
+      const added = newCats.filter((id) => !oldCats.includes(id));
+      const removed = oldCats.filter((id) => !newCats.includes(id));
+
+      const formatNames = (ids) =>
+        ids.map((id) => getCategory.find((c) => c.id === id)?.name || "نامشخص");
+
+      let message = "";
+      if (added.length && removed.length) {
+        message = `${formatNames(removed).join(" و ")} حذف شد و ${formatNames(
+          added
+        ).join(" و ")} اضافه شد.`;
+      } else if (added.length) {
+        message = `${formatNames(added).join(" و ")} اضافه شد.`;
+      } else if (removed.length) {
+        message = `${formatNames(removed).join(" و ")} حذف شد.`;
+      } else {
+        message = "تغییری در دسته‌بندی‌ها ایجاد نشده است.";
+      }
+
+      return (
+        <div key={key} className="text-sm text-gray-700">
+          <span className="font-medium">{label}:</span> {message}
+        </div>
+      );
+    }
+
+    return (
+      <div key={key} className="text-sm text-gray-700">
+        <span className="font-medium">{label}:</span>{" "}
+        <span className="text-red-500 line-through">
+          {formatValue(oldValue)}
+        </span>{" "}
+        <span className="mx-1 text-gray-600">←</span>{" "}
+        <span className="text-green-600">{formatValue(newValue)}</span>
+      </div>
+    );
+  };
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
@@ -162,66 +225,18 @@ const OperationAdmin = ({ agentId }) => {
                   <p className="text-sm text-gray-700 font-semibold">
                     تغییر توسط: {log.changed_by?.full_name || "نامشخص"}
                   </p>
-
                   <p className="text-xs text-gray-500 mt-1">
                     تاریخ ثبت تغییر:{" "}
                     {new Date(log.changed_at).toLocaleString("fa-IR")}
                   </p>
-
                   <div className="mt-3 space-y-2">
-                    {Object.keys(log.changes.old).map((key) => {
-                      let oldValue = log.changes.old[key];
-                      let newValue = log.changes.new[key];
-                      const label = fieldLabels[key] || key;
-
-                      if (key === "username") {
-                        [oldValue, newValue] = [newValue, oldValue];
-                        console.log(
-                          `old value ${oldValue}, new value ${newValue}`
-                        );
-                      }
-
-                      // فیلد permissions
-                      if (key === "permissions") {
-                        return (
-                          <div key={key} className="text-sm text-gray-700">
-                            <span className="font-medium">{label}:</span>
-                            <div className="ml-2 mt-1 space-y-1">
-                              {(oldValue || []).map((perm) => (
-                                <div
-                                  key={perm}
-                                  className="text-red-500 line-through"
-                                >
-                                  {permissionLabels[perm] || perm}
-                                </div>
-                              ))}
-                              {(newValue || []).map((perm) => (
-                                <div key={perm} className="text-green-600">
-                                  {permissionLabels[perm] || perm}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      }
-
-                      return (
-                        <div key={key} className="text-sm text-gray-700">
-                          <span className="font-medium">{label}:</span>{" "}
-                          <span className="text-red-500 line-through">
-                            {key === "username"
-                              ? formatValue(newValue)
-                              : formatValue(oldValue)}
-                          </span>{" "}
-                          <span className="mx-1 text-gray-600">←</span>
-                          <span className="text-green-600">
-                            {key === "username"
-                              ? formatValue(oldValue)
-                              : formatValue(newValue)}
-                          </span>
-                        </div>
-                      );
-                    })}
+                    {Object.keys(log.changes.old).map((key) =>
+                      renderFieldChange(
+                        key,
+                        log.changes.old[key],
+                        log.changes.new[key]
+                      )
+                    )}
                   </div>
                 </div>
               ))
