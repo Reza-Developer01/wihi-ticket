@@ -31,6 +31,10 @@ const page = async ({ params }) => {
     .map((catId) => getCategory.find((c) => c.id === catId)?.name || "نامشخص")
     .join(" , ");
 
+  const selectedCategories = getCategory.filter((cat) =>
+    getAgent.categories.includes(cat.id)
+  );
+
   return (
     <>
       <Header
@@ -43,7 +47,11 @@ const page = async ({ params }) => {
         <div className="container">
           <SubTitle title="اطلاعات هویتــی کارشناس" w="w-[90px]" />
 
-          <EditAgent agentsCategory={getCategory} agent={agent} />
+          <EditAgent
+            agentsCategory={getCategory}
+            agent={agent}
+            selectedCategories={selectedCategories}
+          />
         </div>
       </BottomSection>
     </>

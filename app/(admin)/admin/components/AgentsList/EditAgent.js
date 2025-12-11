@@ -16,10 +16,11 @@ import AgentsCategories from "../CreateAgent/AgentsCategories";
 import AuthorizationCheckbox from "../CreateAgent/AuthorizationCheckbox";
 import OperationAdmin from "./OperationAdmin";
 
-const EditAgent = ({ agentsCategory, agent }) => {
+const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -49,6 +50,7 @@ const EditAgent = ({ agentsCategory, agent }) => {
         rePassword: "",
       });
       setPermissions(agent.permissions || []);
+      setSelected(selectedCategories || []);
     }
   }, [agent]);
 
@@ -165,8 +167,9 @@ const EditAgent = ({ agentsCategory, agent }) => {
         />
 
         <AgentsCategories
-          agentsCategory={agent}
           allCategories={agentsCategory}
+          selected={selected}
+          onChange={(value) => setSelected(value)}
         />
 
         <div className="w-full *:mb-0 *:mt-5">
