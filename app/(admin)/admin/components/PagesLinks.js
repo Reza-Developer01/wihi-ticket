@@ -30,7 +30,7 @@ const PagesLinks = ({ data }) => {
             title="افزودن کاربــــر"
             hasLabel={true}
             labelTitle={`${data.number_customer} | کاربــر`}
-            href="/admin/create-user"
+            href="/admin/users-list"
           />
         </div>
       </div>
