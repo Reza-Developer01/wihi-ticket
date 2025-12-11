@@ -29,6 +29,8 @@ const CreateAgentForm = ({ agentsCategory }) => {
     rePassword: "",
   });
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const [permissions, setPermissions] = useState([]);
   const handlePermissionChange = (key, checked) => {
     setPermissions((prev) =>
@@ -133,8 +135,15 @@ const CreateAgentForm = ({ agentsCategory }) => {
         />
 
         <AgentsCategories
-          agentsCategory={{ categories: [] }}
           allCategories={agentsCategory}
+          selected={selectedCategories}
+          onChange={setSelectedCategories}
+        />
+
+        <input
+          type="hidden"
+          name="categories"
+          value={JSON.stringify(selectedCategories)}
         />
 
         <div className="w-full *:mb-0 *:mt-5">
