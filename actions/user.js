@@ -240,27 +240,29 @@ const createLegalUser = async (state, formData) => {
   // -------------------------------
   const body = new FormData();
 
-  body.append("company_name", company_name);
-  body.append("first_name", first_name);
-  body.append("last_name", last_name);
-  body.append("register_date", register_date);
-  body.append("registration_number", registration_number);
-  body.append("national_id", national_id);
-  body.append("economic_code", economic_code);
-
-  body.append("email", email);
-  body.append("phone", phone);
-  body.append("address", address);
-  body.append("floor", floor);
-  body.append("unit", unit);
-  body.append("postal_code", postal_code);
   body.append("username", username);
   body.append("password", password);
-  body.append("file", file);
-
-  body.append("user_type", user_type);
+  body.append("email", email);
+  body.append("phone", phone);
+  body.append("first_name", first_name);
+  body.append("last_name", last_name);
+  body.append("user_type", "legal");
   body.append("plan", plan);
-  body.append("legal_user", legal_user);
+
+  body.append("legal_user.company_name", company_name);
+  body.append("legal_user.register_date", register_date);
+  body.append("legal_user.registration_number", registration_number);
+  body.append("legal_user.national_id", national_id);
+  body.append("legal_user.economic_code", economic_code);
+
+  body.append("legal_user.address", address);
+  body.append("legal_user.floor", floor);
+  body.append("legal_user.unit", unit);
+  body.append("legal_user.postal_code", postal_code);
+
+  if (file) {
+    body.append("file", file);
+  }
 
   const token = cookies().get("access_token")?.value;
 
