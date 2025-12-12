@@ -17,23 +17,23 @@ const EditLegalUser = ({ data }) => {
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
   const [formData, setFormData] = useState({
-    company_name: data?.company_name || "",
+    company_name: data?.legal_user?.company_name || "",
     first_name: data?.first_name || "",
     last_name: data?.last_name || "",
-    register_date: data?.register_date || "",
-    registration_number: data?.registration_number || "",
+    register_date: data?.legal_user?.register_date || "",
+    registration_number: data?.legal_user?.registration_number || "",
     email: data?.email || "",
     phone: data?.phone || "",
-    address: data?.address || "",
-    floor: data?.floor || "",
-    unit: data?.unit || "",
-    postal_code: data?.postal_code || "",
-    file: "",
+    address: data?.legal_user?.address || "",
+    floor: data?.legal_user?.floor || "",
+    unit: data?.legal_user?.unit || "",
+    postal_code: data?.legal_user?.postal_code || "",
+    file: data?.legal_user?.contract_file || "",
     username: data?.username || "",
     password: "",
     rePassword: "",
-    economic_code: data?.economic_code || "",
-    national_id: data?.national_id || "",
+    economic_code: data?.legal_user?.economic_code || "",
+    national_id: data?.legal_user?.national_id || "",
   });
   const router = useRouter();
   const fileRef = useRef(null);
