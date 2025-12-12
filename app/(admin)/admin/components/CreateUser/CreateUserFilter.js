@@ -41,16 +41,23 @@ const CreateUserFilter = ({ userType, data }) => {
         </button>
       </div>
 
-      {pathname === "/admin/create-user" ? (
-        <div className="mt-4">
-          {activeTab === "real" && <CreateUserReal />}
-          {activeTab === "legal" && <CreateUserLegal />}
-        </div>
-      ) : activeTab === "legal" ? (
-        <EditLegalUser data={data} />
-      ) : (
-        <EditRealUser data={data} />
-      )}
+      <div className="mt-4">
+        {pathname === "/admin/create-user" ? (
+          <>
+            {activeTab === "real" && <CreateUserReal />}
+            {activeTab === "legal" && <CreateUserLegal />}
+          </>
+        ) : (
+          <>
+            {activeTab === "real" && data.real_user && (
+              <EditRealUser data={data} />
+            )}
+            {activeTab === "legal" && data.legal_user && (
+              <EditLegalUser data={data} />
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 };

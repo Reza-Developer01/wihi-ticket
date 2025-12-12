@@ -102,8 +102,14 @@ const createRealUser = async (state, formData) => {
   body.append("user_type", "real");
   body.append("plan", plan);
 
-  // فقط اینجا real_user به صورت JSON داخل یک فیلد قرار می‌گیرد
-  body.append("real_user", JSON.stringify(realUserObj));
+  // 🔥 فیلدهای real_user را تک‌به‌تک append می‌کنیم
+  body.append("real_user.address", realUserObj.address);
+  body.append("real_user.floor", realUserObj.floor);
+  body.append("real_user.unit", realUserObj.unit);
+  body.append("real_user.postal_code", realUserObj.postal_code);
+
+  const file = formData.get("file");
+  if (file) body.append("contract_file", file);
 
   const token = cookies().get("access_token")?.value;
 
