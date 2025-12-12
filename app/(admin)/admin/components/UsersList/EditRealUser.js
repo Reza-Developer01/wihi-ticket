@@ -5,89 +5,88 @@ import { toJalaali } from "jalaali-js";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import SubmitButton from "../SubmitButton";
 import SubTitle from "../SubTitle";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import UserPlans from "../CreateUser/UserPlans";
+import { useRouter } from "next/navigation";
 
-const EditLegalUser = ({ data }) => {
+const EditRealUser = ({ data }) => {
+  console.log(data);
+  const router = useRouter();
+
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
+
+  const fileRef = useRef(null);
+
+  const [selectedPlan, setSelectedPlan] = useState(data?.plan || 1);
+
   const [formData, setFormData] = useState({
-    company_name: data?.company_name || "",
     first_name: data?.first_name || "",
     last_name: data?.last_name || "",
     register_date: data?.register_date || "",
-    registration_number: data?.registration_number || "",
     email: data?.email || "",
     phone: data?.phone || "",
-    address: data?.address || "",
-    floor: data?.floor || "",
-    unit: data?.unit || "",
-    postal_code: data?.postal_code || "",
-    file: "",
     username: data?.username || "",
     password: "",
     rePassword: "",
-    economic_code: data?.economic_code || "",
-    national_id: data?.national_id || "",
+
+    // اطلاعات داخل real_user
+    address: data?.real_user?.address || "",
+    floor: data?.real_user?.floor || "",
+    unit: data?.real_user?.unit || "",
+    postal_code: data?.real_user?.postal_code || "",
   });
-  const router = useRouter();
-  const fileRef = useRef(null);
-  const [selectedPlan, setSelectedPlan] = useState(data?.plan || 1);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  // تابع submit برای ویرایش، فعلاً فقط یک نمونه toast
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success("اطلاعات کاربر حقوقی با موفقیت ویرایش شد");
-    // اینجا می‌تونی call server action رو اضافه کنی
+
+    toast.success("اطلاعات با موفقیت ویرایش شد");
+
+    // اینجا بعداً server action رو باهم می‌نویسیم
+    // فرم فعلاً فقط سابمیت mock هست
   };
 
   return (
     <form onSubmit={handleSubmit} className="mt-5">
       <div className="flex flex-col gap-y-4">
-        <input
-          name="company_name"
-          type="text"
-          value={formData.company_name}
-          onChange={handleChange}
-          placeholder="نام شرکت , سازمان"
-          className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
-        />
-
+        {/* نام و نام خانوادگی */}
         <div className="flex items-center gap-x-4">
-          <input
+          <Input
+            placeholder="نام"
             name="first_name"
-            type="text"
             value={formData.first_name}
             onChange={handleChange}
-            placeholder="نام (مدیرعامل)"
-            className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
-          <input
+
+          <Input
+            placeholder="نام خانوادگی"
             name="last_name"
-            type="text"
             value={formData.last_name}
             onChange={handleChange}
-            placeholder="نام خانوادگی (مدیرعامل)"
-            className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
         </div>
 
-        <div className="input-shadow flex items-center gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5 relative">
+        {/* تاریخ */}
+        <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
 
-          <div className="date-picker h-full flex items-center text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]">
+          <div
+            className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]"
+            style={{ textAlignLast: "left" }}
+          >
             <DatePicker
               value={formData.register_date}
               onChange={(e) => {
@@ -96,16 +95,11 @@ const EditLegalUser = ({ data }) => {
                 const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
                   jd
                 ).padStart(2, "0")}`;
+
                 setFormData((prev) => ({ ...prev, register_date: jDate }));
               }}
               round="x2"
             />
-
-            {!formData.register_date && (
-              <span className="absolute top-1/2 -translate-y-1/2 text-[#8C8C8C] pointer-events-none text-xs">
-                تاریخ ثبت
-              </span>
-            )}
 
             <input
               type="hidden"
@@ -115,33 +109,7 @@ const EditLegalUser = ({ data }) => {
           </div>
         </div>
 
-        <input
-          name="registration_number"
-          type="text"
-          value={formData.registration_number}
-          onChange={handleChange}
-          placeholder="شماره ثبت"
-          className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
-        />
-
-        <input
-          name="national_id"
-          type="text"
-          value={formData.national_id}
-          onChange={handleChange}
-          placeholder="شناســـه ملی"
-          className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
-        />
-
-        <input
-          name="economic_code"
-          type="text"
-          value={formData.economic_code}
-          onChange={handleChange}
-          placeholder="کد اقتصادی"
-          className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
-        />
-
+        {/* ایمیل */}
         <Input
           placeholder="Loisbecket@gmail.com"
           name="email"
@@ -150,10 +118,16 @@ const EditLegalUser = ({ data }) => {
           style={{ textAlign: "left", direction: "ltr" }}
         />
 
+        {/* شماره تماس */}
         <PhoneInput
           name="phone"
           value={formData.phone}
-          onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
+          onChange={(phone) =>
+            setFormData((prev) => ({
+              ...prev,
+              phone,
+            }))
+          }
           defaultCountry="ir"
           className="input-shadow w-full h-[46px] text-sm/[19.6px] text-[#1A1C1E] font-medium rounded-[10px] outline-none"
           inputClassName="!h-full !pl-2.5 !bg-white !text-[#1A1C1E] placeholder:!text-[#1A1C1E] !text-left !grow !outline-none !shadow-none !ring-0 !p-0 !rounded-r-[10px] !border-[#EDF1F3]"
@@ -166,6 +140,7 @@ const EditLegalUser = ({ data }) => {
           style={{ direction: "ltr" }}
         />
 
+        {/* آدرس */}
         <input
           name="address"
           type="text"
@@ -184,6 +159,7 @@ const EditLegalUser = ({ data }) => {
             placeholder="طبقـــــه"
             className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
+
           <input
             name="unit"
             type="text"
@@ -203,6 +179,7 @@ const EditLegalUser = ({ data }) => {
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
         />
 
+        {/* فایل قرارداد */}
         <div
           className={`custom-shadow relative flex items-center w-full h-12 rounded-[10px] overflow-hidden transition-all duration-300 ${
             hasFile ? "bg-[#00C96B33]" : "bg-[#EFF0F6]"
@@ -239,6 +216,7 @@ const EditLegalUser = ({ data }) => {
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
+
               if (file.size > 50 * 1024 * 1024) {
                 toast.error("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
                 e.target.value = "";
@@ -250,10 +228,12 @@ const EditLegalUser = ({ data }) => {
           />
         </div>
 
+        {/* اطلاعات ورود */}
         <div className="w-full *:mb-0 *:mt-5">
           <SubTitle title="اطلاعات ورود کاربر" w="w-[90px]" />
         </div>
 
+        {/* نام کاربری */}
         <input
           type="text"
           placeholder="نام کاربری را وارد کنید"
@@ -263,13 +243,15 @@ const EditLegalUser = ({ data }) => {
           className="input-shadow w-full h-[46px] px-3.5 bg-white text-[#1A1C1E] font-medium text-xs/[19.6px] border border-[#EDF1F3] rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#8C8C8C]"
         />
 
+        {/* پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
           <svg
             className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowPass((v) => !v)}
+            onClick={() => setShowPass((value) => !value)}
           >
             <use href="#eye-off" />
           </svg>
+
           <input
             name="password"
             type={showPass ? "text" : "password"}
@@ -281,13 +263,15 @@ const EditLegalUser = ({ data }) => {
           />
         </div>
 
+        {/* تکرار پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
           <svg
             className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowRePass((v) => !v)}
+            onClick={() => setShowRePass((value) => !value)}
           >
             <use href="#eye-off" />
           </svg>
+
           <input
             name="rePassword"
             type={showRePass ? "text" : "password"}
@@ -299,22 +283,24 @@ const EditLegalUser = ({ data }) => {
           />
         </div>
 
+        {/* پلن */}
         <div className="w-full *:mb-0 *:mt-5">
           <SubTitle title="سطح پلن کاربر" w="w-[90px]" />
         </div>
-
-        <input type="hidden" name="user_type" value="legal" />
 
         <UserPlans
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
         />
-        <input type="hidden" name="plan" value={selectedPlan} />
 
-        <SubmitButton title="ویرایش کاربر حقوقی" />
+        <input type="hidden" name="user_type" value="real" />
+        <input type="hidden" name="plan" value={selectedPlan} />
+        <input type="hidden" name="real_user" value="real" />
+
+        <SubmitButton title="ویرایش کاربر حقیقی" />
       </div>
     </form>
   );
 };
 
-export default EditLegalUser;
+export default EditRealUser;

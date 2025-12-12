@@ -4,6 +4,7 @@ import CreateUserReal from "./CreateUserReal";
 import CreateUserLegal from "./CreateUserLegal";
 import { usePathname } from "next/navigation";
 import EditLegalUser from "../UsersList/EditLegalUser";
+import EditRealUser from "../UsersList/EditRealUser";
 
 const CreateUserFilter = ({ userType, data }) => {
   const [activeTab, setActiveTab] = useState("real");
@@ -45,8 +46,10 @@ const CreateUserFilter = ({ userType, data }) => {
           {activeTab === "real" && <CreateUserReal />}
           {activeTab === "legal" && <CreateUserLegal />}
         </div>
+      ) : activeTab === "legal" ? (
+        <EditLegalUser data={data} />
       ) : (
-        activeTab === "legal" && <EditLegalUser data={data} />
+        <EditRealUser data={data} />
       )}
     </>
   );
