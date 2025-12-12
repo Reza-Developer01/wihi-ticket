@@ -300,4 +300,108 @@ const createLegalUser = async (state, formData) => {
   }
 };
 
-export { createRealUser, createLegalUser };
+const editRealUser = async (state, formData) => {
+  const userId = formData.get("id"); // باید در فرم hidden بگذاری
+  if (!userId) return { status: false, message: "شناسه کاربر یافت نشد." };
+
+  const first_name = formData.get("first_name");
+  const last_name = formData.get("last_name");
+  const register_date = formData.get("register_date");
+  const email = formData.get("email");
+  let phone = formData.get("phone");
+
+  const address = formData.get("address");
+  const floor = formData.get("floor");
+  const unit = formData.get("unit");
+  const postal_code = formData.get("postal_code");
+
+  const username = formData.get("username");
+  const password = formData.get("password");
+  const rePassword = formData.get("rePassword");
+
+  const plan = formData.get("plan");
+
+  const file = formData.get("file");
+
+  // اصلاح شماره موبایل
+  phone = phone?.replace(/\D/g, "");
+  if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
+
+  // -------------------------
+  //   Validation
+  // -------------------------
+  if (!first_name)
+    return { status: false, message: "نام نمی‌تواند خالی باشد." };
+  if (!last_name)
+    return { status: false, message: "نام خانوادگی نمی‌تواند خالی باشد." };
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return { status: false, message: "ایمیل معتبر نیست." };
+
+  if (!phone || !/^09\d{9}$/.test(phone))
+    return { status: false, message: "شماره موبایل معتبر نیست." };
+
+  if (password && password !== rePassword)
+    return { status: false, message: "تکرار رمز عبور صحیح نیست." };
+
+  if (file && file.size > 50 * 1024 * 1024)
+    return { status: false, message: "حداکثر حجم فایل ۵۰ مگابایت است." };
+
+  // ---------------------------
+  // ساخت FormData برای PATCH
+  // ---------------------------
+  const body = new FormData();
+
+  body.append("first_name", first_name);
+  body.append("last_name", last_name);
+  body.append("email", email);
+  body.append("phone", phone);
+  body.append("username", username);
+  body.append("plan", plan);
+  body.append("register_date", register_date);
+
+  // real_user.* فیلدهای
+  body.append("real_user.address", address);
+  body.append("real_user.floor", floor);
+  body.append("real_user.unit", unit);
+  body.append("real_user.postal_code", postal_code);
+
+  if (password) body.append("password", password);
+  if (file) body.append("contract_file", file);
+
+  // Token
+  const token = cookies().get("access_token")?.value;
+
+  try {
+    const res = await fetch(
+      `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+        body,
+      }
+    );
+
+    const data = await res.json();
+    console.log("PATCH Response => ", data);
+
+    if (!res.ok)
+      return {
+        status: false,
+        message: data?.message || "خطا در ویرایش کاربر.",
+      };
+
+    return {
+      status: true,
+      message: "کاربر با موفقیت ویرایش شد.",
+    };
+  } catch (err) {
+    return {
+      status: false,
+      message: "خطا در ارتباط با سرور: " + err.message,
+    };
+  }
+};
+
+export { createRealUser, createLegalUser, editRealUser };

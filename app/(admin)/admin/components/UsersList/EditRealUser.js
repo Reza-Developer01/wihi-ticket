@@ -5,15 +5,17 @@ import { toJalaali } from "jalaali-js";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import { useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import SubmitButton from "../SubmitButton";
 import SubTitle from "../SubTitle";
 import toast from "react-hot-toast";
 import UserPlans from "../CreateUser/UserPlans";
 import { useRouter } from "next/navigation";
+import { editRealUser } from "@/actions/user";
 
 const EditRealUser = ({ data }) => {
   console.log(data);
+  const [state, formAction] = useActionState(editRealUser, {});
   const router = useRouter();
 
   const [hasFile, setHasFile] = useState(false);
@@ -48,17 +50,19 @@ const EditRealUser = ({ data }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
 
-    toast.success("اطلاعات با موفقیت ویرایش شد");
-
-    // اینجا بعداً server action رو باهم می‌نویسیم
-    // فرم فعلاً فقط سابمیت mock هست
-  };
+    if (state.status) {
+      toast.success(state.message);
+      router.refresh();
+    } else {
+      toast.error(state.message);
+    }
+  }, [state]);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-5">
+    <form action={formAction} className="mt-5">
       <div className="flex flex-col gap-y-4">
         {/* نام و نام خانوادگی */}
         <div className="flex items-center gap-x-4">
@@ -299,6 +303,7 @@ const EditRealUser = ({ data }) => {
 
         <SubmitButton title="ویرایش کاربر حقیقی" />
       </div>
+      <input type="hidden" name="id" value={data?.id} />
     </form>
   );
 };
