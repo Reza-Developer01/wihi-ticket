@@ -284,6 +284,8 @@ const CreateUserReal = () => {
         />
         <input type="hidden" name="plan" value={selectedPlan} />
 
+        <input type="hidden" name="real_user" value="real" />
+
         <SubmitButton title="افزودن کاربر حقیقی" />
       </div>
     </form>

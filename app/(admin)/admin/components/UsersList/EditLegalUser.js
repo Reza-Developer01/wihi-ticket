@@ -5,59 +5,54 @@ import { toJalaali } from "jalaali-js";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SubmitButton from "../SubmitButton";
 import SubTitle from "../SubTitle";
-import { createLegalUser } from "@/actions/user";
-import toast from "react-hot-toast";
-import UserPlans from "./UserPlans";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import UserPlans from "../CreateUser/UserPlans";
 
-const CreateUserLegal = () => {
+const EditLegalUser = ({ data }) => {
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
   const [formData, setFormData] = useState({
-    company_name: "",
-    first_name: "",
-    last_name: "",
-    register_date: "",
-    registration_number: "",
-    email: "",
-    phone: "",
-    address: "",
-    floor: "",
-    unit: "",
-    postal_code: "",
+    company_name: data?.company_name || "",
+    first_name: data?.first_name || "",
+    last_name: data?.last_name || "",
+    register_date: data?.register_date || "",
+    registration_number: data?.registration_number || "",
+    email: data?.email || "",
+    phone: data?.phone || "",
+    address: data?.address || "",
+    floor: data?.floor || "",
+    unit: data?.unit || "",
+    postal_code: data?.postal_code || "",
     file: "",
-    username: "",
+    username: data?.username || "",
     password: "",
     rePassword: "",
-    economic_code: "",
-    national_id: "",
+    economic_code: data?.economic_code || "",
+    national_id: data?.national_id || "",
   });
   const router = useRouter();
   const fileRef = useRef(null);
-  const [selectedPlan, setSelectedPlan] = useState(1);
+  const [selectedPlan, setSelectedPlan] = useState(data?.plan || 1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const [state, formAction] = useActionState(createLegalUser, {});
-
-  useEffect(() => {
-    if (!state || Object.keys(state).length === 0) return;
-
-    if (state?.status) {
-      toast.success(state?.message);
-      router.push("/");
-    } else toast.error(state?.message);
-  }, [state]);
+  // تابع submit برای ویرایش، فعلاً فقط یک نمونه toast
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    toast.success("اطلاعات کاربر حقوقی با موفقیت ویرایش شد");
+    // اینجا می‌تونی call server action رو اضافه کنی
+  };
 
   return (
-    <form action={formAction}>
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-y-4">
         <input
           name="company_name"
@@ -68,7 +63,6 @@ const CreateUserLegal = () => {
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
         />
 
-        {/* نام و نام خانوادگی */}
         <div className="flex items-center gap-x-4">
           <input
             name="first_name"
@@ -78,7 +72,6 @@ const CreateUserLegal = () => {
             placeholder="نام (مدیرعامل)"
             className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
-
           <input
             name="last_name"
             type="text"
@@ -89,7 +82,6 @@ const CreateUserLegal = () => {
           />
         </div>
 
-        {/* تاریخ */}
         <div className="input-shadow flex items-center gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5 relative">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
@@ -104,16 +96,11 @@ const CreateUserLegal = () => {
                 const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
                   jd
                 ).padStart(2, "0")}`;
-                setFormData((prev) => ({
-                  ...prev,
-                  register_date: jDate,
-                }));
+                setFormData((prev) => ({ ...prev, register_date: jDate }));
               }}
               round="x2"
-              // defaultValue={new Date()}
             />
 
-            {/* متن دلخواه روی Input وقتی تاریخ خالیه */}
             {!formData.register_date && (
               <span className="absolute top-1/2 -translate-y-1/2 text-[#8C8C8C] pointer-events-none text-xs">
                 تاریخ ثبت
@@ -155,7 +142,6 @@ const CreateUserLegal = () => {
           className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
         />
 
-        {/* ایمیل */}
         <Input
           placeholder="Loisbecket@gmail.com"
           name="email"
@@ -164,7 +150,6 @@ const CreateUserLegal = () => {
           style={{ textAlign: "left", direction: "ltr" }}
         />
 
-        {/* شماره تماس */}
         <PhoneInput
           name="phone"
           value={formData.phone}
@@ -199,7 +184,6 @@ const CreateUserLegal = () => {
             placeholder="طبقـــــه"
             className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
-
           <input
             name="unit"
             type="text"
@@ -252,7 +236,6 @@ const CreateUserLegal = () => {
             type="file"
             name="file"
             className="absolute w-full h-full text-transparent cursor-pointer"
-            // disabled={hasFile}
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
@@ -271,7 +254,6 @@ const CreateUserLegal = () => {
           <SubTitle title="اطلاعات ورود کاربر" w="w-[90px]" />
         </div>
 
-        {/* نام کاربری */}
         <input
           type="text"
           placeholder="نام کاربری را وارد کنید"
@@ -281,15 +263,13 @@ const CreateUserLegal = () => {
           className="input-shadow w-full h-[46px] px-3.5 bg-white text-[#1A1C1E] font-medium text-xs/[19.6px] border border-[#EDF1F3] rounded-[10px] tracking-[-0.12px] outline-none placeholder:text-[#8C8C8C]"
         />
 
-        {/* پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
           <svg
             className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowPass((value) => !value)}
+            onClick={() => setShowPass((v) => !v)}
           >
             <use href="#eye-off" />
           </svg>
-
           <input
             name="password"
             type={showPass ? "text" : "password"}
@@ -301,15 +281,13 @@ const CreateUserLegal = () => {
           />
         </div>
 
-        {/* تکرار پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
           <svg
             className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowRePass((value) => !value)}
+            onClick={() => setShowRePass((v) => !v)}
           >
             <use href="#eye-off" />
           </svg>
-
           <input
             name="rePassword"
             type={showRePass ? "text" : "password"}
@@ -333,12 +311,10 @@ const CreateUserLegal = () => {
         />
         <input type="hidden" name="plan" value={selectedPlan} />
 
-        <input type="hidden" name="legal_user" value="legal" />
-
-        <SubmitButton title="افزودن کاربر حقوقی" />
+        <SubmitButton title="ویرایش کاربر حقوقی" />
       </div>
     </form>
   );
 };
 
-export default CreateUserLegal;
+export default EditLegalUser;

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import CreateUserReal from "./CreateUserReal";
 import CreateUserLegal from "./CreateUserLegal";
 import { usePathname } from "next/navigation";
+import EditLegalUser from "../UsersList/EditLegalUser";
 
 const CreateUserFilter = ({ userType, data }) => {
   const [activeTab, setActiveTab] = useState("real");
@@ -10,7 +11,6 @@ const CreateUserFilter = ({ userType, data }) => {
 
   useEffect(() => {
     if (userType) {
-      // اگر real بود تب حقیقی و اگر legal بود تب حقوقی فعال شود
       setActiveTab(userType === "real" ? "real" : "legal");
     }
   }, [userType]);
@@ -45,7 +45,9 @@ const CreateUserFilter = ({ userType, data }) => {
           {activeTab === "real" && <CreateUserReal />}
           {activeTab === "legal" && <CreateUserLegal />}
         </div>
-      ) : null}
+      ) : (
+        activeTab === "legal" && <EditLegalUser data={data} />
+      )}
     </>
   );
 };
