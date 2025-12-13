@@ -21,9 +21,15 @@ const Input = ({
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-3.5 top-0 bottom-0 m-auto"
           >
-            <svg className="w-4 h-4 text-[#ACB5BB]">
-              <use href="#eye-off" />
-            </svg>
+            {showPassword ? (
+              <svg className="w-4 h-4 text-[#ACB5BB]">
+                <use href="#eye-on" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4 text-[#ACB5BB]">
+                <use href="#eye-off" />
+              </svg>
+            )}
           </button>
           <input
             name="password"
