@@ -15,8 +15,8 @@ const page = async () => {
 
   const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
-  const categories = await getFetch("category-callrequests/", headers);
-  const services = await getFetch("service-callrequests/", headers);
+  const categories = await getFetch("users/agents-categories/", headers);
+  const services = await getFetch("service-tickets/", headers);
   const phones = await getFetch(`users/phones/`, headers);
 
   return (
