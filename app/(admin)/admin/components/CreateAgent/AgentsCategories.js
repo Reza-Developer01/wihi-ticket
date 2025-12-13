@@ -197,10 +197,12 @@ const AgentsCategories = ({ allCategories = [], selected = [], onChange }) => {
                 className="flex items-center justify-center w-[62px] h-full border-r border-r-[#EDF1F3] text-xs"
               >
                 <svg
+                  xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
-                  className="w-5 h-5"
+                  stroke="currentColor"
+                  className="size-6"
                 >
                   <path
                     strokeLinecap="round"
