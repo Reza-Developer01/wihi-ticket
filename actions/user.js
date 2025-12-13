@@ -404,4 +404,120 @@ const editRealUser = async (state, formData) => {
   }
 };
 
-export { createRealUser, createLegalUser, editRealUser };
+const editLegalUser = async (state, formData) => {
+  const userId = formData.get("id");
+  if (!userId) return { status: false, message: "شناسه کاربر یافت نشد." };
+
+  const company_name = formData.get("company_name");
+  const first_name = formData.get("first_name");
+  const last_name = formData.get("last_name");
+  const register_date = formData.get("register_date");
+  const registration_number = formData.get("registration_number");
+  const national_id = formData.get("national_id");
+  const economic_code = formData.get("economic_code");
+  const email = formData.get("email");
+  let phone = formData.get("phone");
+  const address = formData.get("address");
+  const floor = formData.get("floor");
+  const unit = formData.get("unit");
+  const postal_code = formData.get("postal_code");
+  const file = formData.get("file");
+  const username = formData.get("username");
+  const password = formData.get("password");
+  const rePassword = formData.get("rePassword");
+  const plan = formData.get("plan");
+
+  // اصلاح شماره موبایل
+  phone = phone?.replace(/\D/g, "");
+  if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
+
+  // -------------------
+  // Validation
+  // -------------------
+  if (!company_name?.trim())
+    return { status: false, message: "نام شرکت الزامی است." };
+  if (!first_name?.trim())
+    return { status: false, message: "نام مدیرعامل نمی‌تواند خالی باشد." };
+  if (!last_name?.trim())
+    return {
+      status: false,
+      message: "نام خانوادگی مدیرعامل نمی‌تواند خالی باشد.",
+    };
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return { status: false, message: "ایمیل معتبر نیست." };
+  if (!phone || !/^09\d{9}$/.test(phone))
+    return { status: false, message: "شماره موبایل معتبر نیست." };
+  if (!address?.trim() || address.length < 3)
+    return { status: false, message: "آدرس باید حداقل ۳ کاراکتر باشد." };
+  if (!floor || isNaN(floor))
+    return { status: false, message: "شماره طبقه معتبر نیست." };
+  if (!unit || isNaN(unit))
+    return { status: false, message: "شماره واحد معتبر نیست." };
+  if (!postal_code || !/^\d{10}$/.test(postal_code))
+    return { status: false, message: "کد پستی باید ۱۰ رقم باشد." };
+  if (file && file.size > 50 * 1024 * 1024)
+    return { status: false, message: "حداکثر حجم فایل ۵۰ مگابایت است." };
+  if (!username?.trim() || username.length < 3)
+    return { status: false, message: "نام کاربری باید حداقل ۳ کاراکتر باشد." };
+  if (password && password.length < 6)
+    return { status: false, message: "رمز عبور باید حداقل ۶ کاراکتر باشد." };
+  if (password && password !== rePassword)
+    return { status: false, message: "تکرار رمز عبور صحیح نیست." };
+
+  // -------------------
+  // ساخت FormData
+  // -------------------
+  const body = new FormData();
+
+  body.append("username", username);
+  if (password) body.append("password", password);
+  body.append("email", email);
+  body.append("phone", phone);
+  body.append("plan", plan);
+
+  // JSON کردن legal_user داخل FormData
+  const legalUserObj = {
+    company_name,
+    register_date,
+    registration_number,
+    national_id,
+    economic_code,
+    address,
+    floor,
+    unit,
+    postal_code,
+  };
+  body.append("legal_user", JSON.stringify(legalUserObj));
+
+  if (file) body.append("file", file);
+
+  const token = cookies().get("access_token")?.value;
+
+  try {
+    const res = await fetch(
+      `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+        body,
+      }
+    );
+
+    const data = await res.json();
+    console.log("PATCH Response =>", data);
+
+    if (!res.ok)
+      return {
+        status: false,
+        message: data?.message || "خطا در ویرایش کاربر حقوقی.",
+      };
+
+    return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
+  } catch (err) {
+    return { status: false, message: "خطا در ارتباط با سرور: " + err.message };
+  }
+};
+
+export { createRealUser, createLegalUser, editRealUser, editLegalUser };

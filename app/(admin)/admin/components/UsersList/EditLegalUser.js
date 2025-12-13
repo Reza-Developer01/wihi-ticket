@@ -5,14 +5,17 @@ import { toJalaali } from "jalaali-js";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import { useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import SubmitButton from "../SubmitButton";
 import SubTitle from "../SubTitle";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import UserPlans from "../CreateUser/UserPlans";
+import { editLegalUser } from "@/actions/user";
 
 const EditLegalUser = ({ data }) => {
+  console.log(data);
+  const [state, formAction] = useActionState(editLegalUser, {});
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
@@ -44,15 +47,19 @@ const EditLegalUser = ({ data }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // تابع submit برای ویرایش، فعلاً فقط یک نمونه toast
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    toast.success("اطلاعات کاربر حقوقی با موفقیت ویرایش شد");
-    // اینجا می‌تونی call server action رو اضافه کنی
-  };
+  useEffect(() => {
+    if (!state || Object.keys(state).length === 0) return;
+
+    if (state.status) {
+      toast.success(state.message);
+      router.refresh();
+    } else {
+      toast.error(state.message);
+    }
+  }, [state]);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-5">
+    <form action={formAction} className="mt-5">
       <div className="flex flex-col gap-y-4">
         <input
           name="company_name"
@@ -313,6 +320,7 @@ const EditLegalUser = ({ data }) => {
 
         <SubmitButton title="ویرایش کاربر حقوقی" />
       </div>
+      <input type="hidden" name="id" value={data?.id} />
     </form>
   );
 };
