@@ -110,7 +110,7 @@ const createRealUser = async (state, formData) => {
   body.append("real_user.unit", realUserObj.unit);
   body.append("real_user.postal_code", realUserObj.postal_code);
 
-  const file = formData.get("file");
+  const file = formData.get("contract_file");
   if (file) body.append("contract_file", file);
 
   const token = cookies().get("access_token")?.value;
@@ -163,7 +163,7 @@ const createLegalUser = async (state, formData) => {
   const floor = formData.get("floor");
   const unit = formData.get("unit");
   const postal_code = formData.get("postal_code");
-  const file = formData.get("file");
+  const file = formData.get("contract_file");
 
   const username = formData.get("username");
   const password = formData.get("password");

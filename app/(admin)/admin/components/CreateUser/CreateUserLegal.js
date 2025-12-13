@@ -259,7 +259,7 @@ const CreateUserLegal = () => {
           <input
             ref={fileRef}
             type="file"
-            name="file"
+            name="contract_file"
             className="absolute w-full h-full text-transparent cursor-pointer"
             // disabled={hasFile}
             onChange={(e) => {
@@ -269,8 +269,10 @@ const CreateUserLegal = () => {
                 toast.error("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
                 e.target.value = "";
                 setHasFile(false);
+                setFormData((prev) => ({ ...prev, file: "" }));
               } else {
                 setHasFile(true);
+                setFormData((prev) => ({ ...prev, file }));
               }
             }}
           />
