@@ -5,6 +5,10 @@ const PagesLinks = ({ user }) => {
     (p) => p.slug === "view_reports"
   );
 
+  const canViewCalls = user?.permissions?.some(
+    (p) => p.slug === "callrequests_permission"
+  );
+
   return (
     <section className="mb-5">
       <div className="container">
@@ -17,13 +21,15 @@ const PagesLinks = ({ user }) => {
             href="/agent/tickets"
           />
 
-          <PagesLink
-            title="تماس ها"
-            subTitle="جدیدترین ها"
-            hasLabel={true}
-            labelTitle="مشاهده آرشیو"
-            href="/agent/call"
-          />
+          {canViewCalls && user.role === "agent" && (
+            <PagesLink
+              title="تماس ها"
+              subTitle="جدیدترین ها"
+              hasLabel={true}
+              labelTitle="مشاهده آرشیو"
+              href="/agent/call"
+            />
+          )}
 
           {canViewReports && (
             <PagesLink title="گزارشات" href="/agent/reports" />
