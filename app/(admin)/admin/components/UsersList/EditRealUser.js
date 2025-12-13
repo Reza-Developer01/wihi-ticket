@@ -18,7 +18,12 @@ const EditRealUser = ({ data }) => {
   const [state, formAction] = useActionState(editRealUser, {});
   const router = useRouter();
 
-  const [hasFile, setHasFile] = useState(false);
+  const [hasFile, setHasFile] = useState(
+    Boolean(data?.real_user?.contract_file)
+  );
+  const [existingFile, setExistingFile] = useState(
+    data?.real_user?.contract_file || null
+  );
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
 
@@ -214,38 +219,46 @@ const EditRealUser = ({ data }) => {
 
         {/* فایل قرارداد */}
         <div
-          className={`custom-shadow relative flex items-center w-full h-12 rounded-[10px] overflow-hidden transition-all duration-300 ${
-            hasFile ? "bg-[#00C96B33]" : "bg-[#EFF0F6]"
+          className={`custom-shadow relative flex items-center w-full h-12 rounded-[10px] overflow-hidden transition-all duration-300 pl-6 ${
+            hasFile
+              ? existingFile
+                ? "bg-blue-50"
+                : "bg-[#00C96B33]"
+              : "bg-[#EFF0F6]"
           }`}
         >
           <button
             type="button"
-            className="flex items-center justify-between grow pr-6 pl-[15px]"
+            className="flex items-center justify-between grow pr-6"
           >
             <span
-              className={`font-semibold text-xs/[16.8px] ${
-                hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
-              } tracking-[-0.12px]`}
+              className={`font-semibold text-xs/[16.8px] tracking-[-0.12px] ${
+                hasFile
+                  ? existingFile
+                    ? "text-blue-600"
+                    : "text-[#00C96B]"
+                  : "text-[#8C8C8C]"
+              }`}
             >
-              {hasFile ? "فایل انتخاب شد" : "آپلود فایل قرارداد"}
+              {hasFile
+                ? existingFile
+                  ? "فایل قرارداد قبلاً آپلود شده"
+                  : "فایل جدید انتخاب شد"
+                : "آپلود فایل قرارداد"}
               <span className="font-normal text-[8px]/[11.2px]">
                 ( تا حجم 50 مگابایت )
               </span>
             </span>
-            <svg
-              className={`w-[25px] h-[25px] ${
-                hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
-              }`}
-            >
-              <use href="#upload" />
-            </svg>
           </button>
 
           <input
             ref={fileRef}
             type="file"
             name="file"
-            className="absolute w-full h-full text-transparent cursor-pointer"
+            disabled={Boolean(existingFile)}
+            className={`absolute w-full h-full text-transparent cursor-pointer ${
+              existingFile ? "pointer-events-none" : ""
+            }`}
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
@@ -253,12 +266,23 @@ const EditRealUser = ({ data }) => {
               if (file.size > 50 * 1024 * 1024) {
                 toast.error("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
                 e.target.value = "";
-                setHasFile(false);
-              } else {
-                setHasFile(true);
+                return;
               }
+              setHasFile(true);
+              setExistingFile(null);
             }}
           />
+          {existingFile && (
+            <a
+              href={existingFile}
+              target="_blank"
+              className="text-xs text-blue-600 underline inline-block"
+            >
+              <svg className="w-6 h-6 shrink-0">
+                <use href="#paper-download" />
+              </svg>
+            </a>
+          )}
         </div>
 
         {/* اطلاعات ورود */}

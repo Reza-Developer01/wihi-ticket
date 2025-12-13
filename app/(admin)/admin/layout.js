@@ -331,6 +331,39 @@ export default async function RootLayout({ children }) {
               strokeLinejoin="round"
             />
           </symbol>
+          <symbol
+            id="paper-download"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M20.1594 8.29988L14.4894 2.89988C13.7594 2.79988 12.9394 2.74988 12.0394 2.74988C5.74941 2.74988 3.64941 5.06988 3.64941 11.9999C3.64941 18.9399 5.74941 21.2499 12.0394 21.2499C18.3394 21.2499 20.4394 18.9399 20.4394 11.9999C20.4394 10.5799 20.3494 9.34988 20.1594 8.29988Z"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M13.9336 2.83252V5.49352C13.9336 7.35152 15.4396 8.85652 17.2976 8.85652H20.2486"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M11.6602 16.0172V9.9762"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9.31445 13.6622L11.6595 16.0172L14.0045 13.6622"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </symbol>
         </svg>
         {children}
         <HotToast />
