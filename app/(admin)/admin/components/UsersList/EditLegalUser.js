@@ -14,7 +14,7 @@ import UserPlans from "../CreateUser/UserPlans";
 import { editLegalUser } from "@/actions/user";
 
 const EditLegalUser = ({ data }) => {
-  console.log(data);
+  console.log("Initial data:", data);
   const [state, formAction] = useActionState(editLegalUser, {});
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
@@ -42,7 +42,6 @@ const EditLegalUser = ({ data }) => {
           )}`;
         })()
       : "",
-
     register_date_gregorian: data?.register_date
       ? (() => {
           const parts = data.register_date.split("/");
@@ -67,9 +66,11 @@ const EditLegalUser = ({ data }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    console.log(`Field changed: ${name} =>`, value);
   };
 
   useEffect(() => {
+    console.log("State Updated:", state);
     if (!state || Object.keys(state).length === 0) return;
 
     if (state.status) {
@@ -80,8 +81,22 @@ const EditLegalUser = ({ data }) => {
     }
   }, [state]);
 
+  const logFormDataBeforeSubmit = (e) => {
+    console.log("FormData before submit:");
+    const form = new FormData(e.target);
+    for (let [key, value] of form.entries()) {
+      console.log(key, value);
+    }
+  };
+
   return (
-    <form action={formAction} className="mt-5">
+    <form
+      action={(e) => {
+        logFormDataBeforeSubmit(e);
+        formAction(e);
+      }}
+      className="mt-5"
+    >
       <div className="flex flex-col gap-y-4">
         <input
           name="company_name"
@@ -142,10 +157,15 @@ const EditLegalUser = ({ data }) => {
                   d.getMonth() + 1
                 ).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
+                console.log("DatePicker changed:", {
+                  jDateFormatted,
+                  gDateFormatted,
+                });
+
                 setFormData((prev) => ({
                   ...prev,
-                  register_date: jDateFormatted, // شمسی (نمایش)
-                  register_date_gregorian: gDateFormatted, // میلادی (ارسال)
+                  register_date: jDateFormatted,
+                  register_date_gregorian: gDateFormatted,
                 }));
               }}
             />
@@ -196,7 +216,10 @@ const EditLegalUser = ({ data }) => {
         <PhoneInput
           name="phone"
           value={formData.phone}
-          onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
+          onChange={(phone) => {
+            console.log("Phone changed:", phone);
+            setFormData((prev) => ({ ...prev, phone }));
+          }}
           defaultCountry="ir"
           className="input-shadow w-full h-[46px] text-sm/[19.6px] text-[#1A1C1E] font-medium rounded-[10px] outline-none"
           inputClassName="!h-full !pl-2.5 !bg-white !text-[#1A1C1E] placeholder:!text-[#1A1C1E] !text-left !grow !outline-none !shadow-none !ring-0 !p-0 !rounded-r-[10px] !border-[#EDF1F3]"
@@ -282,6 +305,7 @@ const EditLegalUser = ({ data }) => {
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
+              console.log("File selected:", file);
               if (file.size > 50 * 1024 * 1024) {
                 toast.error("حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.");
                 e.target.value = "";
