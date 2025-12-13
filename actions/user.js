@@ -111,7 +111,11 @@ const createRealUser = async (state, formData) => {
   body.append("real_user.postal_code", realUserObj.postal_code);
 
   const file = formData.get("contract_file");
-  if (file) body.append("contract_file", file);
+  console.log("📎 Uploaded file:", file);
+
+  if (file instanceof File) {
+    body.append("real_user.contract_file", file);
+  }
 
   const token = cookies().get("access_token")?.value;
 
