@@ -153,15 +153,15 @@ const AgentsCategories = ({ allCategories = [], selected = [], onChange }) => {
         )}
 
         {/* Button to open modal */}
-        {pathname === "/admin/create-agent" && (
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center justify-center w-full text-[#8C8C8C] font-medium text-xs/[16.8px] mt-4"
-          >
-            تعریف دستــه بندی جدید
-          </button>
-        )}
+        {/* {pathname === "/admin/create-agent" && ( */}
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center justify-center w-full text-[#8C8C8C] font-medium text-xs/[16.8px] mt-4"
+        >
+          تعریف دستــه بندی جدید
+        </button>
+        {/* )} */}
 
         {/* Hidden input for form submission */}
         <input
