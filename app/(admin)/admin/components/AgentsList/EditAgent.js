@@ -237,7 +237,7 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
             onChange={handleChange}
             placeholder="*******"
             className="text-left outline-none placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
-            style={{ direction: "ltr" }}
+            style={{ direction: "ltr", width: "100%" }}
           />
         </div>
 
@@ -248,14 +248,14 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
               className="w-4 h-4 text-[#ACB5BB]"
               onClick={() => setShowRePass((v) => !v)}
             >
-              <use href="#eye-off" />
+              <use href="#eye-on" />
             </svg>
           ) : (
             <svg
               className="w-4 h-4 text-[#ACB5BB]"
               onClick={() => setShowRePass((v) => !v)}
             >
-              <use href="#eye-on" />
+              <use href="#eye-off" />
             </svg>
           )}
 
@@ -266,7 +266,7 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
             onChange={handleChange}
             placeholder="*******"
             className="text-left outline-none placeholder:text-[#1A1C1E] font-medium text-sm/[19.6px] tracking-[-0.12px]"
-            style={{ direction: "ltr" }}
+            style={{ direction: "ltr", width: "100%" }}
           />
         </div>
 
