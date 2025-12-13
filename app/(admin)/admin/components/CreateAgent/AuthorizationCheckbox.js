@@ -15,10 +15,10 @@ const AuthorizationCheckbox = ({ onChangePermission, permissions }) => {
       key: "can_assign_callrequests",
       title: "امکان هدایت درخواست تماس به کارشناس",
     },
-    // {
-    //   key: "can_assign_callrequests",
-    //   title: "دسترسی به درخواست های تماس",
-    // },
+    {
+      key: "callrequests_permission",
+      title: "دسترسی به درخواست های تماس",
+    },
   ];
 
   return (
