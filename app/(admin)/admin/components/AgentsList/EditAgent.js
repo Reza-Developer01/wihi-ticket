@@ -214,12 +214,21 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
 
         {/* پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg
-            className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowPass((v) => !v)}
-          >
-            <use href="#eye-off" />
-          </svg>
+          {showPass ? (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowPass((v) => !v)}
+            >
+              <use href="#eye-on" />
+            </svg>
+          ) : (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowPass((v) => !v)}
+            >
+              <use href="#eye-off" />
+            </svg>
+          )}
 
           <input
             name="password"
@@ -234,12 +243,21 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
 
         {/* تکرار پسورد */}
         <div className="input-shadow flex items-center justify-between w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px]">
-          <svg
-            className="w-4 h-4 text-[#ACB5BB]"
-            onClick={() => setShowRePass((v) => !v)}
-          >
-            <use href="#eye-off" />
-          </svg>
+          {showRePass ? (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowRePass((v) => !v)}
+            >
+              <use href="#eye-off" />
+            </svg>
+          ) : (
+            <svg
+              className="w-4 h-4 text-[#ACB5BB]"
+              onClick={() => setShowRePass((v) => !v)}
+            >
+              <use href="#eye-on" />
+            </svg>
+          )}
 
           <input
             name="rePassword"
