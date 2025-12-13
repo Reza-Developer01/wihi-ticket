@@ -20,7 +20,7 @@ const createRealUser = async (state, formData) => {
   const rePassword = formData.get("rePassword");
   const plan = formData.get("plan");
   const user_type = formData.get("user_type");
-  const real_user = formData.get("real_user");
+  const register_date = formData.get("register_date");
 
   // اصلاح شماره موبایل +98 → 09
   phone = phone?.replace(/\D/g, "");
@@ -101,6 +101,7 @@ const createRealUser = async (state, formData) => {
   body.append("last_name", last_name);
   body.append("user_type", "real");
   body.append("plan", plan);
+  body.append("register_date", register_date);
 
   // 🔥 فیلدهای real_user را تک‌به‌تک append می‌کنیم
   body.append("real_user.address", realUserObj.address);
