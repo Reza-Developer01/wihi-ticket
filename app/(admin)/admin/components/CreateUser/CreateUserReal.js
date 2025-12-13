@@ -85,14 +85,7 @@ const CreateUserReal = () => {
             <DatePicker
               value={formData.register_date}
               onChange={(e) => {
-                const d = new Date(e.value);
-                const { jy, jm, jd } = toJalaali(d);
-
-                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
-                  jd
-                ).padStart(2, "0")}`;
-
-                setFormData((prev) => ({ ...prev, register_date: jDate }));
+                setFormData((prev) => ({ ...prev, register_date: e.value }));
               }}
               round="x2"
               defaultValue={new Date()}
@@ -101,7 +94,11 @@ const CreateUserReal = () => {
             <input
               type="hidden"
               name="register_date"
-              value={formData.register_date}
+              value={
+                formData.register_date instanceof Date
+                  ? formData.register_date.toISOString().slice(0, 10)
+                  : formData.register_date
+              }
             />
           </div>
         </div>

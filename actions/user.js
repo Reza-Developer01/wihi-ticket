@@ -467,6 +467,7 @@ const editLegalUser = async (state, formData) => {
   // JSON کردن legal_user داخل FormData
   const legalUserObj = {
     company_name,
+    register_date,
     registration_number,
     national_id,
     economic_code,
