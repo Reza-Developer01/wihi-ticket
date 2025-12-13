@@ -6,15 +6,14 @@ import { PhoneInput } from "react-international-phone";
 import { useActionState, useEffect, useState } from "react";
 import "react-international-phone/style.css";
 import SubTitle from "../SubTitle";
-
-import { editAgent } from "@/actions/agent";
-import toast from "react-hot-toast";
-import { toGregorian, toJalaali } from "jalaali-js";
-import SubmitButton from "../SubmitButton";
-import { useRouter } from "next/navigation";
 import AgentsCategories from "../CreateAgent/AgentsCategories";
 import AuthorizationCheckbox from "../CreateAgent/AuthorizationCheckbox";
 import OperationAdmin from "./OperationAdmin";
+import { editAgent } from "@/actions/agent";
+import toast from "react-hot-toast";
+import SubmitButton from "../SubmitButton";
+import { toJalaali } from "jalaali-js";
+import { useRouter } from "next/navigation";
 
 const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
   const router = useRouter();
@@ -25,7 +24,8 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    register_date: null,
+    register_date: "",
+    register_date_gregorian: "",
     email: "",
     phone: "",
     username: "",
@@ -36,25 +36,38 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
   const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
-    if (agent?.register_date) {
-      const [jy, jm, jd] = agent.register_date.split("-").map(Number);
-      const { gy, gm, gd } = toGregorian(jy, jm, jd);
-      const date = new Date(gy, gm - 1, gd);
+    if (!agent) return;
 
-      setFormData((prev) => ({
-        ...prev,
-        first_name: agent.first_name || "",
-        last_name: agent.last_name || "",
-        register_date: isNaN(date) ? null : date,
-        email: agent.email || "",
-        phone: agent.phone || "",
-        username: agent.username || "",
-        password: "",
-        rePassword: "",
-      }));
-      setPermissions(agent.permissions || []);
-      setSelected(selectedCategories || []);
+    let register_date = "";
+    let register_date_gregorian = "";
+
+    if (agent.register_date) {
+      const d = new Date(agent.register_date);
+      if (!isNaN(d.getTime())) {
+        const { jy, jm, jd } = toJalaali(d);
+        register_date = `${jy}/${String(jm).padStart(2, "0")}/${String(
+          jd
+        ).padStart(2, "0")}`;
+
+        // حفظ تاریخ میلادی برای submit
+        register_date_gregorian = agent.register_date;
+      }
     }
+
+    setFormData({
+      first_name: agent.first_name || "",
+      last_name: agent.last_name || "",
+      register_date,
+      register_date_gregorian,
+      email: agent.email || "",
+      phone: agent.phone || "",
+      username: agent.username || "",
+      password: "",
+      rePassword: "",
+    });
+
+    setPermissions(agent.permissions || []);
+    setSelected(selectedCategories || []);
   }, [agent]);
 
   const handlePermissionChange = (key, checked) => {
@@ -79,24 +92,6 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
     } else toast.error(state?.message);
   }, [state]);
 
-  let formattedJalaali = "";
-  if (
-    formData.register_date instanceof Date &&
-    !isNaN(formData.register_date.getTime())
-  ) {
-    const year = formData.register_date.getFullYear();
-    const month = formData.register_date.getMonth() + 1;
-    const day = formData.register_date.getDate();
-
-    // مطمئن شدن از اعداد صحیح
-    if (year > 0 && month > 0 && month <= 12 && day > 0 && day <= 31) {
-      const { jy, jm, jd } = toJalaali(year, month, day);
-      formattedJalaali = `${jy}/${String(jm).padStart(2, "0")}/${String(
-        jd
-      ).padStart(2, "0")}`;
-    }
-  }
-
   return (
     <form action={formAction}>
       <div className="flex flex-col gap-y-4">
@@ -110,7 +105,6 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
             value={formData.first_name}
             onChange={handleChange}
           />
-
           <Input
             placeholder="نام خانوادگی"
             name="last_name"
@@ -119,40 +113,55 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
           />
         </div>
 
-        {/* DatePicker */}
+        {/* تاریخ */}
         <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
 
           <div className="relative w-full">
+            {/* نمایش شمسی */}
             {formData.register_date && (
               <span className="custom__jalali absolute left-3 top-1/2 -translate-y-1/2 text-[#1A1C1E] pointer-events-none font-medium text-sm">
-                {formattedJalaali}
+                {formData.register_date}
               </span>
             )}
 
             <DatePicker
               value={
-                formData.register_date instanceof Date
-                  ? formData.register_date
+                formData.register_date_gregorian
+                  ? new Date(formData.register_date_gregorian)
                   : null
               }
               onChange={(e) => {
                 const d = new Date(e.value);
                 if (!isNaN(d.getTime())) {
-                  setFormData((prev) => ({ ...prev, register_date: d }));
+                  const { jy, jm, jd } = toJalaali(d);
+                  const jDateFormatted = `${jy}/${String(jm).padStart(
+                    2,
+                    "0"
+                  )}/${String(jd).padStart(2, "0")}`;
+
+                  const gDateFormatted = `${d.getFullYear()}-${String(
+                    d.getMonth() + 1
+                  ).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+                  setFormData((prev) => ({
+                    ...prev,
+                    register_date: jDateFormatted,
+                    register_date_gregorian: gDateFormatted,
+                  }));
                 }
               }}
               round="x2"
               className="w-full"
             />
 
-            {/* input مخفی برای submit */}
+            {/* input مخفی برای submit با فرمت میلادی */}
             <input
               type="hidden"
               name="register_date"
-              value={formattedJalaali}
+              value={formData.register_date_gregorian || ""}
             />
           </div>
         </div>
@@ -186,7 +195,7 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
         <AgentsCategories
           allCategories={agentsCategory}
           selected={selected}
-          onChange={(value) => setSelected(value)}
+          onChange={setSelected}
         />
 
         <div className="w-full *:mb-0 *:mt-5">

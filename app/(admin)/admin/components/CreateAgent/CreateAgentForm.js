@@ -88,13 +88,12 @@ const CreateAgentForm = ({ agentsCategory }) => {
               value={formData.register_date}
               onChange={(e) => {
                 const d = new Date(e.value);
-                const { jy, jm, jd } = toJalaali(d);
 
-                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
-                  jd
-                ).padStart(2, "0")}`;
+                const mDate = `${d.getFullYear()}-${String(
+                  d.getMonth() + 1
+                ).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
-                setFormData((prev) => ({ ...prev, register_date: jDate }));
+                setFormData((prev) => ({ ...prev, register_date: mDate }));
               }}
               round="x2"
               defaultValue={new Date()}
