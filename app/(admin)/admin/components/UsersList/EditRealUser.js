@@ -87,12 +87,17 @@ const EditRealUser = ({ data }) => {
             <use href="#calendar-due" />
           </svg>
 
-          <div
-            className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]"
-            style={{ textAlignLast: "left" }}
-          >
+          <div className="relative w-full">
+            {formData.register_date && (
+              <span className="custom__jalali absolute left-3 top-1/2 -translate-y-1/2 text-[#1A1C1E] pointer-events-none font-medium text-sm">
+                {formData.register_date}
+              </span>
+            )}
+
             <DatePicker
-              value={formData.register_date}
+              value={
+                formData.register_date ? new Date(formData.register_date) : null
+              }
               onChange={(e) => {
                 const d = new Date(e.value);
                 const { jy, jm, jd } = toJalaali(d);
@@ -103,8 +108,10 @@ const EditRealUser = ({ data }) => {
                 setFormData((prev) => ({ ...prev, register_date: jDate }));
               }}
               round="x2"
+              className="w-full"
             />
 
+            {/* input مخفی برای submit */}
             <input
               type="hidden"
               name="register_date"
