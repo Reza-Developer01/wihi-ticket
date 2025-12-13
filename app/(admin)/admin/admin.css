@@ -112,3 +112,8 @@ body {
 .date-picker input {
     color: #8C8C8C;
 }
+
+.date-picker input {
+    width: 100%;
+    height: 100%;
+}

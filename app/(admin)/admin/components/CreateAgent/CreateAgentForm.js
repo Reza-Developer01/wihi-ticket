@@ -81,7 +81,7 @@ const CreateAgentForm = ({ agentsCategory }) => {
           </svg>
 
           <div
-            className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]"
+            className="date-picker h-full flex items-center justify-end text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E] grow"
             style={{ textAlignLast: "left" }}
           >
             <DatePicker
@@ -97,6 +97,7 @@ const CreateAgentForm = ({ agentsCategory }) => {
               }}
               round="x2"
               defaultValue={new Date()}
+              className="w-full"
             />
 
             <input
