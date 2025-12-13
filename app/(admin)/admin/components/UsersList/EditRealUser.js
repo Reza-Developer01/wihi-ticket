@@ -29,14 +29,26 @@ const EditRealUser = ({ data }) => {
   const [formData, setFormData] = useState({
     first_name: data?.first_name || "",
     last_name: data?.last_name || "",
-    register_date: data?.register_date || "",
+    register_date: data?.register_date
+      ? (() => {
+          // فرض می‌کنیم data.register_date به صورت "YYYY/MM/DD" هست
+          const parts = data.register_date.split("/");
+          const gy = parseInt(parts[0]);
+          const gm = parseInt(parts[1]);
+          const gd = parseInt(parts[2]);
+          const { jy, jm, jd } = toJalaali(gy, gm, gd);
+          return `${jy}/${String(jm).padStart(2, "0")}/${String(jd).padStart(
+            2,
+            "0"
+          )}`;
+        })()
+      : "",
+
     email: data?.email || "",
     phone: data?.phone || "",
     username: data?.username || "",
     password: "",
     rePassword: "",
-
-    // اطلاعات داخل real_user
     address: data?.real_user?.address || "",
     floor: data?.real_user?.floor || "",
     unit: data?.real_user?.unit || "",
@@ -51,6 +63,7 @@ const EditRealUser = ({ data }) => {
   };
 
   useEffect(() => {
+    console.log("🚀 formData to send:", formData);
     if (!state || Object.keys(state).length === 0) return;
 
     if (state.status) {
@@ -96,26 +109,35 @@ const EditRealUser = ({ data }) => {
 
             <DatePicker
               value={
-                formData.register_date ? new Date(formData.register_date) : null
+                formData.register_date_gregorian
+                  ? new Date(formData.register_date_gregorian)
+                  : null
               }
               onChange={(e) => {
                 const d = new Date(e.value);
-                const { jy, jm, jd } = toJalaali(d);
-                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
-                  jd
-                ).padStart(2, "0")}`;
 
-                setFormData((prev) => ({ ...prev, register_date: jDate }));
+                const { jy, jm, jd } = toJalaali(d);
+                const jDateFormatted = `${jy}/${String(jm).padStart(
+                  2,
+                  "0"
+                )}/${String(jd).padStart(2, "0")}`;
+
+                const gDateFormatted = `${d.getFullYear()}-${String(
+                  d.getMonth() + 1
+                ).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+                setFormData((prev) => ({
+                  ...prev,
+                  register_date: jDateFormatted,
+                  register_date_gregorian: gDateFormatted,
+                }));
               }}
-              round="x2"
-              className="w-full"
             />
 
-            {/* input مخفی برای submit */}
             <input
               type="hidden"
               name="register_date"
-              value={formData.register_date}
+              value={formData.register_date_gregorian || ""}
             />
           </div>
         </div>

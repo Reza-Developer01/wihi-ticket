@@ -1,5 +1,6 @@
 "use server";
 
+import { toGregorian } from "jalaali-js";
 import { cookies } from "next/headers";
 
 const createRealUser = async (state, formData) => {
@@ -302,7 +303,7 @@ const createLegalUser = async (state, formData) => {
 };
 
 const editRealUser = async (state, formData) => {
-  const userId = formData.get("id"); // باید در فرم hidden بگذاری
+  const userId = formData.get("id"); // باید در فرم hidden گذاشته شود
   if (!userId) return { status: false, message: "شناسه کاربر یافت نشد." };
 
   const first_name = formData.get("first_name");
@@ -321,7 +322,6 @@ const editRealUser = async (state, formData) => {
   const rePassword = formData.get("rePassword");
 
   const plan = formData.get("plan");
-
   const file = formData.get("file");
 
   // اصلاح شماره موبایل
@@ -329,7 +329,7 @@ const editRealUser = async (state, formData) => {
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
   // -------------------------
-  //   Validation
+  // Validation
   // -------------------------
   if (!first_name)
     return { status: false, message: "نام نمی‌تواند خالی باشد." };
@@ -337,19 +337,16 @@ const editRealUser = async (state, formData) => {
     return { status: false, message: "نام خانوادگی نمی‌تواند خالی باشد." };
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return { status: false, message: "ایمیل معتبر نیست." };
-
   if (!phone || !/^09\d{9}$/.test(phone))
     return { status: false, message: "شماره موبایل معتبر نیست." };
-
   if (password && password !== rePassword)
     return { status: false, message: "تکرار رمز عبور صحیح نیست." };
-
   if (file && file.size > 50 * 1024 * 1024)
     return { status: false, message: "حداکثر حجم فایل ۵۰ مگابایت است." };
 
-  // ---------------------------
+  // -------------------------
   // ساخت FormData برای PATCH
-  // ---------------------------
+  // -------------------------
   const body = new FormData();
 
   body.append("first_name", first_name);
@@ -360,7 +357,6 @@ const editRealUser = async (state, formData) => {
   body.append("plan", plan);
   body.append("register_date", register_date);
 
-  // real_user.* فیلدهای
   body.append("real_user.address", address);
   body.append("real_user.floor", floor);
   body.append("real_user.unit", unit);
@@ -369,7 +365,6 @@ const editRealUser = async (state, formData) => {
   if (password) body.append("password", password);
   if (file) body.append("contract_file", file);
 
-  // Token
   const token = cookies().get("access_token")?.value;
 
   try {
@@ -377,15 +372,13 @@ const editRealUser = async (state, formData) => {
       `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
       {
         method: "PATCH",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : undefined,
-        },
+        headers: { Authorization: token ? `Bearer ${token}` : undefined },
         body,
       }
     );
 
     const data = await res.json();
-    console.log("PATCH Response => ", data);
+    console.log(data);
 
     if (!res.ok)
       return {
@@ -393,15 +386,9 @@ const editRealUser = async (state, formData) => {
         message: data?.message || "خطا در ویرایش کاربر.",
       };
 
-    return {
-      status: true,
-      message: "کاربر با موفقیت ویرایش شد.",
-    };
+    return { status: true, message: "کاربر با موفقیت ویرایش شد." };
   } catch (err) {
-    return {
-      status: false,
-      message: "خطا در ارتباط با سرور: " + err.message,
-    };
+    return { status: false, message: "خطا در ارتباط با سرور: " + err.message };
   }
 };
 
