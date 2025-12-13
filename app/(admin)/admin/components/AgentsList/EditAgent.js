@@ -36,19 +36,22 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
   const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
-    if (agent) {
+    if (agent?.register_date) {
       const [jy, jm, jd] = agent.register_date.split("-").map(Number);
       const { gy, gm, gd } = toGregorian(jy, jm, jd);
-      setFormData({
+      const date = new Date(gy, gm - 1, gd);
+
+      setFormData((prev) => ({
+        ...prev,
         first_name: agent.first_name || "",
         last_name: agent.last_name || "",
-        register_date: new Date(gy, gm - 1, gd),
+        register_date: isNaN(date) ? null : date,
         email: agent.email || "",
         phone: agent.phone || "",
         username: agent.username || "",
         password: "",
         rePassword: "",
-      });
+      }));
       setPermissions(agent.permissions || []);
       setSelected(selectedCategories || []);
     }
@@ -76,13 +79,23 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
     } else toast.error(state?.message);
   }, [state]);
 
-  const formattedJalaali = formData.register_date
-    ? `${toJalaali(formData.register_date).jy}-${String(
-        toJalaali(formData.register_date).jm
-      ).padStart(2, "0")}-${String(
-        toJalaali(formData.register_date).jd
-      ).padStart(2, "0")}`
-    : "";
+  let formattedJalaali = "";
+  if (
+    formData.register_date instanceof Date &&
+    !isNaN(formData.register_date.getTime())
+  ) {
+    const year = formData.register_date.getFullYear();
+    const month = formData.register_date.getMonth() + 1;
+    const day = formData.register_date.getDate();
+
+    // مطمئن شدن از اعداد صحیح
+    if (year > 0 && month > 0 && month <= 12 && day > 0 && day <= 31) {
+      const { jy, jm, jd } = toJalaali(year, month, day);
+      formattedJalaali = `${jy}/${String(jm).padStart(2, "0")}/${String(
+        jd
+      ).padStart(2, "0")}`;
+    }
+  }
 
   return (
     <form action={formAction}>
@@ -120,13 +133,17 @@ const EditAgent = ({ agentsCategory, agent, selectedCategories }) => {
             )}
 
             <DatePicker
-              value={formData.register_date}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  register_date: new Date(e.value),
-                }))
+              value={
+                formData.register_date instanceof Date
+                  ? formData.register_date
+                  : null
               }
+              onChange={(e) => {
+                const d = new Date(e.value);
+                if (!isNaN(d.getTime())) {
+                  setFormData((prev) => ({ ...prev, register_date: d }));
+                }
+              }}
               round="x2"
               className="w-full"
             />
