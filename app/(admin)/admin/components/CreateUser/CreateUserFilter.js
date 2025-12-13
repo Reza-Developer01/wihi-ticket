@@ -9,12 +9,14 @@ import EditRealUser from "../UsersList/EditRealUser";
 const CreateUserFilter = ({ userType, data }) => {
   const [activeTab, setActiveTab] = useState("real");
   const pathname = usePathname();
+  const isCreatePage = pathname === "/admin/create-user";
 
   useEffect(() => {
-    if (userType) {
+    if (userType && !isCreatePage) {
+      // هنگام ویرایش تب مربوطه را فعال کن
       setActiveTab(userType === "real" ? "real" : "legal");
     }
-  }, [userType]);
+  }, [userType, isCreatePage]);
 
   const activeStyle =
     "filter-button__shadow grow bg-white font-medium text-sm/[21px] text-[#232447] border border-[#EFF0F680] h-full rounded-md tracking-[-0.64px]";
@@ -23,38 +25,42 @@ const CreateUserFilter = ({ userType, data }) => {
 
   return (
     <>
+      {/* تب‌ها */}
       <div className="custom-shadow flex items-center gap-x-px w-full h-12 p-0.5 bg-[#F5F6F9] border border-[#F5F6F9] rounded-[7px]">
-        <button
-          type="button"
-          onClick={() => setActiveTab("real")}
-          className={activeTab === "real" ? activeStyle : inactiveStyle}
-        >
-          حقیقــــی
-        </button>
+        {/* دکمه حقیقی */}
+        {(isCreatePage || userType === "real") && (
+          <button
+            type="button"
+            onClick={isCreatePage ? () => setActiveTab("real") : undefined} // غیرقابل کلیک هنگام ویرایش
+            className={activeTab === "real" ? activeStyle : inactiveStyle}
+          >
+            حقیقــــی
+          </button>
+        )}
 
-        <button
-          type="button"
-          onClick={() => setActiveTab("legal")}
-          className={activeTab === "legal" ? activeStyle : inactiveStyle}
-        >
-          حقــوقی
-        </button>
+        {/* دکمه حقوقی */}
+        {(isCreatePage || userType === "legal") && (
+          <button
+            type="button"
+            onClick={isCreatePage ? () => setActiveTab("legal") : undefined} // غیرقابل کلیک هنگام ویرایش
+            className={activeTab === "legal" ? activeStyle : inactiveStyle}
+          >
+            حقــوقی
+          </button>
+        )}
       </div>
 
+      {/* فرم‌ها */}
       <div className="mt-4">
-        {pathname === "/admin/create-user" ? (
+        {isCreatePage ? (
           <>
             {activeTab === "real" && <CreateUserReal />}
             {activeTab === "legal" && <CreateUserLegal />}
           </>
         ) : (
           <>
-            {activeTab === "real" && data.real_user && (
-              <EditRealUser data={data} />
-            )}
-            {activeTab === "legal" && data.legal_user && (
-              <EditLegalUser data={data} />
-            )}
+            {activeTab === "real" && <EditRealUser data={data} />}
+            {activeTab === "legal" && <EditLegalUser data={data} />}
           </>
         )}
       </div>
