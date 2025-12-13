@@ -1,7 +1,7 @@
 "use client";
 
 import { DatePicker } from "zaman";
-import { toJalaali } from "jalaali-js";
+import { toGregorian, toJalaali } from "jalaali-js";
 import Input from "../Input";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
@@ -13,17 +13,38 @@ import toast from "react-hot-toast";
 import UserPlans from "../CreateUser/UserPlans";
 import { editLegalUser } from "@/actions/user";
 
+const parseGregorian = (jalaliDate) => {
+  if (!jalaliDate) return null;
+  const parts = jalaliDate.split("/").map(Number); // [year, month, day]
+  const { gy, gm, gd } = toGregorian(parts[0], parts[1], parts[2]);
+  return new Date(gy, gm - 1, gd); // ماه در Date صفر پایه است
+};
+
 const EditLegalUser = ({ data }) => {
   console.log(data);
   const [state, formAction] = useActionState(editLegalUser, {});
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
+  const router = useRouter();
+  const fileRef = useRef(null);
+  const [selectedPlan, setSelectedPlan] = useState(data?.plan || 1);
+
   const [formData, setFormData] = useState({
     company_name: data?.legal_user?.company_name || "",
     first_name: data?.first_name || "",
     last_name: data?.last_name || "",
-    register_date: data?.legal_user?.register_date || "",
+    register_date: data?.register_date
+      ? (() => {
+          const parts = data.register_date.split("/").map(Number);
+          return `${parts[0]}/${String(parts[1]).padStart(2, "0")}/${String(
+            parts[2]
+          ).padStart(2, "0")}`; // شمسی برای نمایش
+        })()
+      : "",
+    register_date_gregorian: data?.register_date
+      ? parseGregorian(data.register_date)
+      : null, // Date object برای DatePicker
     registration_number: data?.legal_user?.registration_number || "",
     email: data?.email || "",
     phone: data?.phone || "",
@@ -38,9 +59,6 @@ const EditLegalUser = ({ data }) => {
     economic_code: data?.legal_user?.economic_code || "",
     national_id: data?.legal_user?.national_id || "",
   });
-  const router = useRouter();
-  const fileRef = useRef(null);
-  const [selectedPlan, setSelectedPlan] = useState(data?.plan || 1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,35 +107,44 @@ const EditLegalUser = ({ data }) => {
           />
         </div>
 
-        <div className="input-shadow flex items-center gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5 relative">
+        <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
           <svg className="w-4 h-4 text-[#ACB5BB]">
             <use href="#calendar-due" />
           </svg>
 
-          <div className="date-picker h-full flex items-center text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]">
+          <div className="relative w-full">
+            {formData.register_date && (
+              <span className="custom__jalali absolute left-3 top-1/2 -translate-y-1/2 text-[#1A1C1E] pointer-events-none font-medium text-sm">
+                {formData.register_date}
+              </span>
+            )}
+
             <DatePicker
-              value={formData.register_date}
+              value={formData.register_date_gregorian || null}
               onChange={(e) => {
                 const d = new Date(e.value);
                 const { jy, jm, jd } = toJalaali(d);
-                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
-                  jd
-                ).padStart(2, "0")}`;
-                setFormData((prev) => ({ ...prev, register_date: jDate }));
-              }}
-              round="x2"
-            />
+                const jDateFormatted = `${jy}/${String(jm).padStart(
+                  2,
+                  "0"
+                )}/${String(jd).padStart(2, "0")}`;
 
-            {!formData.register_date && (
-              <span className="absolute top-1/2 -translate-y-1/2 text-[#8C8C8C] pointer-events-none text-xs">
-                تاریخ ثبت
-              </span>
-            )}
+                setFormData((prev) => ({
+                  ...prev,
+                  register_date: jDateFormatted,
+                  register_date_gregorian: d,
+                }));
+              }}
+            />
 
             <input
               type="hidden"
               name="register_date"
-              value={formData.register_date}
+              value={
+                formData.register_date_gregorian
+                  ? formData.register_date_gregorian.toISOString().split("T")[0]
+                  : ""
+              }
             />
           </div>
         </div>

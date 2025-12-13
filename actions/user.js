@@ -462,11 +462,11 @@ const editLegalUser = async (state, formData) => {
   body.append("email", email);
   body.append("phone", phone);
   body.append("plan", plan);
+  body.append("register_date", register_date);
 
   // JSON کردن legal_user داخل FormData
   const legalUserObj = {
     company_name,
-    register_date,
     registration_number,
     national_id,
     economic_code,
