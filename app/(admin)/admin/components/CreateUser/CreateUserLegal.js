@@ -97,33 +97,42 @@ const CreateUserLegal = () => {
 
           <div className="date-picker h-full flex items-center text-sm/[19.6px] text-[#1A1C1E] font-medium bg-white outline-none placeholder:text-[#1A1C1E]">
             <DatePicker
-              value={formData.register_date}
+              value={
+                formData.register_date
+                  ? new Date(
+                      formData.register_date.getFullYear(),
+                      formData.register_date.getMonth(),
+                      formData.register_date.getDate()
+                    )
+                  : null
+              }
               onChange={(e) => {
-                const d = new Date(e.value);
-                const { jy, jm, jd } = toJalaali(d);
-                const jDate = `${jy}-${String(jm).padStart(2, "0")}-${String(
-                  jd
-                ).padStart(2, "0")}`;
-                setFormData((prev) => ({
-                  ...prev,
-                  register_date: jDate,
-                }));
+                // مقدار انتخابی میلادی را ذخیره می‌کنیم
+                setFormData((prev) => ({ ...prev, register_date: e.value }));
               }}
-              round="x2"
-              // defaultValue={new Date()}
+              format={(date) => {
+                if (!date) return "";
+                // نمایش شمسی
+                const j = toJalaali(date);
+                return `${j.jy}/${j.jm}/${j.jd}`;
+              }}
             />
 
-            {/* متن دلخواه روی Input وقتی تاریخ خالیه */}
             {!formData.register_date && (
               <span className="absolute top-1/2 -translate-y-1/2 text-[#8C8C8C] pointer-events-none text-xs">
                 تاریخ ثبت
               </span>
             )}
 
+            {/* hidden input برای ارسال میلادی */}
             <input
               type="hidden"
               name="register_date"
-              value={formData.register_date}
+              value={
+                formData.register_date instanceof Date
+                  ? formData.register_date.toISOString().split("T")[0] // yyyy-mm-dd میلادی
+                  : formData.register_date
+              }
             />
           </div>
         </div>

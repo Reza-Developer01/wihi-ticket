@@ -13,13 +13,6 @@ import toast from "react-hot-toast";
 import UserPlans from "../CreateUser/UserPlans";
 import { editLegalUser } from "@/actions/user";
 
-const parseGregorian = (jalaliDate) => {
-  if (!jalaliDate) return null;
-  const parts = jalaliDate.split("/").map(Number); // [year, month, day]
-  const { gy, gm, gd } = toGregorian(parts[0], parts[1], parts[2]);
-  return new Date(gy, gm - 1, gd); // ماه در Date صفر پایه است
-};
-
 const EditLegalUser = ({ data }) => {
   console.log(data);
   const [state, formAction] = useActionState(editLegalUser, {});
@@ -36,15 +29,26 @@ const EditLegalUser = ({ data }) => {
     last_name: data?.last_name || "",
     register_date: data?.register_date
       ? (() => {
-          const parts = data.register_date.split("/").map(Number);
-          return `${parts[0]}/${String(parts[1]).padStart(2, "0")}/${String(
-            parts[2]
-          ).padStart(2, "0")}`; // شمسی برای نمایش
+          const parts = data.register_date.split("/");
+          const gy = parseInt(parts[0]);
+          const gm = parseInt(parts[1]);
+          const gd = parseInt(parts[2]);
+
+          const { jy, jm, jd } = toJalaali(gy, gm, gd);
+
+          return `${jy}/${String(jm).padStart(2, "0")}/${String(jd).padStart(
+            2,
+            "0"
+          )}`;
         })()
       : "",
+
     register_date_gregorian: data?.register_date
-      ? parseGregorian(data.register_date)
-      : null, // Date object برای DatePicker
+      ? (() => {
+          const parts = data.register_date.split("/");
+          return `${parts[0]}-${parts[1]}-${parts[2]}`;
+        })()
+      : "",
     registration_number: data?.legal_user?.registration_number || "",
     email: data?.email || "",
     phone: data?.phone || "",
@@ -120,19 +124,28 @@ const EditLegalUser = ({ data }) => {
             )}
 
             <DatePicker
-              value={formData.register_date_gregorian || null}
+              value={
+                formData.register_date_gregorian
+                  ? new Date(formData.register_date_gregorian)
+                  : null
+              }
               onChange={(e) => {
                 const d = new Date(e.value);
+
                 const { jy, jm, jd } = toJalaali(d);
                 const jDateFormatted = `${jy}/${String(jm).padStart(
                   2,
                   "0"
                 )}/${String(jd).padStart(2, "0")}`;
 
+                const gDateFormatted = `${d.getFullYear()}-${String(
+                  d.getMonth() + 1
+                ).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
                 setFormData((prev) => ({
                   ...prev,
-                  register_date: jDateFormatted,
-                  register_date_gregorian: d,
+                  register_date: jDateFormatted, // شمسی (نمایش)
+                  register_date_gregorian: gDateFormatted, // میلادی (ارسال)
                 }));
               }}
             />
@@ -140,11 +153,7 @@ const EditLegalUser = ({ data }) => {
             <input
               type="hidden"
               name="register_date"
-              value={
-                formData.register_date_gregorian
-                  ? formData.register_date_gregorian.toISOString().split("T")[0]
-                  : ""
-              }
+              value={formData.register_date_gregorian || ""}
             />
           </div>
         </div>
