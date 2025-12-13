@@ -5,6 +5,7 @@ import { Modal } from "@/app/(main)/components/Modal";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
+import jalaali from "jalaali-js"; // استفاده از jalaali-js
 
 const OperationAdmin = ({ agentId, getCategory }) => {
   const fieldLabels = {
@@ -20,6 +21,7 @@ const OperationAdmin = ({ agentId, getCategory }) => {
     updated_at: "تاریخ بروزرسانی",
     permissions: "سطوح دسترسی",
     categories: "دسته‌بندی‌ها",
+    register_date: "تاریخ ثبت نام",
   };
 
   const permissionLabels = {
@@ -35,9 +37,17 @@ const OperationAdmin = ({ agentId, getCategory }) => {
     view_reports: "مشاهده گزارش‌ها",
   };
 
-  const formatValue = (val) => {
+  const formatValue = (val, key) => {
     if (typeof val === "boolean") return val ? "فعال" : "غیرفعال";
     if (val === null || val === undefined) return "—";
+
+    if (key === "register_date" || key.endsWith("_at")) {
+      const date = new Date(val);
+      const j = jalaali.toJalaali(date);
+      const pad = (n) => n.toString().padStart(2, "0");
+      return `${pad(j.jy)}/${pad(j.jm)}/${pad(j.jd)}`;
+    }
+
     return String(val);
   };
 
@@ -160,10 +170,10 @@ const OperationAdmin = ({ agentId, getCategory }) => {
       <div key={key} className="text-sm text-gray-700">
         <span className="font-medium">{label}:</span>{" "}
         <span className="text-red-500 line-through">
-          {formatValue(oldValue)}
+          {formatValue(oldValue, key)}
         </span>{" "}
         <span className="mx-1 text-gray-600">←</span>{" "}
-        <span className="text-green-600">{formatValue(newValue)}</span>
+        <span className="text-green-600">{formatValue(newValue, key)}</span>
       </div>
     );
   };
@@ -226,8 +236,7 @@ const OperationAdmin = ({ agentId, getCategory }) => {
                     تغییر توسط: {log.changed_by?.full_name || "نامشخص"}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    تاریخ ثبت تغییر:{" "}
-                    {new Date(log.changed_at).toLocaleString("fa-IR")}
+                    تاریخ ثبت تغییر: {formatValue(log.changed_at, "changed_at")}
                   </p>
                   <div className="mt-3 space-y-2">
                     {Object.keys(log.changes.old).map((key) =>
