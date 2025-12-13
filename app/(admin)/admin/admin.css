@@ -109,8 +109,14 @@ body {
     opacity: 0;
 }
 
+.date-picker {
+    flex-grow: 1;
+}
+
 .date-picker input {
-    color: #8C8C8C;
+    color: #1A1C1E;
+    outline: none;
+    border: none;
 }
 
 .date-picker input {
