@@ -169,6 +169,10 @@ const createLegalUser = async (state, formData) => {
   const postal_code = formData.get("postal_code");
   const file = formData.get("contract_file");
 
+  console.log("📁 raw file from formData:", file);
+  console.log("📁 file type:", typeof file);
+  console.log("📁 is File instance:", file instanceof File);
+
   const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
@@ -267,7 +271,10 @@ const createLegalUser = async (state, formData) => {
   body.append("legal_user.postal_code", postal_code);
 
   if (file) {
-    body.append("file", file);
+    console.log("✅ appending file to FormData:", file.name);
+    body.append("legal_user.contract_file", file);
+  } else {
+    console.log("⛔ no file to append");
   }
 
   const token = cookies().get("access_token")?.value;
