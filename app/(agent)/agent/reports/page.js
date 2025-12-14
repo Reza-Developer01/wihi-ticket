@@ -3,12 +3,14 @@ import AdminBottomPage from "@/app/(admin)/admin/components/AdminBottomPage";
 import { cookies } from "next/headers";
 import ReportsFilter from "@/app/(admin)/admin/components/Reports/ReportsFilter";
 import ReportsBanner from "@/app/(admin)/admin/components/Reports/ReportsBanner";
+import ReportsPageClient from "@/app/(admin)/admin/components/Reports/ReportsPageClient";
 
 export const metadata = {
   title: "ادمین - گزارشات",
 };
 
-const page = async () => {
+const page = async ({ searchParams }) => {
+  const initialFilter = searchParams?.filter || "daily";
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;
 
@@ -21,10 +23,11 @@ const page = async () => {
       <section>
         <div className="container">
           {/* filter */}
-          <ReportsFilter />
+          {/* <ReportsFilter /> */}
+          <ReportsPageClient initialFilter={initialFilter} token={token} />
 
           {/* information */}
-          <ReportsBanner data={data.full_reports} />
+          {/* <ReportsBanner data={data.full_reports} /> */}
         </div>
       </section>
     </AdminBottomPage>
