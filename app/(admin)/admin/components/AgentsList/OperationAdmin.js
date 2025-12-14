@@ -12,7 +12,7 @@ const OperationAdmin = ({ agentId, getCategory }) => {
     first_name: "نام",
     last_name: "نام خانوادگی",
     username: "نام کاربری",
-    phone_number: "شماره موبایل",
+    phone: "شماره موبایل",
     email: "ایمیل",
     role: "نقش کاربری",
     is_active: "وضعیت حساب",
@@ -169,7 +169,7 @@ const OperationAdmin = ({ agentId, getCategory }) => {
     return (
       <div key={key} className="text-sm text-gray-700">
         <span className="font-medium">{label}:</span>{" "}
-        <span className="text-red-500 line-through">
+        <span className="text-red-500 line-through" dir="auto">
           {formatValue(oldValue, key)}
         </span>{" "}
         <span className="mx-1 text-gray-600">←</span>{" "}
