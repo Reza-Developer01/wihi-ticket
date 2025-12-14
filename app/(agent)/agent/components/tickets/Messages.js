@@ -1,3 +1,4 @@
+import DownloadButton from "./DownloadButton";
 import MessagesHead from "./MessagesHead";
 
 const Messages = ({ request, getTicketHistory, status }) => {
@@ -94,24 +95,7 @@ const Messages = ({ request, getTicketHistory, status }) => {
                       align === "self-end" ? "justify-start" : "justify-end"
                     }`}
                   >
-                    <button
-                      type="button"
-                      className="flex flex-col items-center justify-center w-[45px] h-[45px] border border-[#808392] rounded-[10px]"
-                    >
-                      <svg className="w-6 h-6 text-[#808392]">
-                        <use href="#paper-download" />
-                      </svg>
-                      <span className="text-[#808392] text-[7px]/[9.8px] tracking-[-0.12px]">
-                        {item.file
-                          ? item.file
-                              .split("/")
-                              .pop()
-                              .split(".")
-                              .pop()
-                              .toUpperCase()
-                          : ""}
-                      </span>
-                    </button>
+                    {item.file && <DownloadButton fileUrl={item.file} />}
                   </div>
                 </>
               ) : (

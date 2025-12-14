@@ -39,6 +39,36 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
     }
   }, [state, router]);
 
+  const DownloadButton = ({ fileUrl }) => {
+    const handleDownload = (e) => {
+      e.preventDefault();
+      if (!fileUrl) return;
+
+      const apiLink = `/api/download?file=${encodeURIComponent(fileUrl)}`;
+      const link = document.createElement("a");
+      link.href = apiLink;
+      link.setAttribute("download", fileUrl.split("/").pop());
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    return (
+      <button
+        type="button"
+        className="flex items-center justify-between w-full h-12 px-4 border border-green-500 bg-green-200 rounded-[10px]"
+        onClick={handleDownload}
+      >
+        <span className="font-semibold text-xs/[16.8px] text-green-500">
+          دانلود فایل
+        </span>
+        <svg className="w-[25px] h-[25px] text-green-500">
+          <use href="#paper-download" />
+        </svg>
+      </button>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-y-[15px]">
       {/* دسته بندی فقط نمایش */}
@@ -105,39 +135,7 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
       />
 
       {/* فایل */}
-      <div
-        className={`custom-shadow relative flex items-center w-full h-12 rounded-[10px] overflow-hidden transition-all duration-300 ${
-          hasFile ? "bg-[#00C96B33]" : "bg-[#EFF0F6]"
-        }`}
-      >
-        <button
-          type="button"
-          className="flex items-center justify-between grow pr-6 pl-[15px]"
-          disabled={true}
-        >
-          <span
-            className={`font-semibold text-xs/[16.8px] ${
-              hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
-            } tracking-[-0.12px]`}
-          >
-            {hasFile ? "فایل انتخاب شد" : "فایل آپلودی وجود ندارد"}
-          </span>
-          <svg
-            className={`w-[25px] h-[25px] ${
-              hasFile ? "text-[#00C96B]" : "text-[#8C8C8C]"
-            }`}
-          >
-            <use href="#upload" />
-          </svg>
-        </button>
-
-        <input
-          type="file"
-          name="file"
-          className="absolute w-full h-full text-transparent cursor-not-allowed"
-          disabled={true}
-        />
-      </div>
+      {hasFile && <DownloadButton fileUrl={data.file} />}
 
       {/* تغییر وضعیت */}
       <ChangeStatus
