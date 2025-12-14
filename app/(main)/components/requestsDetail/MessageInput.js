@@ -37,7 +37,7 @@ const MessageInput = ({
       if (hasRedirected) return;
 
       localStorage.setItem(key, "true");
-      router.push("/poll/");
+      router.push(`/poll?id=${id}`);
     }
   }, [requestStatus, id]);
 

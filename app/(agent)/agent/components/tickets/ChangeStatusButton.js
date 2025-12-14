@@ -38,6 +38,10 @@ const ChangeStatusButton = ({
   const router = useRouter();
 
   const handleSelect = async (value, force = false) => {
+    if (value !== "بسته شده") {
+      localStorage.removeItem(`ticket_${ticket_number}_redirected`);
+    }
+
     if (value === "مشاهده تغییرات") {
       setShowHistory(true);
       setOpen(false);

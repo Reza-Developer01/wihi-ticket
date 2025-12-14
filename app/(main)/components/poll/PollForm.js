@@ -8,7 +8,7 @@ import SubmitButton from "../SubmitButton";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const PollForm = () => {
+const PollForm = ({ id }) => {
   const [state, formAction] = useActionState(pollSystem, {});
   const [comment, setComment] = useState("");
   const router = useRouter();
@@ -17,7 +17,7 @@ const PollForm = () => {
     if (!state || Object.keys(state).length === 0) return;
     if (state?.status) {
       toast.success(state?.message);
-      router.push("/successfully");
+      router.push("/requests-list");
     } else {
       toast.error(state?.message);
     }
@@ -34,6 +34,8 @@ const PollForm = () => {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
+
+      <input type="hidden" name="ticket" value={id} />
 
       <SubmitButton title="ارسال نظرسنجی" />
     </form>

@@ -6,7 +6,10 @@ export const metadata = {
   title: "ثبت نظرسنجی",
 };
 
-const page = () => {
+const page = async ({ searchParams }) => {
+  const id = searchParams?.id;
+  console.log(id);
+
   return (
     <>
       <Header
@@ -17,7 +20,7 @@ const page = () => {
 
       <BottomSection pb="55px" height="249">
         <div className="container">
-          <PollForm />
+          <PollForm id={id} />
         </div>
       </BottomSection>
     </>
