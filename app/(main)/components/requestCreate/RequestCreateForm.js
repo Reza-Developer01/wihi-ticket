@@ -22,8 +22,8 @@ const RequestCreateForm = ({ categories, service }) => {
 
     if (state?.status) {
       toast.success(state?.message);
-      // router.push("/poll");
-      router.push("/requests-list");
+      router.push("/successfully");
+      // router.push("/requests-list");
     } else {
       toast.error(state?.message);
     }
