@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const CallList = ({ calls, search }) => {
+const CallList = ({ calls, search, filters }) => {
   const getStatusStyle = (status) => {
     switch (status) {
       case "callـqueue":
@@ -38,6 +38,7 @@ const CallList = ({ calls, search }) => {
 
   let filteredCalls = [...calls];
 
+  /* ================= SEARCH ================= */
   if (search) {
     const s = search.toLowerCase();
     filteredCalls = filteredCalls.filter(
@@ -49,6 +50,24 @@ const CallList = ({ calls, search }) => {
     );
   }
 
+  /* ================= FILTERS ================= */
+  if (filters?.hasSla) {
+    filteredCalls = filteredCalls.filter((c) => c.has_sla);
+  }
+
+  if (filters?.newest) {
+    filteredCalls = filteredCalls.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+  }
+
+  if (filters?.oldest) {
+    filteredCalls = filteredCalls.sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    );
+  }
+
+  /* ================= EMPTY ================= */
   if (filteredCalls.length === 0) {
     return (
       <div className="text-center text-[#808392] mt-4 font-medium text-xs/[18px] tracking-[-0.12px]">

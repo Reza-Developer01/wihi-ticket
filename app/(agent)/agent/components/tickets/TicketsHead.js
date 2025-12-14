@@ -15,10 +15,11 @@ const TicketsHead = ({ setFilters, setSearch }) => {
   });
 
   const toggleFilter = (key) => {
-    setLocalFilters((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setLocalFilters((prev) => {
+      const newFilters = { newest: false, oldest: false, hasSla: false };
+      if (!prev[key]) newFilters[key] = true;
+      return newFilters;
+    });
   };
 
   const handleApplyFilters = () => {
