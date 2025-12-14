@@ -66,14 +66,14 @@ const TicketList = ({ data }) => {
 
         {/* left */}
         <div className="flex items-center gap-x-[5px] *:rounded-[5px]">
-          {/* <div className="flex flex-col items-center justify-center w-15 h-5 pt-0.5 bg-[#EFF0F6] *:tracking-[-0.12px] *:font-medium">
+          <div className="flex flex-col items-center justify-center w-15 h-5 pt-0.5 bg-[#EFF0F6] *:tracking-[-0.12px] *:font-medium">
             <span className="text-[4px]/[5.6px] text-[#B9BBC9]">
               دستــه بندی
             </span>
             <span className="text-[6px]/[8.4px] text-[#808392]">
-              {data.category_name}
+              {data.category_detail.name}
             </span>
-          </div> */}
+          </div>
 
           <button
             className={`flex items-center justify-center w-15 h-5 ${bg} ${text} font-medium text-[8px]/[11.2px] tracking-[-0.12px]`}
