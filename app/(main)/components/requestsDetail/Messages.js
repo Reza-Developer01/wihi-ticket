@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CloseTicket from "./CloseTicket";
 import { Modal } from "../Modal";
+import { downloadFile } from "@/utils/download";
 
 const Messages = ({ request, comment_guided }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -147,11 +148,9 @@ const Messages = ({ request, comment_guided }) => {
                     </p>
                   </div>
                   <div className={`flex items-center ${fileAlign}`}>
-                    <a
-                      href={item.file}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => downloadFile(item.file)}
                       className="flex flex-col items-center justify-center w-[45px] h-[45px] border border-[#808392] rounded-[10px]"
                     >
                       <svg className="w-6 h-6 text-[#808392]">
@@ -167,7 +166,7 @@ const Messages = ({ request, comment_guided }) => {
                               .toUpperCase()
                           : ""}
                       </span>
-                    </a>
+                    </button>
                   </div>
                 </>
               ) : (

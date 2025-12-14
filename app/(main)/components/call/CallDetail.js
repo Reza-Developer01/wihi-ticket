@@ -68,7 +68,7 @@ const CallDetail = ({
       <Input
         type="text"
         name="extension_phone_number_input"
-        value={call.phone_number_detail.extension}
+        value={call.phone_number_detail.extension || ""}
         readOnly={true}
         placeholder="داخلی خود را وارد کنید (درصورت دارا بودن)"
       />
@@ -94,10 +94,13 @@ const CallDetail = ({
       >
         <button
           type="button"
-          className="flex items-center justify-between grow pr-6 pl-[15px]"
+          className="h-full flex items-center justify-between grow pr-6 pl-[15px]"
           disabled={!fileExists}
           onClick={() => {
-            if (fileExists) window.open(call.file, "_blank");
+            if (!fileExists) return;
+
+            const encodedFile = encodeURIComponent(call.file);
+            window.location.href = `/api/download?file=${encodedFile}`;
           }}
         >
           <span
