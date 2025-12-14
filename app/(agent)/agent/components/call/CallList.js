@@ -96,7 +96,7 @@ const CallList = ({ calls, search }) => {
                     دستــه بندی
                   </span>
                   <span className="text-[6px]/[8.4px] text-[#808392]">
-                    {data.category_name}
+                    {data.category_detail.name}
                   </span>
                 </div>
 
