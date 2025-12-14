@@ -73,7 +73,8 @@ const login = async (state, formData) => {
   } catch (err) {
     return {
       status: "error",
-      message: err?.response?.non_field_errors?.[0] || "کاربری با این مشخصات یافت نشد",
+      message:
+        err?.response?.non_field_errors?.[0] || "کاربری با این مشخصات یافت نشد",
     };
   }
 
@@ -95,32 +96,47 @@ const checkOtp = async (state, formData) => {
     return { status: "error", message: "پر کردن تمام موارد اجباری است." };
   }
 
-  const data = await postFetch("users/verify-otp/", { code });
+  try {
+    const data = await postFetch("users/verify-otp/", { code });
 
-  if (data.non_field_errors) {
-    return { status: "error", message: data.non_field_errors };
+    if (data.non_field_errors && data.non_field_errors.length > 0) {
+      return { status: "error", message: data.non_field_errors[0] };
+    }
+
+    setAuthCookies(data.tokens);
+
+    const isSecure =
+      process.env.NODE_ENV === "production" &&
+      (process.env.USE_HTTPS === "true" ||
+        headers().get("x-forwarded-proto") === "https");
+
+    cookies().set("role", data.user.role, {
+      path: "/",
+      secure: isSecure,
+      sameSite: isSecure ? "none" : "lax",
+      maxAge: 3600,
+    });
+
+    return {
+      status: "success",
+      message: data.message,
+      user: data.user,
+    };
+  } catch (err) {
+    let message = "خطایی رخ داده";
+
+    try {
+      const bodyMatch = err.message.match(/body: (.*)$/);
+      if (bodyMatch && bodyMatch[1]) {
+        const bodyJson = JSON.parse(bodyMatch[1]);
+        if (bodyJson.non_field_errors && bodyJson.non_field_errors.length > 0) {
+          message = bodyJson.non_field_errors[0];
+        }
+      }
+    } catch (e) {}
+
+    return { status: "error", message };
   }
-
-  setAuthCookies(data.tokens);
-
-  // استفاده از همان منطق isSecure برای role
-  const isSecure =
-    process.env.NODE_ENV === "production" &&
-    (process.env.USE_HTTPS === "true" ||
-      headers().get("x-forwarded-proto") === "https");
-
-  cookies().set("role", data.user.role, {
-    path: "/",
-    secure: isSecure,
-    sameSite: isSecure ? "none" : "lax",
-    maxAge: 3600,
-  });
-
-  return {
-    status: "success",
-    message: data.message,
-    user: data.user,
-  };
 };
 
 const refreshToken = async () => {
