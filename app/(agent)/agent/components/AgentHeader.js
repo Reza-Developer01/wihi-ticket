@@ -19,9 +19,15 @@ const AgentHeader = async () => {
             {user.first_name} {user.last_name}
           </h5>
           <p className="text-white font-light text-xs/[16.8px] tracking-[-0.12px]">
-            کارشناس بخش <span className="text-[#2BD1D1]">فنی</span> ,{" "}
-            <span className="text-[#2BD1D1]">مالی</span> <br /> شما فقط در
-            پشتیبانی به دسته بندی های بالا دسترسی دارید
+            کارشناس بخش{" "}
+            {user.category_agents.map((category, index) => (
+              <span key={index} className="text-[#2BD1D1]">
+                {category}
+                {index < user.category_agents.length - 1 ? " , " : ""}
+              </span>
+            ))}{" "}
+            <br />
+            شما فقط در پشتیبانی به دسته بندی های بالا دسترسی دارید
           </p>
         </div>
       </div>
