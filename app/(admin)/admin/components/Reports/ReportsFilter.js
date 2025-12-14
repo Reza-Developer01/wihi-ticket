@@ -61,13 +61,14 @@ const ReportsFilter = ({ currentFilter, onFilterChange, onCustomDate }) => {
           </ul>
         </div>
 
-        {pathname === "/admin/reports" && (
-          <Link href="/">
-            <svg className="w-6 h-6 text-[#1A1C1E]">
-              <use href="#arrow-narrow-left" />
-            </svg>
-          </Link>
-        )}
+        {pathname === "/admin/reports" ||
+          (pathname === "/agent/reports" && (
+            <Link href="/">
+              <svg className="w-6 h-6 text-[#1A1C1E]">
+                <use href="#arrow-narrow-left" />
+              </svg>
+            </Link>
+          ))}
       </div>
 
       {showCustom && (
