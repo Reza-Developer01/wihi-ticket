@@ -113,7 +113,7 @@ const createRealUser = async (state, formData) => {
   const file = formData.get("contract_file");
   console.log("📎 Uploaded file:", file);
 
-  if (file instanceof File) {
+  if (file && file.size > 0) {
     body.append("real_user.contract_file", file);
   }
 
@@ -270,11 +270,8 @@ const createLegalUser = async (state, formData) => {
   body.append("legal_user.unit", unit);
   body.append("legal_user.postal_code", postal_code);
 
-  if (file) {
-    console.log("✅ appending file to FormData:", file.name);
+  if (file && file.size > 0) {
     body.append("legal_user.contract_file", file);
-  } else {
-    console.log("⛔ no file to append");
   }
 
   const token = cookies().get("access_token")?.value;
