@@ -16,15 +16,10 @@ const createAgent = async (state, formData) => {
   const rePassword = formData.get("rePassword");
   const permissions = JSON.parse(formData.get("permissions") || "[]");
 
-  console.log(`permissions : ${permissions}`);
-
   phone = phone.replace(/\D/g, "");
-  if (phone.startsWith("98")) {
-    phone = "0" + phone.slice(2);
-  }
+  if (phone.startsWith("98")) phone = "0" + phone.slice(2);
 
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("access_token")?.value;
+  const token = cookies().get("access_token")?.value;
 
   if (
     !first_name ||
@@ -36,10 +31,7 @@ const createAgent = async (state, formData) => {
     !username ||
     !password
   ) {
-    return {
-      status: false,
-      message: "پر کردن تمام موارد الزامی است.",
-    };
+    return { status: false, message: "پر کردن تمام موارد الزامی است." };
   }
 
   if (password !== rePassword) {
@@ -49,30 +41,56 @@ const createAgent = async (state, formData) => {
     };
   }
 
-  const data = await postFetch(
-    `users/agents/`,
-    {
-      first_name,
-      last_name,
-      register_date,
-      email,
-      phone,
-      categories,
-      username,
-      password,
-      permissions,
-    },
-    {
-      Authorization: token ? `Bearer ${token}` : undefined,
+  try {
+    const res = await fetch(
+      `http://preview.kft.co.com/ticket/api/users/agents/`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name,
+          last_name,
+          register_date,
+          email,
+          phone,
+          categories,
+          username,
+          password,
+          permissions,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data?.email) {
+        return { status: false, message: "ایمیل تکراری است." };
+      }
+      if (data?.username) {
+        return { status: false, message: "نام کاربری تکراری است." };
+      }
+      if (data?.phone) {
+        return { status: false, message: "شماره موبایل تکراری است." };
+      }
+
+      return {
+        status: false,
+        message: data?.message || "خطا در ایجاد کارشناس.",
+      };
     }
-  );
 
-  console.log(data);
-
-  if (data) {
     return {
       status: true,
       message: "کارشناس با موفقیت ساخته شد.",
+    };
+  } catch (err) {
+    return {
+      status: false,
+      message: "خطا در ارتباط با سرور.",
     };
   }
 };
@@ -94,8 +112,7 @@ const editAgent = async (state, formData) => {
   phone = phone.replace(/\D/g, "");
   if (phone.startsWith("98")) phone = "0" + phone.slice(2);
 
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("access_token")?.value;
+  const token = cookies().get("access_token")?.value;
 
   if (
     !first_name ||
@@ -114,7 +131,6 @@ const editAgent = async (state, formData) => {
   }
 
   const payload = {
-    id,
     first_name,
     last_name,
     register_date,
@@ -125,28 +141,46 @@ const editAgent = async (state, formData) => {
     permissions,
   };
 
-  console.log("PAYLOAD : ", payload);
-
   if (password) payload.password = password;
 
-  const data = await fetch(
-    `http://preview.kft.co.com/ticket/api/users/agents/${id}/`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: token ? `Bearer ${token}` : undefined,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+  try {
+    const res = await fetch(
+      `http://preview.kft.co.com/ticket/api/users/agents/${id}/`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data?.email) {
+        return { status: false, message: "ایمیل تکراری است." };
+      }
+      if (data?.username) {
+        return { status: false, message: "نام کاربری تکراری است." };
+      }
+      if (data?.phone) {
+        return { status: false, message: "شماره موبایل تکراری است." };
+      }
+
+      return {
+        status: false,
+        message: data?.message || "ویرایش کارشناس با خطا مواجه شد.",
+      };
     }
-  ).then((res) => res.json());
 
-  console.log("DATA => ", data);
-
-  if (data) {
     return { status: true, message: "کارشناس با موفقیت ویرایش شد." };
-  } else {
-    return { status: false, message: "ویرایش کارشناس با خطا مواجه شد." };
+  } catch (err) {
+    return {
+      status: false,
+      message: "خطا در ارتباط با سرور.",
+    };
   }
 };
 

@@ -157,61 +157,66 @@ const createLegalUser = async (state, formData) => {
   const company_name = formData.get("company_name");
   const first_name = formData.get("first_name");
   const last_name = formData.get("last_name");
-  const register_date = formData.get("register_date");
+  const email = formData.get("email");
+  let phone = formData.get("phone");
+
   const registration_number = formData.get("registration_number");
   const national_id = formData.get("national_id");
   const economic_code = formData.get("economic_code");
 
-  const email = formData.get("email");
-  let phone = formData.get("phone");
   const address = formData.get("address");
   const floor = formData.get("floor");
   const unit = formData.get("unit");
   const postal_code = formData.get("postal_code");
-  const file = formData.get("contract_file");
-
-  console.log("📁 raw file from formData:", file);
-  console.log("📁 file type:", typeof file);
-  console.log("📁 is File instance:", file instanceof File);
 
   const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
-
-  const user_type = formData.get("user_type");
   const plan = formData.get("plan");
-  const legal_user = formData.get("legal_user");
+  const register_date = formData.get("register_date");
 
   // اصلاح شماره موبایل
   phone = phone?.replace(/\D/g, "");
-
-  console.log(`legal_user : ${legal_user}`);
-
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
-  // -------------------------------
-  // ولیدیشن
-  // -------------------------------
-  if (!company_name || company_name.trim() === "")
+  // ساخت آبجکت legal_user (دقیقاً مثل real)
+  const legalUserObj = {
+    company_name,
+    registration_number,
+    national_id,
+    economic_code,
+    address,
+    floor,
+    unit,
+    postal_code: postal_code ?? "",
+  };
+
+  // 🔥 لاگ کامل برای دیباگ
+  console.log("🔵 createLegalUser - collected values:");
+  console.log({
+    first_name,
+    last_name,
+    email,
+    phone,
+    username,
+    password: password ? "*****" : null,
+    rePassword: rePassword ? "*****" : null,
+    plan,
+    legal_user: legalUserObj,
+  });
+  console.log("===================================");
+
+  // -------------------------
+  // Validation
+  // -------------------------
+  if (!company_name?.trim())
     return { status: false, message: "نام شرکت الزامی است." };
 
-  if (!first_name || first_name.trim() === "")
-    return { status: false, message: "نام مدیرعامل نمی‌تواند خالی باشد." };
+  if (!first_name?.trim())
+    return { status: false, message: "نام مدیرعامل الزامی است." };
 
-  if (!last_name || last_name.trim() === "")
-    return {
-      status: false,
-      message: "نام خانوادگی مدیرعامل نمی‌تواند خالی باشد.",
-    };
-
-  // if (!registration_number)
-  //   return { status: false, message: "تاریخ ثبت شرکت الزامی است." };
-
-  // if (!national_id || national_id.length !== 11)
-  //   return { status: false, message: "شناسه ملی باید ۱۱ رقم باشد." };
-
-  // if (!economic_code || economic_code.length < 5)
-  //   return { status: false, message: "کد اقتصادی معتبر نیست." };
+  if (!last_name?.trim())
+    return { status: false, message: "نام خانوادگی مدیرعامل الزامی است." };
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return { status: false, message: "ایمیل معتبر نیست." };
@@ -228,14 +233,8 @@ const createLegalUser = async (state, formData) => {
   if (!unit || isNaN(unit))
     return { status: false, message: "شماره واحد معتبر نیست." };
 
-  if (!postal_code || !/^\d{10}$/.test(postal_code))
+  if (!legalUserObj.postal_code || !/^\d{10}$/.test(legalUserObj.postal_code))
     return { status: false, message: "کد پستی باید ۱۰ رقم باشد." };
-
-  if (file?.size > 50 * 1024 * 1024)
-    return {
-      status: false,
-      message: "حجم فایل نباید بیشتر از ۵۰ مگابایت باشد.",
-    };
 
   if (!username || username.trim().length < 3)
     return { status: false, message: "نام کاربری باید حداقل ۳ کاراکتر باشد." };
@@ -246,9 +245,9 @@ const createLegalUser = async (state, formData) => {
   if (password !== rePassword)
     return { status: false, message: "تکرار رمز عبور با رمز اصلی یکسان نیست." };
 
-  // -------------------------------
-  // ساخت FormData
-  // -------------------------------
+  // ----------------------------
+  // ساخت FormData (دقیقاً مشابه real)
+  // ----------------------------
   const body = new FormData();
 
   body.append("username", username);
@@ -261,15 +260,19 @@ const createLegalUser = async (state, formData) => {
   body.append("plan", plan);
   body.append("register_date", register_date);
 
-  body.append("legal_user.company_name", company_name);
-  body.append("legal_user.registration_number", registration_number);
-  body.append("legal_user.national_id", national_id);
-  body.append("legal_user.economic_code", economic_code);
+  // legal_user fields (مثل real_user)
+  body.append("legal_user.company_name", legalUserObj.company_name);
+  body.append("legal_user.registration_number", legalUserObj.registration_number);
+  body.append("legal_user.national_id", legalUserObj.national_id);
+  body.append("legal_user.economic_code", legalUserObj.economic_code);
+  body.append("legal_user.address", legalUserObj.address);
+  body.append("legal_user.floor", legalUserObj.floor);
+  body.append("legal_user.unit", legalUserObj.unit);
+  body.append("legal_user.postal_code", legalUserObj.postal_code);
 
-  body.append("legal_user.address", address);
-  body.append("legal_user.floor", floor);
-  body.append("legal_user.unit", unit);
-  body.append("legal_user.postal_code", postal_code);
+  // فایل قرارداد
+  const file = formData.get("contract_file");
+  console.log("📎 Uploaded file:", file);
 
   if (file && file.size > 0) {
     body.append("legal_user.contract_file", file);
@@ -290,14 +293,14 @@ const createLegalUser = async (state, formData) => {
     );
 
     const data = await res.json();
+    console.log("🔵 API Response:", data);
 
-    if (!res.ok) {
+    if (!res.ok)
       return {
         status: false,
         message:
           data?.message || "نام کاربری یا شماره تماس یا ایمیل تکراری است.",
       };
-    }
 
     return {
       status: true,
@@ -311,8 +314,9 @@ const createLegalUser = async (state, formData) => {
   }
 };
 
+
 const editRealUser = async (state, formData) => {
-  const userId = formData.get("id"); // باید در فرم hidden گذاشته شود
+  const userId = formData.get("id");
   if (!userId) return { status: false, message: "شناسه کاربر یافت نشد." };
 
   const first_name = formData.get("first_name");
@@ -329,33 +333,15 @@ const editRealUser = async (state, formData) => {
   const username = formData.get("username");
   const password = formData.get("password");
   const rePassword = formData.get("rePassword");
-
   const plan = formData.get("plan");
   const file = formData.get("file");
 
-  // اصلاح شماره موبایل
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
-  // -------------------------
-  // Validation
-  // -------------------------
-  if (!first_name)
-    return { status: false, message: "نام نمی‌تواند خالی باشد." };
-  if (!last_name)
-    return { status: false, message: "نام خانوادگی نمی‌تواند خالی باشد." };
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return { status: false, message: "ایمیل معتبر نیست." };
-  if (!phone || !/^09\d{9}$/.test(phone))
-    return { status: false, message: "شماره موبایل معتبر نیست." };
   if (password && password !== rePassword)
     return { status: false, message: "تکرار رمز عبور صحیح نیست." };
-  if (file && file.size > 50 * 1024 * 1024)
-    return { status: false, message: "حداکثر حجم فایل ۵۰ مگابایت است." };
 
-  // -------------------------
-  // ساخت FormData برای PATCH
-  // -------------------------
   const body = new FormData();
 
   body.append("first_name", first_name);
@@ -372,40 +358,36 @@ const editRealUser = async (state, formData) => {
   body.append("real_user.postal_code", postal_code);
 
   if (password) body.append("password", password);
-  if (file) body.append("contract_file", file);
+
+  // ✅ اصلاح اصلی
+  if (file && file.size > 0) {
+    body.append("real_user.contract_file", file);
+  }
 
   const token = cookies().get("access_token")?.value;
 
-  try {
-    const res = await fetch(
-      `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
-      {
-        method: "PATCH",
-        headers: { Authorization: token ? `Bearer ${token}` : undefined },
-        body,
-      }
-    );
+  const res = await fetch(
+    `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
+    {
+      method: "PATCH",
+      headers: { Authorization: token ? `Bearer ${token}` : undefined },
+      body,
+    }
+  );
 
-    const data = await res.json();
-    console.log(data);
+  const data = await res.json();
 
-    if (!res.ok)
-      return {
-        status: false,
-        message: data?.message || "خطا در ویرایش کاربر.",
-      };
+  if (!res.ok)
+    return { status: false, message: data?.message || "خطا در ویرایش کاربر." };
 
-    return { status: true, message: "کاربر با موفقیت ویرایش شد." };
-  } catch (err) {
-    return { status: false, message: "خطا در ارتباط با سرور: " + err.message };
-  }
+  return { status: true, message: "کاربر با موفقیت ویرایش شد." };
 };
+
 
 const editLegalUser = async (state, formData) => {
   const userId = formData.get("id");
   if (!userId) return { status: false, message: "شناسه کاربر یافت نشد." };
 
-  // داده‌ها از فرم
   const company_name = formData.get("company_name");
   const first_name = formData.get("first_name");
   const last_name = formData.get("last_name");
@@ -423,72 +405,63 @@ const editLegalUser = async (state, formData) => {
   const rePassword = formData.get("rePassword");
   const plan = formData.get("plan");
   const register_date = formData.get("register_date");
+  const file = formData.get("file");
 
-  // شماره موبایل normalize
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
-  // Validation ساده
-  if (!company_name?.trim())
-    return { status: false, message: "نام شرکت الزامی است." };
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return { status: false, message: "ایمیل معتبر نیست." };
-  if (!phone || !/^09\d{9}$/.test(phone))
-    return { status: false, message: "شماره موبایل معتبر نیست." };
   if (password && password !== rePassword)
     return { status: false, message: "تکرار رمز عبور صحیح نیست." };
 
-  // JSON body
-  const body = {
-    username,
-    first_name,
-    last_name,
-    email,
-    phone,
-    password: password || undefined,
-    user_type: "legal",
-    plan: Number(plan),
-    register_date,
-    legal_user: {
-      company_name,
-      registration_number,
-      economic_code,
-      national_id,
-      address,
-      floor,
-      unit,
-      postal_code,
-    },
-  };
+  // ✅ FormData (به‌جای JSON)
+  const body = new FormData();
+
+  body.append("username", username);
+  body.append("first_name", first_name);
+  body.append("last_name", last_name);
+  body.append("email", email);
+  body.append("phone", phone);
+  body.append("plan", plan);
+  body.append("register_date", register_date);
+
+  body.append("legal_user.company_name", company_name);
+  body.append("legal_user.registration_number", registration_number);
+  body.append("legal_user.national_id", national_id);
+  body.append("legal_user.economic_code", economic_code);
+  body.append("legal_user.address", address);
+  body.append("legal_user.floor", floor);
+  body.append("legal_user.unit", unit);
+  body.append("legal_user.postal_code", postal_code);
+
+  if (password) body.append("password", password);
+
+  // ✅ ارسال صحیح فایل
+  if (file && file.size > 0) {
+    body.append("legal_user.contract_file", file);
+  }
 
   const token = cookies().get("access_token")?.value;
 
-  try {
-    const res = await fetch(
-      `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : undefined,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
+  const res = await fetch(
+    `http://preview.kft.co.com/ticket/api/users/customers/${userId}/`,
+    {
+      method: "PATCH",
+      headers: { Authorization: token ? `Bearer ${token}` : undefined },
+      body,
+    }
+  );
 
-    const data = await res.json();
-    console.log("PATCH Response:", data);
+  const data = await res.json();
 
-    if (!res.ok)
-      return {
-        status: false,
-        message: data?.message || "خطا در ویرایش کاربر حقوقی.",
-      };
+  if (!res.ok)
+    return {
+      status: false,
+      message: data?.message || "خطا در ویرایش کاربر حقوقی.",
+    };
 
-    return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
-  } catch (err) {
-    return { status: false, message: "خطا در ارتباط با سرور: " + err.message };
-  }
+  return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
 };
+
+
 
 export { createRealUser, createLegalUser, editRealUser, editLegalUser };
