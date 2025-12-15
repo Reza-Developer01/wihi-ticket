@@ -20,9 +20,12 @@ const MessagesHead = async ({
     (p) => p.slug === "can_assign_tickets"
   );
 
-  const agents = await getFetch("users/agents-list/", {
-    Authorization: `Bearer ${token}`,
-  });
+  let agents;
+  if (hasPermission) {
+    agents = await getFetch("users/agents-list/", {
+      Authorization: `Bearer ${token}`,
+    });
+  }
 
   return (
     <div className="flex items-center justify-between mb-[15px]">
