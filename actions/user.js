@@ -137,7 +137,8 @@ const createRealUser = async (state, formData) => {
     if (!res.ok)
       return {
         status: false,
-        message: data?.message || "خطا در ایجاد کاربر.",
+        message:
+          data?.message || "نام کاربری یا شماره تماس یا ایمیل تکراری است.",
       };
 
     return {
@@ -293,7 +294,8 @@ const createLegalUser = async (state, formData) => {
     if (!res.ok) {
       return {
         status: false,
-        message: data?.message || "خطا در ایجاد کاربر حقوقی.",
+        message:
+          data?.message || "نام کاربری یا شماره تماس یا ایمیل تکراری است.",
       };
     }
 
