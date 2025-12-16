@@ -10,7 +10,7 @@ const CallsListItem = ({
 }) => {
   const getStatusStyle = (status) => {
     switch (status) {
-      case "callـqueue":
+      case "queue_call":
         return {
           bg: "bg-[#FF770033]",
           text: "text-[#FF7700]",
