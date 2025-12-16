@@ -110,11 +110,11 @@ const createRealUser = async (state, formData) => {
   body.append("real_user.unit", realUserObj.unit);
   body.append("real_user.postal_code", realUserObj.postal_code);
 
-  const file = formData.get("contract_file");
+  const file = formData.get("file");
   console.log("📎 Uploaded file:", file);
 
   if (file && file.size > 0) {
-    body.append("real_user.contract_file", file);
+    body.append("real_user.file", file);
   }
 
   const token = cookies().get("access_token")?.value;
@@ -271,11 +271,11 @@ const createLegalUser = async (state, formData) => {
   body.append("legal_user.postal_code", legalUserObj.postal_code);
 
   // فایل قرارداد
-  const file = formData.get("contract_file");
+  const file = formData.get("file");
   console.log("📎 Uploaded file:", file);
 
   if (file && file.size > 0) {
-    body.append("legal_user.contract_file", file);
+    body.append("legal_user.file", file);
   }
 
   const token = cookies().get("access_token")?.value;
