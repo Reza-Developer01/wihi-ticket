@@ -18,6 +18,8 @@ const page = async ({ searchParams }) => {
     Authorization: `Bearer ${token}`,
   });
 
+  console.log(data);
+
   return (
     <AdminBottomPage mt="mt-[79px] pb-[50px] h-[calc(100vh-79px)]">
       <section>

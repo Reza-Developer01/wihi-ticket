@@ -30,7 +30,7 @@ const ReportsBannerTop = ({ data }) => {
             میانگیـــن پاسخگــویی
           </span>
           <p className="reports__text-gradient font-extrabold text-lg/[25.2px] tracking-[-0.12px]">
-            {data.average_callrequest_response_time}
+            {data.average_combined_response_time}
           </p>
         </div>
       </div>
