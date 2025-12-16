@@ -19,7 +19,7 @@ const ChangeStatusDropDown = ({
   comment_cancelled,
 }) => {
   const statusMap = {
-    callـqueue: {
+    queue_call: {
       bg: "bg-[#FF770033]",
       text: "text-[#FF7700]",
       message: "در صف تماس",
