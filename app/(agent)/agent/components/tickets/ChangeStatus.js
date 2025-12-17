@@ -156,19 +156,21 @@ const ChangeStatus = ({
     setSelected(label);
     setIsOpen(false);
 
-    if (label === "لغو شده") return setIsModalOpen(true);
-    if (label === "هدایت شده") return setIsGuidedModalOpen(true);
-
-    // اضافه کردن is_progress
-    if (
-      value === "queue_call" ||
-      value === "Checked" ||
-      value === "is_progress"
-    ) {
-      const form = document.getElementById("quick-status-form");
-      form.querySelector('input[name="status"]').value = value;
-      form.requestSubmit();
+    // مدال فقط برای هدایت یا لغو
+    if (value === "cancelled") {
+      setIsModalOpen(true);
+      return;
     }
+
+    if (value === "Guided") {
+      setIsGuidedModalOpen(true);
+      return;
+    }
+
+    // سایر وضعیت‌ها مستقیم ارسال شوند
+    const form = document.getElementById("quick-status-form");
+    form.querySelector('input[name="status"]').value = value;
+    form.requestSubmit();
   };
 
   return (
@@ -179,28 +181,26 @@ const ChangeStatus = ({
         onClick={() => {
           if (noAccess) return;
 
+          if (role === "admin" || role === "agent") {
+            setIsOpen(!isOpen); // همیشه دراپ‌داون فعال
+            return;
+          }
+
           if (initialStatus === "Guided") {
             setIsGuidedViewModalOpen(true);
             return;
           }
 
           if (initialStatus === "cancelled") {
-            setIsCancelledModalOpen(true);
+            setIsModalOpen(true); // همیشه مدال لغو باز شود
             return;
           }
 
-          if (!isCancelled) {
-            setIsOpen(!isOpen);
-          }
+          setIsOpen(!isOpen); // برای سایر کاربران و وضعیت‌ها
         }}
         disabled={noAccess}
         className={`flex items-center justify-between px-3.5 w-full h-12 mt-[9px] text-white font-medium leading-6 rounded-[10px]
-    ${
-      noAccess || isCancelled
-        ? "bg-[#FF000033] justify-center"
-        : statusBgColor
-    }
-  `}
+${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
       >
         {initialStatus !== "Guided" && initialStatus !== "cancelled" && (
           <div></div>
