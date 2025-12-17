@@ -19,7 +19,7 @@ const Messages = ({ request, comment_guided }) => {
         return {
           bg: "bg-[#FF770033]",
           text: "text-[#FF7700]",
-          message: "منتظر پاسخ کاربر",
+          message: "در دست بررسی",
         };
       case "closed":
         return {
