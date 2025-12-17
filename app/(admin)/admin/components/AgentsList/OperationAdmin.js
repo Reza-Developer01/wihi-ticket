@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import jalaali from "jalaali-js"; // استفاده از jalaali-js
 
-const OperationAdmin = ({ agentId, getCategory }) => {
+const OperationAdmin = ({ agentId, getCategory, isActive }) => {
   const fieldLabels = {
     first_name: "نام",
     last_name: "نام خانوادگی",
@@ -58,8 +58,7 @@ const OperationAdmin = ({ agentId, getCategory }) => {
   const router = useRouter();
 
   const options = [
-    { label: "غیرفعالسازی" },
-    { label: "فعالسازی" },
+    ...(isActive ? [{ label: "غیرفعالسازی" }] : [{ label: "فعالسازی" }]),
     { label: "گزارش عملکرد(براساس نظر سنجی)" },
     { label: "گزارش عملکرد ( براساس میانگین پاسخ , تیکت و تماس و.. )" },
     { label: "تاریخچــه تغییرات" },

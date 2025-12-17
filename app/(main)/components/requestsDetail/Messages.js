@@ -13,7 +13,7 @@ const Messages = ({ request, comment_guided }) => {
         return {
           bg: "bg-[#0068C933]",
           text: "text-[#0068C9]",
-          message: "در دست بررسی",
+          message: "منتظر پاسخ",
         };
       case "is_progress":
         return {
