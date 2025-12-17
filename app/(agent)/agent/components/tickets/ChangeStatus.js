@@ -39,6 +39,8 @@ const ChangeStatus = ({
   comment_cancelled,
 }) => {
   const isCancelled = initialStatus === "cancelled";
+  const canOpenAfterCancelled =
+    user?.role === "admin" || user?.role === "agent";
   const statusBgColor = STATUS_COLORS[initialStatus] || "bg-[#20CFCF]";
 
   const role = user?.role;
@@ -182,7 +184,7 @@ const ChangeStatus = ({
           if (noAccess) return;
 
           if (role === "admin" || role === "agent") {
-            setIsOpen(!isOpen); // همیشه دراپ‌داون فعال
+            setIsOpen(!isOpen);
             return;
           }
 
@@ -191,12 +193,18 @@ const ChangeStatus = ({
             return;
           }
 
-          if (initialStatus === "cancelled") {
-            setIsModalOpen(true); // همیشه مدال لغو باز شود
+          // ✅ CHANGE (فقط این شرط تغییر کرده)
+          if (initialStatus === "cancelled" && role === "customer") {
+            setIsCancelledModalOpen(true); // نمایش مدال read-only
             return;
           }
 
-          setIsOpen(!isOpen); // برای سایر کاربران و وضعیت‌ها
+          if (initialStatus === "cancelled" && !canOpenAfterCancelled) {
+            setIsModalOpen(true); // برای admin/agent که بعد از لغو هم می‌خوان تغییر بدن
+            return;
+          }
+
+          setIsOpen(!isOpen);
         }}
         disabled={noAccess}
         className={`flex items-center justify-between px-3.5 w-full h-12 mt-[9px] text-white font-medium leading-6 rounded-[10px]
@@ -218,7 +226,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
           {selected}
         </span>
 
-        {!isCancelled && initialStatus !== "Guided" && (
+        {(!isCancelled || canOpenAfterCancelled) && (
           <div className="border-r border-r-white pr-3 flex items-center">
             <svg
               className={`w-5 h-5 text-white transition-transform duration-200 ${
@@ -232,9 +240,9 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
       </button>
 
       {/* منوی وضعیت */}
-      {isOpen && !noAccess && !isCancelled && (
+      {isOpen && !noAccess && (!isCancelled || canOpenAfterCancelled) && (
         <div className="custom-shadow absolute bottom-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-20 max-h-60 overflow-y-auto">
-          <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
+          <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm text-center divide-y divide-[#EFF0F6]">
             {visibleStatusOptions.map((option) => (
               <li
                 key={option.value}
@@ -308,7 +316,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
                     isAgentOpen ? "rotate-180" : ""
                   }`}
                 >
-                  <use href="#arrow-down" />
+                  <use href="#arrow-down-2" />
                 </svg>
               </button>
               {isAgentOpen && (
