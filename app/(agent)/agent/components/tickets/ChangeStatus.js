@@ -19,6 +19,7 @@ const ChangeStatus = ({
   agentsList = [],
   user,
 }) => {
+  const role = user?.role;
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -51,13 +52,26 @@ const ChangeStatus = ({
     user.role === "admin" ||
     permissions.some((p) => p.slug === "can_assign_callrequests");
 
-  const visibleStatusOptions = statusOptions.filter((option) => {
-    if (option.value === "cancelled") return hasCloseCall;
-    if (option.value === "callـqueue" || option.value === "Checked")
-      return hasCallStatus;
-    if (option.value === "Guided") return hasCanAssign;
-    return false;
-  });
+  const visibleStatusOptions = (() => {
+    // admin → همه وضعیت‌ها
+    if (role === "admin") {
+      return statusOptions;
+    }
+
+    // customer → فقط لغو
+    if (role === "customer") {
+      return statusOptions.filter((option) => option.value === "cancelled");
+    }
+
+    // بقیه نقش‌ها (agent و ...)
+    return statusOptions.filter((option) => {
+      if (option.value === "cancelled") return hasCloseCall;
+      if (option.value === "callـqueue" || option.value === "Checked")
+        return hasCallStatus;
+      if (option.value === "Guided") return hasCanAssign;
+      return false;
+    });
+  })();
 
   const noAccess = visibleStatusOptions.length === 0;
 
