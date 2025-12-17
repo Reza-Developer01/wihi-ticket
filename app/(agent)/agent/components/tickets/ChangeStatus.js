@@ -35,6 +35,7 @@ const ChangeStatus = ({
   initialStatus = "queue_call",
   agentsList = [],
   user,
+  comment_guided,
 }) => {
   const isCancelled = initialStatus === "cancelled";
   const statusBgColor = STATUS_COLORS[initialStatus] || "bg-[#20CFCF]";
@@ -60,6 +61,8 @@ const ChangeStatus = ({
 
   const [state, formAction] = useActionState(changeStatus, {});
   const [stateGuided, formActionGuided] = useActionState(guidedStatus, {});
+
+  const [isGuidedViewModalOpen, setIsGuidedViewModalOpen] = useState(false);
 
   const permissions = user?.permissions || [];
 
@@ -173,6 +176,12 @@ const ChangeStatus = ({
         type="button"
         onClick={() => {
           if (isCancelled || noAccess) return;
+
+          if (initialStatus === "Guided") {
+            setIsGuidedViewModalOpen(true); // باز کردن مدال
+            return; // جلوگیری از باز شدن دراپ‌داون
+          }
+
           setIsOpen(!isOpen);
         }}
         disabled={noAccess || isCancelled}
@@ -184,12 +193,16 @@ const ChangeStatus = ({
     }
   `}
       >
-        <div></div>
+        {initialStatus !== "Guided" && <div></div>}
 
-        <span className={STATUS_TEXT_COLORS[initialStatus]}>{selected}</span>
+        <span
+          className={STATUS_TEXT_COLORS[initialStatus]}
+          style={{ margin: initialStatus === "Guided" ? "0 auto" : "0" }}
+        >
+          {selected}
+        </span>
 
-        {/* آیکون فقط وقتی status cancelled نیست */}
-        {!isCancelled && (
+        {!isCancelled && initialStatus !== "Guided" && (
           <div className="border-r border-r-white pr-3 flex items-center">
             <svg
               className={`w-5 h-5 text-white transition-transform duration-200 ${
@@ -372,6 +385,39 @@ const ChangeStatus = ({
               </button>
             </div>
           </form>
+        </Modal>
+      )}
+
+      {isGuidedViewModalOpen && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            مشاهده جزئیات
+          </h4>
+
+          <div
+            className="font-light text-xs h-[150px]"
+            style={{ boxShadow: "0px -3px 6px 0px #F4F5FA99 inset" }}
+          >
+            <p className="pt-2.5 pl-2.5 pr-2">{comment_guided}</p>
+          </div>
+
+          <div className="flex flex-col gap-y-6">
+            <button
+              onClick={() => setIsGuidedViewModalOpen(false)}
+              type="button"
+              className="flex items-center justify-center w-full h-12 bg-[#D9D9D9] text-[#404040] rounded-[10px] mt-6 font-medium"
+            >
+              مشاهده
+            </button>
+
+            <button
+              onClick={() => setIsGuidedViewModalOpen(false)}
+              type="button"
+              className="text-[#6C7278] text-xs"
+            >
+              متوجـــه شدم
+            </button>
+          </div>
         </Modal>
       )}
 
