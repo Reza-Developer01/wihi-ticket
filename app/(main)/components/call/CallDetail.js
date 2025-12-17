@@ -116,14 +116,14 @@ const CallDetail = ({
       </div>
 
       {/* وضعیت --- فعلاً طبق گفته تو خالی می‌ذارم */}
-      {role !== "admin" && (
+      {/* {role !== "admin" && (
         <ChangeStatusDropDown
           status={call.status}
           call_request_number={call.call_request_number}
           comment_guided={call.comment_guided}
           comment_cancelled={call.comment_cancelled}
         />
-      )}
+      )} */}
 
       {/* {role === "admin" && ( */}
       <ChangeStatus

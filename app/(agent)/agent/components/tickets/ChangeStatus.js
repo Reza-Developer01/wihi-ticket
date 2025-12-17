@@ -19,6 +19,7 @@ const ChangeStatus = ({
   agentsList = [],
   user,
 }) => {
+  const isCancelled = initialStatus === "cancelled";
   const role = user?.role;
   const router = useRouter();
 
@@ -145,23 +146,37 @@ const ChangeStatus = ({
       {/* دکمه وضعیت */}
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        disabled={noAccess}
-        className={`flex items-center justify-between px-3.5 w-full h-12 mt-[9px] text-white font-medium leading-6 rounded-[10px] ${
-          noAccess ? "bg-gray-400 cursor-not-allowed" : "bg-[#20CFCF]"
-        }`}
+        onClick={() => {
+          if (isCancelled || noAccess) return;
+          setIsOpen(!isOpen);
+        }}
+        disabled={noAccess || isCancelled}
+        className={`flex items-center justify-between px-3.5 w-full h-12 mt-[9px] text-white font-medium leading-6 rounded-[10px]
+    ${
+      noAccess || isCancelled
+        ? "bg-[#FF000033] justify-center cursor-not-allowed"
+        : "bg-[#20CFCF]"
+    }
+  `}
       >
         <div></div>
-        {noAccess ? "دسترسی ندارید" : selected}
-        <div className="border-r border-r-white pr-3 flex items-center">
-          <svg
-            className={`w-5 h-5 text-white transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          >
-            <use href="#arrow-down-2" />
-          </svg>
-        </div>
+
+        <span className={`${noAccess || isCancelled ? "text-[#FF0000]" : ""}`}>
+          {selected}
+        </span>
+
+        {/* آیکون فقط وقتی status cancelled نیست */}
+        {!isCancelled && (
+          <div className="border-r border-r-white pr-3 flex items-center">
+            <svg
+              className={`w-5 h-5 text-white transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            >
+              <use href="#arrow-down-2" />
+            </svg>
+          </div>
+        )}
       </button>
 
       {/* منوی وضعیت */}
