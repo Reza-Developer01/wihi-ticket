@@ -89,6 +89,7 @@ const ChangeStatus = ({
       if (option.value === "queue_call" || option.value === "Checked")
         return hasCallStatus;
       if (option.value === "Guided") return hasCanAssign;
+      if (option.value === "is_progress") return true;
       return false;
     });
   })();
@@ -153,7 +154,12 @@ const ChangeStatus = ({
     if (label === "لغو شده") return setIsModalOpen(true);
     if (label === "هدایت شده") return setIsGuidedModalOpen(true);
 
-    if (value === "queue_call" || value === "Checked") {
+    // اضافه کردن is_progress
+    if (
+      value === "queue_call" ||
+      value === "Checked" ||
+      value === "is_progress"
+    ) {
       const form = document.getElementById("quick-status-form");
       form.querySelector('input[name="status"]').value = value;
       form.requestSubmit();
