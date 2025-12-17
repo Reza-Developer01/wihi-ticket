@@ -132,6 +132,7 @@ const CallDetail = ({
         agentsList={agentsList}
         user={user}
         comment_guided={call.comment_guided}
+        comment_cancelled={call.comment_cancelled}
       />
       {/* )} */}
     </div>

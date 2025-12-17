@@ -36,6 +36,7 @@ const ChangeStatus = ({
   agentsList = [],
   user,
   comment_guided,
+  comment_cancelled,
 }) => {
   const isCancelled = initialStatus === "cancelled";
   const statusBgColor = STATUS_COLORS[initialStatus] || "bg-[#20CFCF]";
@@ -63,6 +64,7 @@ const ChangeStatus = ({
   const [stateGuided, formActionGuided] = useActionState(guidedStatus, {});
 
   const [isGuidedViewModalOpen, setIsGuidedViewModalOpen] = useState(false);
+  const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false);
 
   const permissions = user?.permissions || [];
 
@@ -175,29 +177,43 @@ const ChangeStatus = ({
       <button
         type="button"
         onClick={() => {
-          if (isCancelled || noAccess) return;
+          if (noAccess) return;
 
           if (initialStatus === "Guided") {
-            setIsGuidedViewModalOpen(true); // باز کردن مدال
-            return; // جلوگیری از باز شدن دراپ‌داون
+            setIsGuidedViewModalOpen(true);
+            return;
           }
 
-          setIsOpen(!isOpen);
+          if (initialStatus === "cancelled") {
+            setIsCancelledModalOpen(true);
+            return;
+          }
+
+          if (!isCancelled) {
+            setIsOpen(!isOpen);
+          }
         }}
-        disabled={noAccess || isCancelled}
+        disabled={noAccess}
         className={`flex items-center justify-between px-3.5 w-full h-12 mt-[9px] text-white font-medium leading-6 rounded-[10px]
     ${
       noAccess || isCancelled
-        ? "bg-[#FF000033] justify-center cursor-not-allowed"
+        ? "bg-[#FF000033] justify-center"
         : statusBgColor
     }
   `}
       >
-        {initialStatus !== "Guided" && <div></div>}
+        {initialStatus !== "Guided" && initialStatus !== "cancelled" && (
+          <div></div>
+        )}
 
         <span
           className={STATUS_TEXT_COLORS[initialStatus]}
-          style={{ margin: initialStatus === "Guided" ? "0 auto" : "0" }}
+          style={{
+            margin:
+              initialStatus === "Guided" || initialStatus === "cancelled"
+                ? "0 auto"
+                : "0",
+          }}
         >
           {selected}
         </span>
@@ -412,6 +428,39 @@ const ChangeStatus = ({
 
             <button
               onClick={() => setIsGuidedViewModalOpen(false)}
+              type="button"
+              className="text-[#6C7278] text-xs"
+            >
+              متوجـــه شدم
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {isCancelledModalOpen && (
+        <Modal>
+          <h4 className="mb-6 text-[#404040] font-semibold leading-[22.4px] tracking-[-0.12px]">
+            مشاهده جزئیات
+          </h4>
+
+          <div
+            className="font-light text-xs h-[150px]"
+            style={{ boxShadow: "0px -3px 6px 0px #F4F5FA99 inset" }}
+          >
+            <p className="pt-2.5 pl-2.5 pr-2">{comment_cancelled}</p>
+          </div>
+
+          <div className="flex flex-col gap-y-6">
+            <button
+              onClick={() => setIsCancelledModalOpen(false)}
+              type="button"
+              className="flex items-center justify-center w-full h-12 bg-[#FF000033] text-[#FF0000] rounded-[10px] mt-6 font-medium"
+            >
+              مشاهده
+            </button>
+
+            <button
+              onClick={() => setIsCancelledModalOpen(false)}
               type="button"
               className="text-[#6C7278] text-xs"
             >
