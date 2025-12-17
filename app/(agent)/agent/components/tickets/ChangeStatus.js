@@ -11,13 +11,15 @@ const statusOptions = [
   { label: "هدایت شده", value: "Guided" },
   { label: "بررسی شده", value: "Checked" },
   { label: "لغو شده", value: "cancelled" },
+  { label: "در دست بررسی", value: "is_progress" },
 ];
 
 const STATUS_COLORS = {
-  queue_call: "bg-[#FF880033]", // فیروزه‌ای (پیش‌فرض)
-  Checked: "bg-[#00C96B33]", // سبز
-  Guided: "bg-[#40404033]", // آبی
-  cancelled: "bg-[#FF000033]", // لغو شده (قفل)
+  queue_call: "bg-[#FF880033]",
+  Checked: "bg-[#00C96B33]",
+  Guided: "bg-[#40404033]",
+  cancelled: "bg-[#FF000033]",
+  is_progress: "bg-[#0068C933]",
 };
 
 const STATUS_TEXT_COLORS = {
@@ -25,6 +27,7 @@ const STATUS_TEXT_COLORS = {
   Checked: "text-[#00C96B]",
   Guided: "text-[#404040]",
   cancelled: "text-[#FF0000]",
+  is_progress: "text-[#0068C9]",
 };
 
 const ChangeStatus = ({

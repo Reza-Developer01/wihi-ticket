@@ -3,7 +3,7 @@ import Link from "next/link";
 const CallList = ({ calls, search, filters }) => {
   const getStatusStyle = (status) => {
     switch (status) {
-      case "callـqueue":
+      case "queue_call":
         return {
           bg: "bg-[#FF770033]",
           text: "text-[#FF0000]",
@@ -26,6 +26,12 @@ const CallList = ({ calls, search, filters }) => {
           bg: "bg-[#FF000033]",
           text: "text-[#FF0000]",
           message: "لغو شده",
+        };
+      case "is_progress":
+        return {
+          bg: "bg-[#0068C933]",
+          text: "text-[#0068C9]",
+          message: "در دست بررسی",
         };
       default:
         return {

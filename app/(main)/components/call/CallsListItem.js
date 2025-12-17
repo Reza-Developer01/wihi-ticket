@@ -34,6 +34,12 @@ const CallsListItem = ({
           text: "text-[#FF0000]",
           message: "لغو شده",
         };
+      case "is_progress":
+        return {
+          bg: "bg-[#0068C933]",
+          text: "text-[#0068C9]",
+          message: "در دست بررسی",
+        };
       default:
         return {
           bg: "bg-[#E5E7EB]",
