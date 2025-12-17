@@ -175,11 +175,9 @@ const createLegalUser = async (state, formData) => {
   const plan = formData.get("plan");
   const register_date = formData.get("register_date");
 
-  // اصلاح شماره موبایل
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
-  // ساخت آبجکت legal_user (دقیقاً مثل real)
   const legalUserObj = {
     company_name,
     registration_number,
@@ -191,24 +189,7 @@ const createLegalUser = async (state, formData) => {
     postal_code: postal_code ?? "",
   };
 
-  // 🔥 لاگ کامل برای دیباگ
-  console.log("🔵 createLegalUser - collected values:");
-  console.log({
-    first_name,
-    last_name,
-    email,
-    phone,
-    username,
-    password: password ? "*****" : null,
-    rePassword: rePassword ? "*****" : null,
-    plan,
-    legal_user: legalUserObj,
-  });
-  console.log("===================================");
-
-  // -------------------------
-  // Validation
-  // -------------------------
+  // ---------------- Validation ----------------
   if (!company_name?.trim())
     return { status: false, message: "نام شرکت الزامی است." };
 
@@ -224,15 +205,6 @@ const createLegalUser = async (state, formData) => {
   if (!phone || !/^09\d{9}$/.test(phone))
     return { status: false, message: "شماره موبایل معتبر نیست." };
 
-  if (!address || address.trim().length < 3)
-    return { status: false, message: "آدرس باید حداقل ۳ کاراکتر باشد." };
-
-  if (!floor || isNaN(floor))
-    return { status: false, message: "شماره طبقه معتبر نیست." };
-
-  if (!unit || isNaN(unit))
-    return { status: false, message: "شماره واحد معتبر نیست." };
-
   if (!legalUserObj.postal_code || !/^\d{10}$/.test(legalUserObj.postal_code))
     return { status: false, message: "کد پستی باید ۱۰ رقم باشد." };
 
@@ -245,9 +217,7 @@ const createLegalUser = async (state, formData) => {
   if (password !== rePassword)
     return { status: false, message: "تکرار رمز عبور با رمز اصلی یکسان نیست." };
 
-  // ----------------------------
-  // ساخت FormData (دقیقاً مشابه real)
-  // ----------------------------
+  // ---------------- FormData ----------------
   const body = new FormData();
 
   body.append("username", username);
@@ -260,9 +230,11 @@ const createLegalUser = async (state, formData) => {
   body.append("plan", plan);
   body.append("register_date", register_date);
 
-  // legal_user fields (مثل real_user)
   body.append("legal_user.company_name", legalUserObj.company_name);
-  body.append("legal_user.registration_number", legalUserObj.registration_number);
+  body.append(
+    "legal_user.registration_number",
+    legalUserObj.registration_number
+  );
   body.append("legal_user.national_id", legalUserObj.national_id);
   body.append("legal_user.economic_code", legalUserObj.economic_code);
   body.append("legal_user.address", legalUserObj.address);
@@ -270,10 +242,8 @@ const createLegalUser = async (state, formData) => {
   body.append("legal_user.unit", legalUserObj.unit);
   body.append("legal_user.postal_code", legalUserObj.postal_code);
 
-  // فایل قرارداد
+  // ✅ دقیقاً مثل createRealUser
   const file = formData.get("contract_file");
-  console.log("📎 Uploaded file:", file);
-
   if (file && file.size > 0) {
     body.append("legal_user.contract_file", file);
   }
@@ -293,14 +263,19 @@ const createLegalUser = async (state, formData) => {
     );
 
     const data = await res.json();
-    console.log("🔵 API Response:", data);
 
-    if (!res.ok)
+    if (!res.ok) {
+      if (data?.email) return { status: false, message: "ایمیل تکراری است." };
+      if (data?.username)
+        return { status: false, message: "نام کاربری تکراری است." };
+      if (data?.phone)
+        return { status: false, message: "شماره موبایل تکراری است." };
+
       return {
         status: false,
-        message:
-          data?.message || "نام کاربری یا شماره تماس یا ایمیل تکراری است.",
+        message: data?.message || "خطا در ایجاد کاربر حقوقی.",
       };
+    }
 
     return {
       status: true,
@@ -309,11 +284,10 @@ const createLegalUser = async (state, formData) => {
   } catch (error) {
     return {
       status: false,
-      message: "خطا در ارسال اطلاعات: " + error.message,
+      message: "خطا در ارسال اطلاعات.",
     };
   }
 };
-
 
 const editRealUser = async (state, formData) => {
   const userId = formData.get("id");
@@ -382,7 +356,6 @@ const editRealUser = async (state, formData) => {
 
   return { status: true, message: "کاربر با موفقیت ویرایش شد." };
 };
-
 
 const editLegalUser = async (state, formData) => {
   const userId = formData.get("id");
@@ -461,7 +434,5 @@ const editLegalUser = async (state, formData) => {
 
   return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
 };
-
-
 
 export { createRealUser, createLegalUser, editRealUser, editLegalUser };
