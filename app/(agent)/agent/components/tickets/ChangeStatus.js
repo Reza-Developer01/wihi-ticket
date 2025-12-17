@@ -7,19 +7,35 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const statusOptions = [
-  { label: "در صف تماس", value: "callـqueue" },
+  { label: "در صف تماس", value: "queue_call" },
   { label: "هدایت شده", value: "Guided" },
   { label: "بررسی شده", value: "Checked" },
   { label: "لغو شده", value: "cancelled" },
 ];
 
+const STATUS_COLORS = {
+  queue_call: "bg-[#FF880033]", // فیروزه‌ای (پیش‌فرض)
+  Checked: "bg-[#00C96B33]", // سبز
+  Guided: "bg-[#40404033]", // آبی
+  cancelled: "bg-[#FF000033]", // لغو شده (قفل)
+};
+
+const STATUS_TEXT_COLORS = {
+  queue_call: "text-[#FF8000]",
+  Checked: "text-[#00C96B]",
+  Guided: "text-[#404040]",
+  cancelled: "text-[#FF0000]",
+};
+
 const ChangeStatus = ({
   call_request_number,
-  initialStatus = "callـqueue",
+  initialStatus = "queue_call",
   agentsList = [],
   user,
 }) => {
   const isCancelled = initialStatus === "cancelled";
+  const statusBgColor = STATUS_COLORS[initialStatus] || "bg-[#20CFCF]";
+
   const role = user?.role;
   const router = useRouter();
 
@@ -67,7 +83,7 @@ const ChangeStatus = ({
     // بقیه نقش‌ها (agent و ...)
     return statusOptions.filter((option) => {
       if (option.value === "cancelled") return hasCloseCall;
-      if (option.value === "callـqueue" || option.value === "Checked")
+      if (option.value === "queue_call" || option.value === "Checked")
         return hasCallStatus;
       if (option.value === "Guided") return hasCanAssign;
       return false;
@@ -134,7 +150,7 @@ const ChangeStatus = ({
     if (label === "لغو شده") return setIsModalOpen(true);
     if (label === "هدایت شده") return setIsGuidedModalOpen(true);
 
-    if (value === "callـqueue" || value === "Checked") {
+    if (value === "queue_call" || value === "Checked") {
       const form = document.getElementById("quick-status-form");
       form.querySelector('input[name="status"]').value = value;
       form.requestSubmit();
@@ -155,15 +171,13 @@ const ChangeStatus = ({
     ${
       noAccess || isCancelled
         ? "bg-[#FF000033] justify-center cursor-not-allowed"
-        : "bg-[#20CFCF]"
+        : statusBgColor
     }
   `}
       >
         <div></div>
 
-        <span className={`${noAccess || isCancelled ? "text-[#FF0000]" : ""}`}>
-          {selected}
-        </span>
+        <span className={STATUS_TEXT_COLORS[initialStatus]}>{selected}</span>
 
         {/* آیکون فقط وقتی status cancelled نیست */}
         {!isCancelled && (
@@ -180,7 +194,7 @@ const ChangeStatus = ({
       </button>
 
       {/* منوی وضعیت */}
-      {isOpen && !noAccess && (
+      {isOpen && !noAccess && !isCancelled && (
         <div className="custom-shadow absolute bottom-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-20 max-h-60 overflow-y-auto">
           <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:last:pb-0">
             {visibleStatusOptions.map((option) => (
