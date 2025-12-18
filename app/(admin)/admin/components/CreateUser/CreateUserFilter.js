@@ -55,7 +55,7 @@ const CreateUserFilter = ({ userType, data, services }) => {
         {isCreatePage ? (
           <>
             {activeTab === "real" && <CreateUserReal services={services} />}
-            {activeTab === "legal" && <CreateUserLegal />}
+            {activeTab === "legal" && <CreateUserLegal services={services} />}
           </>
         ) : (
           <>

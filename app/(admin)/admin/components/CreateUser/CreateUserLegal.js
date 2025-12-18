@@ -14,13 +14,8 @@ import UserPlans from "./UserPlans";
 import { useRouter } from "next/navigation";
 import Services from "./Services";
 
-const mockServices = [
-  { id: 1, name: "پشتیبانی" },
-  { id: 2, name: "مشاوره" },
-  { id: 3, name: "فروش" },
-];
-
-const CreateUserLegal = () => {
+const CreateUserLegal = ({ services: allServices }) => {
+  const [selectedServices, setSelectedServices] = useState([]);
   const [services, setServices] = useState([]);
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
@@ -203,12 +198,16 @@ const CreateUserLegal = () => {
         </div> */}
 
         <Services
-          allServices={mockServices}
-          selected={services}
-          onChange={setServices}
+          allServices={allServices}
+          selected={selectedServices}
+          onChange={setSelectedServices}
         />
 
-        <input type="hidden" name="services" value={JSON.stringify(services)} />
+        <input
+          type="hidden"
+          name="services"
+          value={JSON.stringify(selectedServices)}
+        />
 
         <input
           name="address"
