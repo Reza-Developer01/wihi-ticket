@@ -262,6 +262,19 @@ const createLegalUser = async (state, formData) => {
   if (password !== rePassword)
     return { status: false, message: "تکرار رمز عبور با رمز اصلی یکسان نیست." };
 
+  const servicesRaw = formData.get("services");
+  let servicesArr = [];
+  try {
+    servicesArr = JSON.parse(servicesRaw);
+    if (!Array.isArray(servicesArr) || servicesArr.length === 0) {
+      return { status: false, message: "حداقل یک سرویس باید انتخاب شود." };
+    }
+  } catch (err) {
+    return { status: false, message: "سرویس‌ها نامعتبر هستند." };
+  }
+
+  console.log(servicesArr);
+
   // ----------------------------
   // ساخت FormData (دقیقاً مشابه real)
   // ----------------------------
@@ -297,6 +310,8 @@ const createLegalUser = async (state, formData) => {
   if (file && file.size > 0) {
     body.append("legal_user.contract_file", file);
   }
+
+  servicesArr.forEach((id) => body.append("services", id));
 
   const token = cookies().get("access_token")?.value;
 
