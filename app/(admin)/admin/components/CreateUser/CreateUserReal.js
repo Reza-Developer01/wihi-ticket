@@ -12,8 +12,16 @@ import { createRealUser } from "@/actions/user";
 import toast from "react-hot-toast";
 import UserPlans from "./UserPlans";
 import { useRouter } from "next/navigation";
+import Services from "./Services";
+
+const mockServices = [
+  { id: 1, name: "پشتیبانی" },
+  { id: 2, name: "مشاوره" },
+  { id: 3, name: "فروش" },
+];
 
 const CreateUserReal = () => {
+  const [services, setServices] = useState([]);
   const [hasFile, setHasFile] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
@@ -128,6 +136,18 @@ const CreateUserReal = () => {
           }}
           style={{ direction: "ltr" }}
         />
+
+        {/* <div className="w-full *:mb-0 *:mt-5">
+          <SubTitle title="سرویــس‌های کاربر" w="w-[90px]" />
+        </div> */}
+
+        <Services
+          allServices={mockServices}
+          selected={services}
+          onChange={setServices}
+        />
+
+        <input type="hidden" name="services" value={JSON.stringify(services)} />
 
         <input
           name="address"
