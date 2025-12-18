@@ -7,10 +7,7 @@ const createRealUser = async (state, formData) => {
   const last_name = formData.get("last_name");
   const email = formData.get("email");
   let phone = formData.get("phone");
-
-  // **توجه**: در فرانت شما فیلد کدپستی اسمش "zip_code" هست — همین رو می‌خونیم
   const zip_code = formData.get("zip_code");
-  // ولی داخل real_user API اسمش postal_code ست، پس موقع JSON کردن تبدیل می‌کنیم.
   const address = formData.get("address");
   const floor = formData.get("floor");
   const unit = formData.get("unit");
@@ -21,20 +18,27 @@ const createRealUser = async (state, formData) => {
   const plan = formData.get("plan");
   const user_type = formData.get("user_type");
   const register_date = formData.get("register_date");
+  const services = formData.get("services");
+  let servicesArr = [];
+  if (services) {
+    try {
+      servicesArr = JSON.parse(services);
+      servicesArr = servicesArr.map((id) => Number(id));
+    } catch (err) {
+      console.warn("services JSON invalid:", services);
+    }
+  }
 
-  // اصلاح شماره موبایل +98 → 09
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
-  // ساختار نهایی real_user که قرار است به API برود
   const realUserObj = {
     address,
     floor,
     unit,
-    postal_code: zip_code ?? "", // از zip_code فرانت استفاده می‌کنیم و اسمش را به postal_code تغییر می‌دهیم
+    postal_code: zip_code ?? "",
   };
 
-  // 🔥 لاگ کامل ورودی‌ها و ساختار نهایی real_user (برای دیباگ)
   console.log("🔵 createRealUser - collected values:");
   console.log({
     first_name,
@@ -102,28 +106,18 @@ const createRealUser = async (state, formData) => {
   body.append("user_type", "real");
   body.append("plan", plan);
   body.append("register_date", register_date);
-
-  // 🔥 فیلدهای real_user را تک‌به‌تک append می‌کنیم
   body.append("real_user.address", realUserObj.address);
   body.append("real_user.floor", realUserObj.floor);
   body.append("real_user.unit", realUserObj.unit);
   body.append("real_user.postal_code", realUserObj.postal_code);
 
-  const services = formData.get("services");
-  let servicesArr = [];
-
-  if (services) {
-    try {
-      servicesArr = JSON.parse(services);
-      servicesArr = servicesArr.map((id) => Number(id)); // تبدیل به عدد
-    } catch (err) {
-      console.warn("services JSON invalid:", services);
-    }
-  }
-
   if (!servicesArr.length) {
     return { status: false, message: "حداقل یک سرویس باید انتخاب شود." };
   }
+
+  servicesArr.forEach((id) => {
+    body.append("services", id);
+  });
 
   console.log(`SERVICES => ${services}`);
 
@@ -311,7 +305,9 @@ const createLegalUser = async (state, formData) => {
     body.append("legal_user.contract_file", file);
   }
 
-  servicesArr.forEach((id) => body.append("services", id));
+  servicesArr.forEach((id) => {
+    body.append("services", id);
+  });
 
   const token = cookies().get("access_token")?.value;
 
