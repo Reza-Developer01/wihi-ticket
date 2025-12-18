@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import UserPlans from "./UserPlans";
 import { useRouter } from "next/navigation";
 import Services from "./Services";
+import { createService } from "@/actions/service";
 
 const CreateUserReal = ({ services: allServices }) => {
   const [selectedServices, setSelectedServices] = useState([]);
@@ -44,6 +45,7 @@ const CreateUserReal = ({ services: allServices }) => {
   };
 
   const [state, formAction] = useActionState(createRealUser, {});
+  const [stateService, formActionService] = useActionState(createService, {});
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;

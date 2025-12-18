@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "@/app/(main)/components/Modal";
+import { createService } from "@/actions/service";
+import toast from "react-hot-toast";
 
 const Services = ({ allServices = [], selected = [], onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newServiceName, setNewServiceName] = useState("");
 
   const dropdownRef = useRef(null);
   const modalRef = useRef(null);
@@ -41,6 +44,35 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
       onChange(selected.filter((s) => s.id !== item.id));
     } else {
       onChange([...selected, item]);
+    }
+  };
+
+  const handleCreateService = async () => {
+    if (!newServiceName.trim()) {
+      toast.error("پر کردن نام سرویس الزامی است.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("name", newServiceName);
+
+      const res = await createService(formData);
+
+      if (res.status) {
+        toast.success(res.message);
+
+        const newService = { id: Date.now(), name: newServiceName };
+        onChange([...selected, newService]);
+
+        setNewServiceName(""); // خالی کردن input
+        setIsModalOpen(false); // بستن modal
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err) {
+      toast.error("خطا در ایجاد سرویس.");
+      console.error(err);
     }
   };
 
@@ -125,11 +157,14 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
                 ref={inputRef}
                 type="text"
                 placeholder="عنوان سرویس"
+                value={newServiceName} // اضافه کن
+                onChange={(e) => setNewServiceName(e.target.value)}
                 className="grow h-full pr-3.5 pl-2.5 text-xs font-medium outline-none text-[#8C8C8C]"
               />
 
               <button
                 type="button"
+                onClick={handleCreateService}
                 className="flex items-center justify-center w-[62px] h-full border-r border-[#EDF1F3]"
               >
                 <svg
