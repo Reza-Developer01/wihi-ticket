@@ -60,7 +60,7 @@ const CreateUserFilter = ({ userType, data, services }) => {
         ) : (
           <>
             {activeTab === "real" && <EditRealUser data={data} services={services} />}
-            {activeTab === "legal" && <EditLegalUser data={data} />}
+            {activeTab === "legal" && <EditLegalUser data={data} services={services} />}
           </>
         )}
       </div>

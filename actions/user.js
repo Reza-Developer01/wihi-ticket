@@ -443,6 +443,7 @@ const editLegalUser = async (state, formData) => {
   const plan = formData.get("plan");
   const register_date = formData.get("register_date");
   const file = formData.get("file");
+  const servicesRaw = formData.get("services");
 
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
@@ -476,6 +477,19 @@ const editLegalUser = async (state, formData) => {
   if (file && file.size > 0) {
     body.append("legal_user.contract_file", file);
   }
+
+  if (servicesRaw) {
+    try {
+      const services = JSON.parse(servicesRaw);
+      services.forEach((serviceId) => {
+        body.append("services", serviceId); // API انتظار دارد چند مقدار services
+      });
+    } catch (err) {
+      console.error("خطا در پارس کردن سرویس‌ها:", err);
+    }
+  }
+
+  console.log(servicesRaw);
 
   const token = cookies().get("access_token")?.value;
 

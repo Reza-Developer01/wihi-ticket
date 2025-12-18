@@ -65,11 +65,10 @@ const EditableServices = ({ allServices = [], selected = [], onChange }) => {
 
         // استفاده از ID که API برگردانده
         const newService = {
-          id: res.data.id, // <- مهم
-          name: res.data.name, // <- یا همان newServiceName
+          id: res.data?.id,
+          name: res.data?.name,
         };
 
-        // اضافه کردن سرویس جدید به لیست و selected
         setServices([...services, newService]);
         onChange([...selected, newService]);
 
