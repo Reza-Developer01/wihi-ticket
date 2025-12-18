@@ -135,12 +135,6 @@ const AgentsCategories = ({ allCategories = [], selected = [], onChange }) => {
                     onClick={() => toggleCategory(item)}
                   >
                     {item.name}
-
-                    {selected.some((c) => c.id === item.id) && (
-                      <svg className="w-4 h-4 text-green-500">
-                        <use href="#check" />
-                      </svg>
-                    )}
                   </li>
                 ))
               ) : (

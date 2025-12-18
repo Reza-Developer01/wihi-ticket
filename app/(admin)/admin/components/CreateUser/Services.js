@@ -81,18 +81,13 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
                   <li
                     key={item.id}
                     onClick={() => toggleService(item)}
-                    className={`flex items-center justify-center gap-x-2 py-3 cursor-pointer ${
+                    className={`flex items-center justify-center gap-x-2 py-3 cursor-pointer hover:text-[#1A1C1E] ${
                       selected.some((s) => s.id === item.id)
                         ? "text-black font-semibold"
                         : ""
                     }`}
                   >
                     {item.name}
-                    {selected.some((s) => s.id === item.id) && (
-                      <svg className="w-4 h-4 text-green-500">
-                        <use href="#check" />
-                      </svg>
-                    )}
                   </li>
                 ))
               ) : (
