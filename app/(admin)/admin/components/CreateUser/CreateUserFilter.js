@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import EditLegalUser from "../UsersList/EditLegalUser";
 import EditRealUser from "../UsersList/EditRealUser";
 
-const CreateUserFilter = ({ userType, data }) => {
+const CreateUserFilter = ({ userType, data, services }) => {
   const [activeTab, setActiveTab] = useState("real");
   const pathname = usePathname();
   const isCreatePage = pathname === "/admin/create-user";
@@ -54,7 +54,7 @@ const CreateUserFilter = ({ userType, data }) => {
       <div className="mt-4">
         {isCreatePage ? (
           <>
-            {activeTab === "real" && <CreateUserReal />}
+            {activeTab === "real" && <CreateUserReal services={services} />}
             {activeTab === "legal" && <CreateUserLegal />}
           </>
         ) : (
