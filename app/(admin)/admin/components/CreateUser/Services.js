@@ -70,7 +70,6 @@ const Services = ({
 
         // اضافه کردن به UI و selected
         const newService = {
-          id: res.data?.id || Date.now(),
           name: newServiceName,
         };
         setServices([...services, newService]);

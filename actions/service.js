@@ -7,6 +7,9 @@ const BASE_URL = "http://preview.kft.co.com/ticket/api";
 
 const createService = async (formData) => {
   const name = formData.get("name");
+  const id = formData.get("id");
+
+  console.log(`NAME => ${name}, ID => ${id}`);
 
   const cookieStore = cookies();
   const token = cookieStore.get("access_token")?.value;

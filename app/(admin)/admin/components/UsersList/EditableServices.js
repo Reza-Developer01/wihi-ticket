@@ -61,19 +61,26 @@ const EditableServices = ({ allServices = [], selected = [], onChange }) => {
       const res = await createService(formData);
 
       if (res.status) {
-        // اگر موفق بود، سرویس جدید رو به state اضافه کن
-        const newService = { id: Date.now(), name: newServiceName }; // یا از response آی‌دی واقعی رو بگیر
+        toast.success(res.message);
+
+        // استفاده از ID که API برگردانده
+        const newService = {
+          id: res.data.id, // <- مهم
+          name: res.data.name, // <- یا همان newServiceName
+        };
+
+        // اضافه کردن سرویس جدید به لیست و selected
         setServices([...services, newService]);
         onChange([...selected, newService]);
+
         setNewServiceName("");
         setIsModalOpen(false);
-        toast.success(res.message);
       } else {
         toast.error(res.message);
       }
     } catch (err) {
-      console.error(err);
       toast.error("خطا در ایجاد سرویس.");
+      console.error(err);
     }
   };
 
@@ -126,9 +133,9 @@ const EditableServices = ({ allServices = [], selected = [], onChange }) => {
           <div className="custom-shadow absolute top-[50px] right-0 left-0 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
             <ul className="divide-y divide-[#EFF0F6] text-sm text-[#8C8C8C]">
               {services.length ? (
-                services.map((item) => (
+                services.map((item, index) => (
                   <li
-                    key={item.id}
+                    key={index}
                     className={`flex items-center justify-between gap-x-2 py-3 px-3 cursor-pointer hover:text-[#1A1C1E] ${
                       selected.some((s) => s.id === item.id)
                         ? "text-black font-semibold"
