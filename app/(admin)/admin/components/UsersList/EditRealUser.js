@@ -12,9 +12,19 @@ import toast from "react-hot-toast";
 import UserPlans from "../CreateUser/UserPlans";
 import { useRouter } from "next/navigation";
 import { editRealUser } from "@/actions/user";
+import EditableServices from "./EditableServices";
 
-const EditRealUser = ({ data }) => {
+const EditRealUser = ({ data, services }) => {
   console.log(data);
+  const initialSelectedServices =
+    data.services?.map((id) => {
+      const service = services.find((s) => s.id === id);
+      return service ? service : { id, name: `سرویس ${id}` };
+    }) || [];
+
+  const [selectedServices, setSelectedServices] = useState(
+    initialSelectedServices
+  );
   const [state, formAction] = useActionState(editRealUser, {});
   const router = useRouter();
 
@@ -176,6 +186,12 @@ const EditRealUser = ({ data }) => {
             flagClassName: "custom__flag",
           }}
           style={{ direction: "ltr" }}
+        />
+
+        <EditableServices
+          allServices={services}
+          selected={selectedServices}
+          onChange={(updated) => setSelectedServices(updated)}
         />
 
         {/* آدرس */}
@@ -348,6 +364,12 @@ const EditRealUser = ({ data }) => {
         <UserPlans
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
+        />
+
+        <input
+          type="hidden"
+          name="services"
+          value={JSON.stringify(selectedServices.map((s) => s.id))}
         />
 
         <input type="hidden" name="user_type" value="real" />

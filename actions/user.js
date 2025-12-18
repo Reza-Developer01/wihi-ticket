@@ -394,6 +394,12 @@ const editRealUser = async (state, formData) => {
     body.append("real_user.contract_file", file);
   }
 
+  const services = formData.get("services");
+  if (services) {
+    const serviceIds = JSON.parse(services);
+    serviceIds.forEach((id) => body.append("services", id));
+  }
+
   const token = cookies().get("access_token")?.value;
 
   const res = await fetch(
@@ -406,6 +412,8 @@ const editRealUser = async (state, formData) => {
   );
 
   const data = await res.json();
+
+  console.log(data);
 
   if (!res.ok)
     return { status: false, message: data?.message || "خطا در ویرایش کاربر." };

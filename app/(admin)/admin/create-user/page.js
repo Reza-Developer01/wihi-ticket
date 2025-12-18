@@ -17,6 +17,8 @@ const page = async () => {
     Authorization: token ? `Bearer ${token}` : undefined,
   });
 
+  console.log(services);
+
   return (
     <AdminBottomPage mt="mt-[79px] pb-[50px]">
       <section>

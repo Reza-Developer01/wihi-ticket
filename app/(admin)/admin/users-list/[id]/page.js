@@ -17,6 +17,8 @@ const page = async ({ params }) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
   const getUser = await getFetch(`users/customers/${id}/`, headers);
+  const getServices = await getFetch(`service-tickets/`, headers);
+  console.log(getServices);
   console.log(getUser);
   const { first_name, last_name, user_type } = getUser;
   const fullName = first_name + " " + last_name;
@@ -33,7 +35,11 @@ const page = async ({ params }) => {
         <div className="container">
           <SubTitle title="اطلاعات هویتــی کاربر" w="w-[90px]" />
 
-          <CreateUserFilter userType={getUser.user_type} data={getUser} />
+          <CreateUserFilter
+            userType={getUser.user_type}
+            data={getUser}
+            services={getServices}
+          />
         </div>
       </BottomSection>
     </>
