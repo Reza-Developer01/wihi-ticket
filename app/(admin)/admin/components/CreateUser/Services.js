@@ -2,13 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "@/app/(main)/components/Modal";
-import { createService } from "@/actions/service";
+import { createService, deleteService } from "@/actions/service";
 import toast from "react-hot-toast";
 
-const Services = ({ allServices = [], selected = [], onChange }) => {
+const Services = ({
+  allServices: initialServices = [],
+  selected = [],
+  onChange,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newServiceName, setNewServiceName] = useState("");
+  const [services, setServices] = useState(initialServices);
 
   const dropdownRef = useRef(null);
   const modalRef = useRef(null);
@@ -47,6 +52,7 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
     }
   };
 
+  // Create service
   const handleCreateService = async () => {
     if (!newServiceName.trim()) {
       toast.error("پر کردن نام سرویس الزامی است.");
@@ -62,16 +68,41 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
       if (res.status) {
         toast.success(res.message);
 
-        const newService = { id: Date.now(), name: newServiceName };
+        // اضافه کردن به UI و selected
+        const newService = {
+          id: res.data?.id || Date.now(),
+          name: newServiceName,
+        };
+        setServices([...services, newService]);
         onChange([...selected, newService]);
 
-        setNewServiceName(""); // خالی کردن input
-        setIsModalOpen(false); // بستن modal
+        setNewServiceName("");
+        setIsModalOpen(false);
       } else {
         toast.error(res.message);
       }
     } catch (err) {
       toast.error("خطا در ایجاد سرویس.");
+      console.error(err);
+    }
+  };
+
+  // Delete service
+  const handleDeleteService = async (id) => {
+    if (!id) return;
+
+    try {
+      const res = await deleteService(id);
+
+      if (res.status) {
+        toast.success(res.message);
+        setServices(services.filter((s) => s.id !== id));
+        onChange(selected.filter((s) => s.id !== id));
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err) {
+      toast.error("خطا در حذف سرویس.");
       console.error(err);
     }
   };
@@ -108,8 +139,8 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
         {isOpen && (
           <div className="custom-shadow absolute top-[50px] right-0 left-0 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
             <ul className="divide-y divide-[#EFF0F6] text-sm text-[#8C8C8C]">
-              {allServices.length ? (
-                allServices.map((item) => (
+              {services.length ? (
+                services.map((item) => (
                   <li
                     key={item.id}
                     onClick={() => toggleService(item)}
@@ -157,7 +188,7 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
                 ref={inputRef}
                 type="text"
                 placeholder="عنوان سرویس"
-                value={newServiceName} // اضافه کن
+                value={newServiceName}
                 onChange={(e) => setNewServiceName(e.target.value)}
                 className="grow h-full pr-3.5 pl-2.5 text-xs font-medium outline-none text-[#8C8C8C]"
               />
@@ -184,15 +215,17 @@ const Services = ({ allServices = [], selected = [], onChange }) => {
               </button>
             </div>
 
-            {/* fake list (UI only) */}
             <ul className="mt-4 space-y-2">
-              {allServices.map((item) => (
+              {services.map((item) => (
                 <li
                   key={item.id}
                   className="flex items-center justify-between text-sm text-[#8C8C8C]"
                 >
                   {item.name}
-                  <svg className="w-4 h-4 text-red-500 cursor-pointer">
+                  <svg
+                    className="w-4 h-4 text-red-500 cursor-pointer"
+                    onClick={() => handleDeleteService(item.id)}
+                  >
                     <use href="#delete" />
                   </svg>
                 </li>
