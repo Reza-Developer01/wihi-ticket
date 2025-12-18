@@ -233,7 +233,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
                 isOpen ? "rotate-180" : ""
               }`}
             >
-              <use href="#arrow-down-2" />
+              <use href="#arrow-down-3" />
             </svg>
           </div>
         )}
@@ -247,7 +247,9 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
               <li
                 key={option.value}
                 onClick={() => handleSelect(option.label, option.value)}
-                className="cursor-pointer hover:text-black pb-3"
+                className={`cursor-pointer hover:text-black ${
+                  user.role === "customer" ? "pb-0" : "pb-3 last:pb-0"
+                }`}
               >
                 {option.label}
               </li>
@@ -306,7 +308,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
                 onClick={() => setIsAgentOpen(!isAgentOpen)}
                 className="flex items-center justify-between w-full h-12 px-4 border border-[#EFF0F6] rounded-[10px] bg-white text-[#1A1C1E]"
               >
-                <span className="truncate text-sm/[19.6px]">
+                <span className="truncate text-sm/[19.6px] text-[#1A1C1E]">
                   {selectedAgent
                     ? selectedAgent.full_name
                     : "کارشناس مورد نظر را انتخاب کنید"}
@@ -316,7 +318,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
                     isAgentOpen ? "rotate-180" : ""
                   }`}
                 >
-                  <use href="#arrow-down-2" />
+                  <use href="#arrow-down-3" />
                 </svg>
               </button>
               {isAgentOpen && (
