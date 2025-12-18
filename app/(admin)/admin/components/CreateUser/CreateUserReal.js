@@ -146,7 +146,7 @@ const CreateUserReal = ({ services: allServices }) => {
         <input
           type="hidden"
           name="services"
-          value={JSON.stringify(selectedServices)}
+          value={JSON.stringify(selectedServices.map((s) => s.id))}
         />
 
         <input

@@ -109,6 +109,24 @@ const createRealUser = async (state, formData) => {
   body.append("real_user.unit", realUserObj.unit);
   body.append("real_user.postal_code", realUserObj.postal_code);
 
+  const services = formData.get("services");
+  let servicesArr = [];
+
+  if (services) {
+    try {
+      servicesArr = JSON.parse(services);
+      servicesArr = servicesArr.map((id) => Number(id)); // تبدیل به عدد
+    } catch (err) {
+      console.warn("services JSON invalid:", services);
+    }
+  }
+
+  if (!servicesArr.length) {
+    return { status: false, message: "حداقل یک سرویس باید انتخاب شود." };
+  }
+
+  console.log(`SERVICES => ${services}`);
+
   const file = formData.get("contract_file");
   console.log("📎 Uploaded file:", file);
 

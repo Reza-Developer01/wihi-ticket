@@ -172,7 +172,11 @@ const Services = ({
         </button>
 
         {/* Hidden input for form */}
-        <input type="hidden" name="services" value={JSON.stringify(selected)} />
+        <input
+          type="hidden"
+          name="services"
+          value={JSON.stringify(selected.map((s) => s.id))}
+        />
       </div>
 
       {/* Modal */}
