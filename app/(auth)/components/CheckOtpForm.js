@@ -1,11 +1,12 @@
 "use client";
 
-import { checkOtp } from "@/actions/auth";
+import { checkOtp, getMe } from "@/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { OtpInput } from "reactjs-otp-input";
+import ResendButton from "./ResendButton";
 
 const CheckOtpForm = () => {
   const [state, formAction] = useActionState(checkOtp, {});
@@ -26,6 +27,16 @@ const CheckOtpForm = () => {
     }
   }, [state]);
 
+  const handleChange = (otp) => setOtp(otp);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
   useEffect(() => {
     if (timeLeft <= 0) {
       setIsExpired(true);
@@ -38,22 +49,6 @@ const CheckOtpForm = () => {
 
     return () => clearInterval(timer);
   }, [timeLeft]);
-
-  const handleChange = (otp) => setOtp(otp);
-
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = (seconds % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
-  };
-
-  const handleResend = () => {
-    toast.success("کد تایید مجدداً ارسال شد");
-    setTimeLeft(5);
-    setIsExpired(false);
-  };
 
   return (
     <section className="section-check-otp -mt-[140px]">
@@ -69,6 +64,7 @@ const CheckOtpForm = () => {
               value={otp}
               onChange={handleChange}
               numInputs={4}
+              isInputNum={true}
               containerStyle={{
                 display: "flex",
                 flexDirection: "row-reverse",
@@ -95,13 +91,10 @@ const CheckOtpForm = () => {
                 {formatTime(timeLeft)}
               </span>
             ) : (
-              <span
-                type="button"
-                onClick={handleResend}
-                className="timer relative block mt-6 text-center text-[#6C7278] text-xs/[18px] font-bold"
-              >
-                ارسال مجدد کد
-              </span>
+              <ResendButton
+                setTimeLeft={setTimeLeft}
+                setIsExpired={setIsExpired}
+              />
             )}
 
             <button
