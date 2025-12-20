@@ -4,6 +4,8 @@ import Button from "../components/Button";
 import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
 import RequestsList from "../components/requestsList/RequestsList";
+import CallsListSkeleton from "../components/CallsListSkeleton";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "لیست درخواست ها",
@@ -29,7 +31,9 @@ const page = async () => {
 
       <BottomSection pb="25px" height="249">
         <div className="container">
-          <RequestsList requestsList={getRequestsList} />
+          <Suspense fallback={<CallsListSkeleton count={3} />}>
+            <RequestsList requestsList={getRequestsList} />
+          </Suspense>
 
           <Button href="/request-create" text="ثبت تیکت جدید" />
         </div>

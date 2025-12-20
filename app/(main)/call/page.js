@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import BottomSection from "../components/BottomSection";
 import Button from "../components/Button";
 import CallsList from "../components/call/CallsList";
 import Header from "../components/Header";
 import { getFetch } from "@/utils/fetch";
 import { cookies } from "next/headers";
+import CallsListSkeleton from "../components/CallsListSkeleton";
 
 export const metadata = {
   title: "لیست درخواست تماس ها",
@@ -31,7 +33,9 @@ const page = async () => {
 
       <BottomSection pb="31px" height="249">
         <div className="container">
-          <CallsList callsList={getCallsList} />
+          <Suspense fallback={<CallsListSkeleton count={3} />}>
+            <CallsList callsList={getCallsList} />
+          </Suspense>
 
           <div className="flex flex-col items-center gap-y-[15px] mt-[15px]">
             {/* <button className="flex items-center gap-x-1">
