@@ -26,6 +26,8 @@ const LoginForm = () => {
     if (state?.status === "error") {
       toast.error(state?.message);
     } else {
+      sessionStorage.setItem("username", formData.username);
+      sessionStorage.setItem("password", formData.password);
       console.log(state.code);
       sessionStorage.setItem("username", state?.username);
       toast.success(state?.message);

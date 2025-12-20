@@ -1,31 +1,48 @@
 "use client";
 
-import { checkOtp, getMe } from "@/actions/auth";
+import { checkOtp, login } from "@/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { OtpInput } from "reactjs-otp-input";
 import ResendButton from "./ResendButton";
 
 const CheckOtpForm = () => {
   const [state, formAction] = useActionState(checkOtp, {});
+  const [resendState, resendAction] = useActionState(login, {});
+  const [, startTransition] = useTransition();
+
   const [otp, setOtp] = useState("");
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [isExpired, setIsExpired] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (!state || Object.keys(state).length === 0) return;
 
-    if (state?.status === "error") {
-      toast.error(state?.message);
+    if (state.status === "error") {
+      toast.error(state.message);
     } else {
-      toast.success(state?.message);
+      toast.success(state.message);
       sessionStorage.removeItem("phone");
       router.push("/");
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("password");
     }
   }, [state]);
+
+  useEffect(() => {
+    if (!resendState || Object.keys(resendState).length === 0) return;
+
+    if (resendState.status === "error") {
+      toast.error(resendState.message);
+    } else {
+      toast.success("کد تایید مجدداً ارسال شد");
+      setTimeLeft(30);
+      setIsExpired(false);
+    }
+  }, [resendState]);
 
   const handleChange = (otp) => setOtp(otp);
 
@@ -49,6 +66,24 @@ const CheckOtpForm = () => {
 
     return () => clearInterval(timer);
   }, [timeLeft]);
+
+  const handleResend = () => {
+    const username = sessionStorage.getItem("username");
+    const password = sessionStorage.getItem("password");
+
+    if (!username || !password) {
+      toast.error("اطلاعات ورود یافت نشد");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+
+    startTransition(() => {
+      resendAction(formData);
+    });
+  };
 
   return (
     <section className="section-check-otp -mt-[140px]">
@@ -91,10 +126,7 @@ const CheckOtpForm = () => {
                 {formatTime(timeLeft)}
               </span>
             ) : (
-              <ResendButton
-                setTimeLeft={setTimeLeft}
-                setIsExpired={setIsExpired}
-              />
+              <ResendButton onResend={handleResend} /> // ✅ فقط این
             )}
 
             <button
