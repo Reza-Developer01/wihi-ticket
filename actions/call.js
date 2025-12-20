@@ -140,38 +140,55 @@ const changeStatus = async (state, formData) => {
 };
 
 const guidedStatus = async (state, formData) => {
-  const assigned_to_id = formData.get("assigned_to_id");
-  const call_request_number = formData.get("call_request_number");
-  const status = formData.get("status");
-  const comment = formData.get("comment");
+  try {
+    const assigned_to_id = formData.get("assigned_to_id");
+    const call_request_number = formData.get("call_request_number");
+    const comment = formData.get("comment");
 
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("access_token")?.value;
+    const cookieStore = cookies();
+    const token = cookieStore.get("access_token")?.value;
 
-  console.log({ assigned_to_id, call_request_number, status });
+    const res = await postFetch(
+      `callrequests/${call_request_number}/assign/`,
+      { assigned_to_id, comment },
+      {
+        Authorization: token ? `Bearer ${token}` : undefined,
+      }
+    );
 
-  const data = await postFetch(
-    `callrequests/${call_request_number}/assign/`,
-    {
-      assigned_to_id,
-      // call_request_number,
-      // status,
-      comment,
-    },
-    {
-      Authorization: token ? `Bearer ${token}` : undefined,
-    }
-  );
-
-  if (data) {
     return {
       status: true,
-      message: data.message,
+      message: res?.message || "با موفقیت انجام شد",
     };
-  } else {
+  } catch (error) {
+    let message = "خطای ناشناخته";
+
+    if (typeof error?.message === "string") {
+      // پیدا کردن بخش body:
+      const bodyIndex = error.message.indexOf("body:");
+
+      if (bodyIndex !== -1) {
+        const bodyString = error.message.slice(bodyIndex + 5).trim();
+
+        try {
+          const parsedBody = JSON.parse(bodyString);
+
+          if (parsedBody?.error) {
+            message = parsedBody.error;
+          } else {
+            message = bodyString;
+          }
+        } catch {
+          message = bodyString;
+        }
+      } else {
+        message = error.message;
+      }
+    }
+
     return {
       status: false,
-      message: "خطا",
+      message,
     };
   }
 };
