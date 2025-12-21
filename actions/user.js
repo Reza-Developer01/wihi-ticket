@@ -367,7 +367,7 @@ const editRealUser = async (state, formData) => {
   const file = formData.get("file");
 
   phone = phone?.replace(/\D/g, "");
-  if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
+  if (phone?.startsWith("09")) phone = "98" + phone.slice(2);
 
   if (password && password !== rePassword)
     return { status: false, message: "تکرار رمز عبور صحیح نیست." };
@@ -446,7 +446,7 @@ const editLegalUser = async (state, formData) => {
   const servicesRaw = formData.get("services");
 
   phone = phone?.replace(/\D/g, "");
-  if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
+  if (phone?.startsWith("09")) phone = "98" + phone.slice(2);
 
   if (password && password !== rePassword)
     return { status: false, message: "تکرار رمز عبور صحیح نیست." };

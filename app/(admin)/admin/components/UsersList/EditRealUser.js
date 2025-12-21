@@ -15,7 +15,22 @@ import { editRealUser } from "@/actions/user";
 import EditableServices from "./EditableServices";
 
 const EditRealUser = ({ data, services }) => {
-  console.log(data);
+  const normalizeIranPhone = (phone) => {
+    if (!phone) return "";
+    let p = phone.toString().trim();
+    if (p.startsWith("09")) {
+      return "98" + p.slice(1);
+    }
+    if (p.startsWith("+98")) {
+      return p.slice(1);
+    }
+    if (p.startsWith("98")) {
+      return p;
+    }
+
+    return p;
+  };
+
   const initialSelectedServices =
     data.services?.map((id) => {
       const service = services.find((s) => s.id === id);
@@ -60,7 +75,7 @@ const EditRealUser = ({ data, services }) => {
       : "",
 
     email: data?.email || "",
-    phone: data?.phone || "",
+    phone: normalizeIranPhone(data?.phone),
     username: data?.username || "",
     password: "",
     rePassword: "",
@@ -110,8 +125,8 @@ const EditRealUser = ({ data, services }) => {
         </div>
 
         {/* تاریخ */}
-        <div className="input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
-          <svg className="w-4 h-4 text-[#ACB5BB]">
+        <div className="editrealuser input-shadow flex items-center justify-between gap-x-2.5 w-full h-[46px] border border-[#EDF1F3] rounded-[10px] px-3.5">
+          <svg className="w-4 h-4 text-[#ACB5BB] shrink-0">
             <use href="#calendar-due" />
           </svg>
 

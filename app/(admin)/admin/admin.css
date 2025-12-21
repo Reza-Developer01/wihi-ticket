@@ -123,3 +123,10 @@ body {
     width: 100%;
     height: 100%;
 }
+
+.editrealuser input {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+}

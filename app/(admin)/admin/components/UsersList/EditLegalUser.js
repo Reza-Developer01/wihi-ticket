@@ -15,6 +15,22 @@ import EditableServices from "./EditableServices";
 import { editLegalUser } from "@/actions/user";
 
 const EditLegalUser = ({ data, services }) => {
+  const normalizeIranPhone = (phone) => {
+    if (!phone) return "";
+    let p = phone.toString().trim();
+    if (p.startsWith("09")) {
+      return "98" + p.slice(1);
+    }
+    if (p.startsWith("+98")) {
+      return p.slice(1);
+    }
+    if (p.startsWith("98")) {
+      return p;
+    }
+
+    return p;
+  };
+
   const [state, formAction] = useActionState(editLegalUser, {});
   const [hasFile, setHasFile] = useState(
     Boolean(data?.legal_user?.contract_file)
@@ -64,7 +80,7 @@ const EditLegalUser = ({ data, services }) => {
       : "",
     registration_number: data?.legal_user?.registration_number || "",
     email: data?.email || "",
-    phone: data?.phone || "",
+    phone: normalizeIranPhone(data?.phone),
     address: data?.legal_user?.address || "",
     floor: data?.legal_user?.floor || "",
     unit: data?.legal_user?.unit || "",
