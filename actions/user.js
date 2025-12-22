@@ -2,6 +2,12 @@
 
 import { cookies } from "next/headers";
 
+const toEnglishDigits = (str = "") =>
+  str
+    .toString()
+    .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+    .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+
 const createRealUser = async (state, formData) => {
   const first_name = formData.get("first_name");
   const last_name = formData.get("last_name");
@@ -29,14 +35,19 @@ const createRealUser = async (state, formData) => {
     }
   }
 
+  phone = toEnglishDigits(phone);
+  const normalizedFloor = toEnglishDigits(floor);
+  const normalizedUnit = toEnglishDigits(unit);
+  const normalizedZipCode = toEnglishDigits(zip_code);
+
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
 
   const realUserObj = {
     address,
-    floor,
-    unit,
-    postal_code: zip_code ?? "",
+    floor: normalizedFloor,
+    unit: normalizedUnit,
+    postal_code: normalizedZipCode ?? "",
   };
 
   console.log("🔵 createRealUser - collected values:");
@@ -46,7 +57,7 @@ const createRealUser = async (state, formData) => {
     email,
     phone,
     username,
-    password: password ? "*****" : null, // از لاگ کردن پسورد خام جلوگیری جزئی
+    password: password ? "*****" : null,
     rePassword: rePassword ? "*****" : null,
     plan,
     user_type,
@@ -55,7 +66,7 @@ const createRealUser = async (state, formData) => {
   console.log("===================================");
 
   // -------------------------
-  //   Validation
+  //   Validation (دست‌نخورده)
   // -------------------------
   if (!first_name || first_name.trim() === "")
     return { status: false, message: "نام نمی‌تواند خالی باشد." };
@@ -72,10 +83,10 @@ const createRealUser = async (state, formData) => {
   if (!address || address.trim().length < 3)
     return { status: false, message: "آدرس باید حداقل ۳ کاراکتر باشد." };
 
-  if (!floor || isNaN(floor))
+  if (!normalizedFloor || isNaN(normalizedFloor))
     return { status: false, message: "شماره طبقه معتبر نیست." };
 
-  if (!unit || isNaN(unit))
+  if (!normalizedUnit || isNaN(normalizedUnit))
     return { status: false, message: "شماره واحد معتبر نیست." };
 
   if (!realUserObj.postal_code || !/^\d{10}$/.test(realUserObj.postal_code))
@@ -89,11 +100,6 @@ const createRealUser = async (state, formData) => {
 
   if (password !== rePassword)
     return { status: false, message: "تکرار رمز عبور با رمز اصلی یکسان نیست." };
-
-  // ----------------------------
-  //   ساختار FormData برای API
-  //   <-- **نکته مهم**: دیگر address/floor/unit/postal_code را به‌صورت top-level append نمی‌کنیم
-  // ----------------------------
 
   const body = new FormData();
 
