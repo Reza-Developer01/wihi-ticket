@@ -191,6 +191,13 @@ const createLegalUser = async (state, formData) => {
   const plan = formData.get("plan");
   const register_date = formData.get("register_date");
 
+  // ✅ فقط این ۵ خط اضافه شده (نرمال‌سازی)
+  phone = toEnglishDigits(phone);
+  const normalizedFloor = toEnglishDigits(floor);
+  const normalizedUnit = toEnglishDigits(unit);
+  const normalizedPostalCode = toEnglishDigits(postal_code);
+  const normalizedRegistrationNumber = toEnglishDigits(registration_number);
+
   // اصلاح شماره موبایل
   phone = phone?.replace(/\D/g, "");
   if (phone?.startsWith("98")) phone = "0" + phone.slice(2);
@@ -198,13 +205,13 @@ const createLegalUser = async (state, formData) => {
   // ساخت آبجکت legal_user (دقیقاً مثل real)
   const legalUserObj = {
     company_name,
-    registration_number,
+    registration_number: normalizedRegistrationNumber, // 👈 فقط مقدار
     national_id,
     economic_code,
     address,
-    floor,
-    unit,
-    postal_code: postal_code ?? "",
+    floor: normalizedFloor, // 👈 فقط مقدار
+    unit: normalizedUnit, // 👈 فقط مقدار
+    postal_code: normalizedPostalCode ?? "",
   };
 
   // 🔥 لاگ کامل برای دیباگ
@@ -223,7 +230,7 @@ const createLegalUser = async (state, formData) => {
   console.log("===================================");
 
   // -------------------------
-  // Validation
+  // Validation (دست‌نخورده)
   // -------------------------
   if (!company_name?.trim())
     return { status: false, message: "نام شرکت الزامی است." };
@@ -243,10 +250,10 @@ const createLegalUser = async (state, formData) => {
   if (!address || address.trim().length < 3)
     return { status: false, message: "آدرس باید حداقل ۳ کاراکتر باشد." };
 
-  if (!floor || isNaN(floor))
+  if (!normalizedFloor || isNaN(normalizedFloor))
     return { status: false, message: "شماره طبقه معتبر نیست." };
 
-  if (!unit || isNaN(unit))
+  if (!normalizedUnit || isNaN(normalizedUnit))
     return { status: false, message: "شماره واحد معتبر نیست." };
 
   if (!legalUserObj.postal_code || !/^\d{10}$/.test(legalUserObj.postal_code))
