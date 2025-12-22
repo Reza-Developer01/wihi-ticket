@@ -161,7 +161,7 @@ const CreateUserReal = ({ services: allServices }) => {
         <div className="flex items-center gap-x-4">
           <input
             name="floor"
-            type="text"
+            type="tel"
             value={formData.floor}
             onChange={handleChange}
             placeholder="طبقـــــه"
@@ -170,7 +170,7 @@ const CreateUserReal = ({ services: allServices }) => {
 
           <input
             name="unit"
-            type="text"
+            type="tel"
             value={formData.unit}
             onChange={handleChange}
             placeholder="واحــــــد"
