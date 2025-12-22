@@ -86,7 +86,10 @@ const Messages = ({ request, getTicketHistory, status }) => {
                   <div
                     className={`custom-shadow flex items-center p-2.5 ${bg} border border-[#F1F1F7] rounded-[10px]`}
                   >
-                    <p className={`${text} text-xs/[16.8px] w-[202px] break-all grow`}>
+                    <p
+                      className={`${text} text-xs/[16.8px] w-[202px] grow leading-5`}
+                      style={{ wordBreak: "break-word" }}
+                    >
                       {item.message}
                     </p>
                   </div>
@@ -102,7 +105,10 @@ const Messages = ({ request, getTicketHistory, status }) => {
                 <div
                   className={`custom-shadow flex items-center p-2.5 ${bg} border border-[#F1F1F7] rounded-[10px]`}
                 >
-                  <p className={`${text} text-xs/[16.8px] w-[202px] break-all grow`}>
+                  <p
+                    className={`${text} text-xs/[16.8px] w-[202px] grow leading-5`}
+                    style={{ wordBreak: "break-word" }}
+                  >
                     {item.message}
                   </p>
                 </div>
