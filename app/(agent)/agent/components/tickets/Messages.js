@@ -84,9 +84,9 @@ const Messages = ({ request, getTicketHistory, status }) => {
               {item.file ? (
                 <>
                   <div
-                    className={`custom-shadow flex items-center h-12 pr-2.5 ${bg} border border-[#F1F1F7] rounded-[10px]`}
+                    className={`custom-shadow flex items-center p-2.5 ${bg} border border-[#F1F1F7] rounded-[10px]`}
                   >
-                    <p className={`${text} text-xs/[16.8px] w-[202px]`}>
+                    <p className={`${text} text-xs/[16.8px] w-[202px] break-all grow`}>
                       {item.message}
                     </p>
                   </div>
@@ -100,9 +100,9 @@ const Messages = ({ request, getTicketHistory, status }) => {
                 </>
               ) : (
                 <div
-                  className={`custom-shadow flex items-center h-12 pr-2.5 ${bg} border border-[#F1F1F7] rounded-[10px]`}
+                  className={`custom-shadow flex items-center p-2.5 ${bg} border border-[#F1F1F7] rounded-[10px]`}
                 >
-                  <p className={`${text} text-xs/[16.8px] w-[202px]`}>
+                  <p className={`${text} text-xs/[16.8px] w-[202px] break-all grow`}>
                     {item.message}
                   </p>
                 </div>
