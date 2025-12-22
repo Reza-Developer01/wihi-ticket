@@ -148,8 +148,7 @@ const createRealUser = async (state, formData) => {
     if (!res.ok)
       return {
         status: false,
-        message:
-          data?.message || "نام کاربری یا شماره تماس یا ایمیل تکراری است.",
+        message: data?.message || "نام کاربری یا شماره تماس تکراری است.",
       };
 
     return {
@@ -329,8 +328,7 @@ const createLegalUser = async (state, formData) => {
     if (!res.ok)
       return {
         status: false,
-        message:
-          data?.message || "نام کاربری یا شماره تماس یا ایمیل تکراری است.",
+        message: data?.message || "نام کاربری یا شماره تماس تکراری است.",
       };
 
     return {
