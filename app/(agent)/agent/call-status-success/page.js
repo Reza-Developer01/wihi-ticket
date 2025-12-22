@@ -15,7 +15,11 @@ export default function SuccessPage({ searchParams }) {
       <AgentBottomPage pb="pb-[74px]">
         <div className="container">
           <div className="flex flex-col gap-y-6">
-            <Image src={successfullyAgent} alt="successfully agent" />
+            <Image
+              src={successfullyAgent}
+              alt="successfully agent"
+              className="mx-auto"
+            />
 
             <div className="flex items-center justify-center w-full h-[150px] text-[#0D0D1B] text-center font-bold text-lg/[27px] tracking-[-0.12px]">
               <p>

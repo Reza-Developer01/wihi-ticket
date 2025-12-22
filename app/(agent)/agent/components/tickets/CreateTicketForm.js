@@ -143,6 +143,7 @@ const CreateTicketForm = ({ data, agentsList, user }) => {
         initialStatus={data.status}
         agentsList={agentsList}
         user={user}
+        comment_cancelled={data.comment_cancelled}
       />
     </div>
   );

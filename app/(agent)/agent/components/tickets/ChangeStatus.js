@@ -80,17 +80,18 @@ const ChangeStatus = ({
     permissions.some((p) => p.slug === "can_assign_callrequests");
 
   const visibleStatusOptions = (() => {
-    // admin → همه وضعیت‌ها
+    if (role === "agent" && initialStatus === "cancelled") {
+      return statusOptions.filter((option) => option.value === "cancelled");
+    }
+
     if (role === "admin") {
       return statusOptions;
     }
 
-    // customer → فقط لغو
     if (role === "customer") {
       return statusOptions.filter((option) => option.value === "cancelled");
     }
 
-    // بقیه نقش‌ها (agent و ...)
     return statusOptions.filter((option) => {
       if (option.value === "cancelled") return hasCloseCall;
       if (option.value === "queue_call" || option.value === "Checked")
@@ -158,9 +159,19 @@ const ChangeStatus = ({
     setSelected(label);
     setIsOpen(false);
 
-    // مدال فقط برای هدایت یا لغو
     if (value === "cancelled") {
-      setIsModalOpen(true);
+      // کاربر عادی یا کارشناس
+      if (role === "customer") {
+        // customer همیشه مدال تایپ کردن علت
+        setIsModalOpen(true);
+      } else if (role === "agent") {
+        // اگر درخواست قبلاً لغو نشده بود، مدال تایپ کردن علت باز شود
+        if (initialStatus !== "cancelled") {
+          setIsModalOpen(true); // مدال تایپ کردن علت
+        } else {
+          setIsCancelledModalOpen(true); // فقط مشاهده علت
+        }
+      }
       return;
     }
 
@@ -169,7 +180,6 @@ const ChangeStatus = ({
       return;
     }
 
-    // سایر وضعیت‌ها مستقیم ارسال شوند
     const form = document.getElementById("quick-status-form");
     form.querySelector('input[name="status"]').value = value;
     form.requestSubmit();
@@ -464,7 +474,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
             <button
               onClick={() => setIsCancelledModalOpen(false)}
               type="button"
-              className="flex items-center justify-center w-full h-12 bg-[#FF000033] text-[#FF0000] rounded-[10px] mt-6 font-medium"
+              className="flex items-center justify-center w-full h-12 bg-[#D9D9D9] text-[#404040] rounded-[10px] mt-6 font-medium"
             >
               مشاهده
             </button>
