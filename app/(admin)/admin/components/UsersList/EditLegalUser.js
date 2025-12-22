@@ -249,7 +249,7 @@ const EditLegalUser = ({ data, services }) => {
             value={formData.floor}
             onChange={handleChange}
             placeholder="طبقـــــه"
-            className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
+            className="input-shadow text-right w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
           <input
             name="unit"
@@ -257,7 +257,7 @@ const EditLegalUser = ({ data, services }) => {
             value={formData.unit}
             onChange={handleChange}
             placeholder="واحــــــد"
-            className="input-shadow w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
+            className="input-shadow text-right w-full h-[46px] px-3.5 bg-white border border-[#EDF1F3] rounded-[10px] outline-none placeholder:text-[#8C8C8C] font-medium text-xs/[19.6px] tracking-[-0.12px]"
           />
         </div>
 
