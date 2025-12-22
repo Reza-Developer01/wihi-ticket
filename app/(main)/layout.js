@@ -361,6 +361,21 @@ export default async function RootLayout({ children }) {
                 </clipPath>
               </defs>
             </symbol>
+            <symbol
+              id="arrow-down-3"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                d="M15.8346 7.0835C15.8346 7.0835 12.3813 12.9168 10.0013 12.9168C7.62214 12.9168 4.16797 7.0835 4.16797 7.0835"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </symbol>
           </svg>
 
           {children}
