@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getFetch } from "@/utils/fetch";
 import ReportsFilter from "./ReportsFilter";
 import ReportsBanner from "./ReportsBanner";
+import ReportsSkeleton from "./ReportsSkeleton";
 
 const ReportsPageClient = ({ initialFilter, token }) => {
   const [filter, setFilter] = useState(initialFilter || "daily");
@@ -28,7 +29,7 @@ const ReportsPageClient = ({ initialFilter, token }) => {
     fetchData(filter, customRange);
   }, [filter, customRange]);
 
-  if (!data) return <p>در حال بارگذاری...</p>;
+  if (!data) return <ReportsSkeleton />;
 
   return (
     <>
