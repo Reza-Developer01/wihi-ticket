@@ -13,8 +13,12 @@ const BackButton = () => {
     switch (pathname) {
       case `/requests-list/${result}`:
         return router.replace("/requests-list");
+      case `/requests-list`:
+        return router.replace("/");
       case `/call-request/${result}`:
         return router.replace("/call");
+      case `/call`:
+        return router.replace("/");
     }
 
     router.back();
