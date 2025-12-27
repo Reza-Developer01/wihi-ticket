@@ -524,7 +524,7 @@ const editLegalUser = async (state, formData) => {
   return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
 };
 
-export const changeUserStatus = async (userId, status) => {
+const changeUserStatus = async (userId, status) => {
   try {
     const token = cookies().get("access_token")?.value;
 

@@ -13,6 +13,7 @@ import UserPlans from "../CreateUser/UserPlans";
 import { useRouter } from "next/navigation";
 import EditableServices from "./EditableServices";
 import { editLegalUser } from "@/actions/user";
+import OperationUser from "./OperationUser";
 
 const EditLegalUser = ({ data, services }) => {
   const normalizeIranPhone = (phone) => {
@@ -400,6 +401,8 @@ const EditLegalUser = ({ data, services }) => {
           name="services"
           value={JSON.stringify(selectedServices.map((s) => s.id))}
         />
+
+        <OperationUser userId={data.id} isActive={data.is_active} />
 
         <SubmitButton title="ویرایش کاربر حقوقی" />
       </div>
