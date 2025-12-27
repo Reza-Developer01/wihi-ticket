@@ -37,13 +37,15 @@ const MessagesHead = async ({
             ticket_number={ticket_number}
           />
 
-          <ChangeStatusButton
-            message={message}
-            ticket_number={ticket_number}
-            getTicketHistory={getTicketHistory}
-            status={status}
-            user={user}
-          />
+          {status !== "closed" && (
+            <ChangeStatusButton
+              message={message}
+              ticket_number={ticket_number}
+              getTicketHistory={getTicketHistory}
+              status={status}
+              user={user}
+            />
+          )}
         </div>
 
         {request.status === "Guided" && (

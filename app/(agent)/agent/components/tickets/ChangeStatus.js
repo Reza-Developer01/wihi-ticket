@@ -474,7 +474,7 @@ ${noAccess ? "bg-[#FF000033] justify-center" : statusBgColor}`}
             <button
               onClick={() => setIsCancelledModalOpen(false)}
               type="button"
-              className="flex items-center justify-center w-full h-12 bg-[#D9D9D9] text-[#404040] rounded-[10px] mt-6 font-medium"
+              className="flex items-center justify-center w-full h-12 bg-[#FF000033] text-[#FF0000] rounded-[10px] mt-6 font-medium"
             >
               مشاهده
             </button>
