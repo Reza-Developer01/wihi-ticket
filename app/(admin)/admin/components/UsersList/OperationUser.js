@@ -12,6 +12,7 @@ const OperationUser = ({ userId, isActive }) => {
 
   const options = [
     ...(isActive ? [{ label: "غیرفعالسازی" }] : [{ label: "فعالسازی" }]),
+    { label: "گزارشات کاربر" },
   ];
 
   const handleSelect = async (label) => {
@@ -27,6 +28,10 @@ const OperationUser = ({ userId, isActive }) => {
       } else {
         toast.error(res?.message || "خطا در انجام عملیات");
       }
+    }
+
+    if (label === "گزارشات کاربر") {
+      router.push(`/admin/users-list/${userId}/reports`);
     }
 
     setIsOpen(false);
@@ -65,7 +70,7 @@ const OperationUser = ({ userId, isActive }) => {
 
       {isOpen && (
         <div className="custom-shadow absolute bottom-[calc(100%+4px)] right-0 left-0 p-4 bg-white border border-[#EFF0F6] rounded-[10px] z-20">
-          <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6]">
+          <ul className="space-y-3 text-[#8C8C8C] font-medium text-sm/[19.6px] text-center divide-y divide-[#EFF0F6] *:pb-3 *:last:pb-0">
             {options.map((opt) => (
               <li
                 key={opt.label}

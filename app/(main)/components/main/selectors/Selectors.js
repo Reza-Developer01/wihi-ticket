@@ -12,11 +12,6 @@ const selectorItems = [
     href: "/call",
   },
   {
-    id: 3,
-    text: "گزارشات",
-    href: "/reports",
-  },
-  {
     id: 4,
     text: "پرسش های متداول",
     href: "/faqs",
