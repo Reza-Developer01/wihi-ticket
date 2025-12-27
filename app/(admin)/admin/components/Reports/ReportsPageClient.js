@@ -6,7 +6,7 @@ import ReportsFilter from "./ReportsFilter";
 import ReportsBanner from "./ReportsBanner";
 import ReportsSkeleton from "./ReportsSkeleton";
 
-const ReportsPageClient = ({ initialFilter, token }) => {
+const ReportsPageClient = ({ initialFilter, token, prefetchedData }) => {
   const [filter, setFilter] = useState(initialFilter || "daily");
   const [customRange, setCustomRange] = useState({ from: null, to: null });
   const [data, setData] = useState(null);
@@ -26,8 +26,13 @@ const ReportsPageClient = ({ initialFilter, token }) => {
   };
 
   useEffect(() => {
+    if (prefetchedData) {
+      setData(prefetchedData);
+      return;
+    }
+
     fetchData(filter, customRange);
-  }, [filter, customRange]);
+  }, [filter, customRange, prefetchedData]);
 
   if (!data) return <ReportsSkeleton />;
 

@@ -76,6 +76,15 @@ const ReportsFilter = ({ currentFilter, onFilterChange, onCustomDate }) => {
             </svg>
           </Link>
         )}
+
+        {pathname.startsWith("/admin/users-list/") &&
+          pathname.endsWith("/reports") && (
+            <Link href="/">
+              <svg className="w-6 h-6 text-[#1A1C1E]">
+                <use href="#arrow-narrow-left" />
+              </svg>
+            </Link>
+          )}
       </div>
 
       {showCustom && (
