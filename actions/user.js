@@ -524,4 +524,46 @@ const editLegalUser = async (state, formData) => {
   return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
 };
 
-export { createRealUser, createLegalUser, editRealUser, editLegalUser };
+export const changeUserStatus = async (userId, status) => {
+  try {
+    const token = cookies().get("access_token")?.value;
+
+    const res = await fetch(
+      `http://preview.kft.co.com/users/customers/${userId}/change-status/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+        body: JSON.stringify({
+          is_active: status,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        status: false,
+        message: data?.message || "خطا در تغییر وضعیت کاربر",
+      };
+    }
+
+    return {
+      status: true,
+      message: "وضعیت کاربر تغییر کرد",
+    };
+  } catch (err) {
+    return { status: false, message: "خطای سرور" };
+  }
+};
+
+export {
+  createRealUser,
+  createLegalUser,
+  editRealUser,
+  editLegalUser,
+  changeUserStatus,
+};

@@ -13,6 +13,7 @@ import UserPlans from "../CreateUser/UserPlans";
 import { useRouter } from "next/navigation";
 import { editRealUser } from "@/actions/user";
 import EditableServices from "./EditableServices";
+import OperationUser from "./OperationUser";
 
 const EditRealUser = ({ data, services }) => {
   const normalizeIranPhone = (phone) => {
@@ -390,6 +391,8 @@ const EditRealUser = ({ data, services }) => {
         <input type="hidden" name="user_type" value="real" />
         <input type="hidden" name="plan" value={selectedPlan} />
         <input type="hidden" name="real_user" value="real" />
+
+        <OperationUser userId={data.id} isActive={data.is_active} />
 
         <SubmitButton title="ویرایش کاربر حقیقی" />
       </div>
