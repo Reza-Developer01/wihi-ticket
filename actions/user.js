@@ -17,6 +17,7 @@ const createRealUser = async (state, formData) => {
   const address = formData.get("address");
   const floor = formData.get("floor");
   const unit = formData.get("unit");
+  const is_active = true;
 
   const username = formData.get("username");
   const password = formData.get("password");
@@ -116,6 +117,7 @@ const createRealUser = async (state, formData) => {
   body.append("real_user.floor", realUserObj.floor);
   body.append("real_user.unit", realUserObj.unit);
   body.append("real_user.postal_code", realUserObj.postal_code);
+  body.append("is_active", is_active);
 
   if (!servicesArr.length) {
     return { status: false, message: "حداقل یک سرویس باید انتخاب شود." };
@@ -190,6 +192,7 @@ const createLegalUser = async (state, formData) => {
   const rePassword = formData.get("rePassword");
   const plan = formData.get("plan");
   const register_date = formData.get("register_date");
+  const is_active = true;
 
   // ✅ فقط این ۵ خط اضافه شده (نرمال‌سازی)
   phone = toEnglishDigits(phone);
@@ -308,6 +311,7 @@ const createLegalUser = async (state, formData) => {
   body.append("legal_user.floor", legalUserObj.floor);
   body.append("legal_user.unit", legalUserObj.unit);
   body.append("legal_user.postal_code", legalUserObj.postal_code);
+  body.append("is_active", is_active);
 
   // فایل قرارداد
   const file = formData.get("contract_file");
