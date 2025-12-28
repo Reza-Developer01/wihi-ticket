@@ -524,39 +524,67 @@ const editLegalUser = async (state, formData) => {
   return { status: true, message: "کاربر حقوقی با موفقیت ویرایش شد." };
 };
 
-const changeUserStatus = async (userId, status) => {
+const changeUserStatus = async (id, is_active) => {
+  // 1️⃣ لاگ ورودی‌ها
+  console.log("🔹 Payload received:", { id, is_active });
+
+  // 2️⃣ گرفتن توکن
+  const cookieStore = await cookies();
+  const token = cookieStore.get("access_token")?.value;
+  console.log("🔹 Token:", token || "❌ توکن خالی است");
+
+  // 3️⃣ آماده‌سازی body
+  const body = JSON.stringify({ is_active });
+  console.log("🔹 Request body:", body);
+
+  // 4️⃣ قبل از fetch، url و headers رو هم لاگ کن
+  const url = `http://preview.kft.co.com/ticket/api/users/customers/${id}/`;
+  const headers = {
+    Authorization: token ? `Bearer ${token}` : undefined,
+    "Content-Type": "application/json",
+  };
+  console.log("🔹 Request URL:", url);
+  console.log("🔹 Request headers:", headers);
+
+  // 5️⃣ درخواست به API
   try {
-    const token = cookies().get("access_token")?.value;
+    const res = await fetch(url, { method: "PATCH", headers, body });
 
-    const res = await fetch(
-      `http://preview.kft.co.com/users/customers/${userId}/change-status/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : undefined,
-        },
-        body: JSON.stringify({
-          is_active: status,
-        }),
-      }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      return {
-        status: false,
-        message: data?.message || "خطا در تغییر وضعیت کاربر",
-      };
+    // 6️⃣ لاگ کامل پاسخ
+    let data;
+    try {
+      data = await res.json();
+    } catch (err) {
+      console.error("⚠️ JSON parse error:", err);
+      data = null;
     }
 
+    console.log("🔹 Response status:", res.status);
+    console.log("🔹 Response ok:", res.ok);
+    console.log("🔹 Response headers:", [...res.headers.entries()]);
+    console.log("🔹 Response data:", data);
+
+    // 7️⃣ قبل از return، لاگ تفاوت مقدار ارسال شده و مقدار برگشتی
+    if (data && "is_active" in data) {
+      console.log("🔹 is_active comparison:", {
+        sent: is_active,
+        received: data.is_active,
+      });
+    }
+
+    // 8️⃣ return نهایی
     return {
-      status: true,
-      message: "وضعیت کاربر تغییر کرد",
+      status: res.ok,
+      message: res.ok
+        ? "وضعیت کاربر با موفقیت تغییر کرد."
+        : data?.message || "تغییر وضعیت ناموفق بود.",
     };
   } catch (err) {
-    return { status: false, message: "خطای سرور" };
+    console.error("⚠️ Fetch error:", err);
+    return {
+      status: false,
+      message: "خطا در اتصال به سرور: " + err.message,
+    };
   }
 };
 

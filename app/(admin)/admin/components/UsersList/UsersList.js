@@ -33,20 +33,38 @@ const UsersList = ({ data }) => {
             </div>
 
             {/* left side */}
-            <div
-              className={`flex items-center justify-center w-[60px] h-5 rounded-[5px] ${
-                item.user_type === "real" ? "bg-[#5DFFFF33]" : "bg-[#FF000033]"
-              }`}
-            >
-              <span
-                className={`font-semibold text-[8px]/[11.2px] tracking-[-0.12px] ${
+            <div className="flex items-center justify-center gap-x-1">
+              <div
+                className={`flex items-center justify-center w-[60px] h-5 rounded-[5px] ${
                   item.user_type === "real"
-                    ? "text-[#5DFFFF]"
-                    : "text-[#FF0000]"
+                    ? "bg-[#0068C933]"
+                    : "bg-[#FF000033]"
                 }`}
               >
-                {item.user_type === "real" ? "حقیقی" : "حقوقی"}
-              </span>
+                <span
+                  className={`font-semibold text-[8px]/[11.2px] tracking-[-0.12px] ${
+                    item.user_type === "real"
+                      ? "text-[#0068C9]"
+                      : "text-[#FF0000]"
+                  }`}
+                >
+                  {item.user_type === "real" ? "حقیقی" : "حقوقی"}
+                </span>
+              </div>
+
+              <div
+                className={`flex items-center justify-center w-[60px] h-5 rounded-[5px] ${
+                  item.is_active ? "bg-[#FF880033]" : "bg-[#FF000033]"
+                }`}
+              >
+                <span
+                  className={`font-semibold text-[8px]/[11.2px] tracking-[-0.12px] ${
+                    item.is_active ? "text-[#FF8000]" : "text-[#FF0000]"
+                  }`}
+                >
+                  {item.is_active ? "فعال" : "غیرفعال"}
+                </span>
+              </div>
             </div>
           </div>
 
