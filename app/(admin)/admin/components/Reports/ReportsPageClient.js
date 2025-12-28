@@ -5,8 +5,10 @@ import { getFetch } from "@/utils/fetch";
 import ReportsFilter from "./ReportsFilter";
 import ReportsBanner from "./ReportsBanner";
 import ReportsSkeleton from "./ReportsSkeleton";
+import { useRouter } from "next/navigation";
 
 const ReportsPageClient = ({ initialFilter, token, prefetchedData }) => {
+  const router = useRouter();
   const [filter, setFilter] = useState(initialFilter || "daily");
   const [customRange, setCustomRange] = useState({ from: null, to: null });
   const [data, setData] = useState(null);
@@ -43,6 +45,10 @@ const ReportsPageClient = ({ initialFilter, token, prefetchedData }) => {
       cancelled_callrequests: 0,
     };
   };
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   const fetchData = async (filterValue, range = {}) => {
     let url = "";
