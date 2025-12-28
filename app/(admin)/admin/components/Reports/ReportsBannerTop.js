@@ -29,7 +29,7 @@ const ReportsBannerTop = ({ data, isUserView }) => {
           <span className="text-[#9C0101] text-[10px]/3.5 tracking-[-0.12px]">
             میانگیـــن پاسخگــویی
           </span>
-          <p className="reports__text-gradient font-extrabold text-lg/[25.2px] tracking-[-0.12px]">
+          <p className={`reports__text-gradient font-extrabold ${isUserView ? "text-xs" : "text-lg/[25.2px]"} tracking-[-0.12px]`}>
             {data.average_combined_response_time}
           </p>
         </div>
