@@ -22,12 +22,12 @@ const getFetch = async (url, headers = {}) => {
   const start = Date.now();
 
   // لاگ درخواست
-  console.log("[getFetch] requesting:", {
-    url: fullUrl,
-    method: "GET",
-    headers,
-    timestamp: new Date().toISOString(),
-  });
+  // console.log("[getFetch] requesting:", {
+  //   url: fullUrl,
+  //   method: "GET",
+  //   headers,
+  //   timestamp: new Date().toISOString(),
+  // });
 
   let res;
   try {
@@ -41,7 +41,7 @@ const getFetch = async (url, headers = {}) => {
       },
     });
   } catch (networkErr) {
-    console.error("[getFetch] network error for", fullUrl, networkErr);
+    // console.error("[getFetch] network error for", fullUrl, networkErr);
     throw networkErr; // bubble up
   }
 
@@ -49,17 +49,17 @@ const getFetch = async (url, headers = {}) => {
 
   if (!res.ok) {
     const bodyInfo = await readResponseBody(res);
-    console.error("[getFetch] response NOT OK:", {
-      url: fullUrl,
-      status: res.status,
-      statusText: res.statusText,
-      durationMs: duration,
-      responseBodyType: bodyInfo.type,
-      responseBody: bodyInfo.body,
-      responseHeaders: Object.fromEntries(
-        res.headers.entries ? res.headers.entries() : []
-      ),
-    });
+    // console.error("[getFetch] response NOT OK:", {
+    //   url: fullUrl,
+    //   status: res.status,
+    //   statusText: res.statusText,
+    //   durationMs: duration,
+    //   responseBodyType: bodyInfo.type,
+    //   responseBody: bodyInfo.body,
+    //   responseHeaders: Object.fromEntries(
+    //     res.headers.entries ? res.headers.entries() : []
+    //   ),
+    // });
 
     // پر کردن خطای دقیق برای caller
     throw new Error(
@@ -85,15 +85,15 @@ const getFetch = async (url, headers = {}) => {
       return t;
     });
 
-  console.log("[getFetch] success:", {
-    url: fullUrl,
-    status: res.status,
-    durationMs: duration,
-    bodyPreview:
-      typeof successBody === "string"
-        ? successBody.slice(0, 200)
-        : JSON.stringify(successBody).slice(0, 200),
-  });
+  // console.log("[getFetch] success:", {
+  //   url: fullUrl,
+  //   status: res.status,
+  //   durationMs: duration,
+  //   bodyPreview:
+  //     typeof successBody === "string"
+  //       ? successBody.slice(0, 200)
+  //       : JSON.stringify(successBody).slice(0, 200),
+  // });
 
   return await res.json();
 };
@@ -128,7 +128,7 @@ const postFetch = async (url, body, headers = {}) => {
       body: JSON.stringify(body),
     });
   } catch (networkErr) {
-    console.error("[postFetch] network error for", fullUrl, networkErr);
+    // console.error("[postFetch] network error for", fullUrl, networkErr);
     throw networkErr;
   }
 
@@ -136,21 +136,21 @@ const postFetch = async (url, body, headers = {}) => {
 
   if (!res.ok) {
     const bodyInfo = await readResponseBody(res);
-    console.error("[postFetch] response NOT OK:", {
-      url: fullUrl,
-      status: res.status,
-      statusText: res.statusText,
-      durationMs: duration,
-      requestBodyPreview:
-        body && typeof body === "object"
-          ? JSON.stringify(body).slice(0, 1000)
-          : String(body),
-      responseBodyType: bodyInfo.type,
-      responseBody: bodyInfo.body,
-      responseHeaders: Object.fromEntries(
-        res.headers.entries ? res.headers.entries() : []
-      ),
-    });
+    // console.error("[postFetch] response NOT OK:", {
+    //   url: fullUrl,
+    //   status: res.status,
+    //   statusText: res.statusText,
+    //   durationMs: duration,
+    //   requestBodyPreview:
+    //     body && typeof body === "object"
+    //       ? JSON.stringify(body).slice(0, 1000)
+    //       : String(body),
+    //   responseBodyType: bodyInfo.type,
+    //   responseBody: bodyInfo.body,
+    //   responseHeaders: Object.fromEntries(
+    //     res.headers.entries ? res.headers.entries() : []
+    //   ),
+    // });
 
     throw new Error(
       `[postFetch] Failed to post ${fullUrl} - status: ${res.status} ${
@@ -175,15 +175,15 @@ const postFetch = async (url, body, headers = {}) => {
       return t;
     });
 
-  console.log("[postFetch] success:", {
-    url: fullUrl,
-    status: res.status,
-    durationMs: duration,
-    bodyPreview:
-      typeof successBody === "string"
-        ? successBody.slice(0, 200)
-        : JSON.stringify(successBody).slice(0, 200),
-  });
+  // console.log("[postFetch] success:", {
+  //   url: fullUrl,
+  //   status: res.status,
+  //   durationMs: duration,
+  //   bodyPreview:
+  //     typeof successBody === "string"
+  //       ? successBody.slice(0, 200)
+  //       : JSON.stringify(successBody).slice(0, 200),
+  // });
 
   return await res.json();
 };
