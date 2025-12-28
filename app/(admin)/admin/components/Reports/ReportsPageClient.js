@@ -76,6 +76,15 @@ const ReportsPageClient = ({ initialFilter, token, prefetchedData }) => {
 
       let finalData = result.full_reports || result;
 
+      if (!pathname.startsWith("/admin/users-list/")) {
+        // اصلاح نام فیلدها برای ادمین
+        finalData = {
+          ...finalData,
+          totla_tickets_SLA: finalData.total_tickets_SLA,
+          totla_tickets: finalData.total_tickets,
+        };
+      }
+
       if (
         pathname.startsWith("/admin/users-list/") &&
         pathname.endsWith("/reports")
