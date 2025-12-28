@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ticket from "@/public/images/svgs/ticket.svg";
 
-const ReportsBannerTop = ({ data }) => {
+const ReportsBannerTop = ({ data, isUserView }) => {
   const topItems = [
     {
       value: data.total_response_callrequests,
@@ -35,25 +35,27 @@ const ReportsBannerTop = ({ data }) => {
         </div>
       </div>
 
-      <div className="flex gap-x-[5px]">
-        {topItems.map((item, idx) => (
-          <div
-            key={idx}
-            className={`flex flex-col items-center justify-center gap-y-[7px] w-[65px] h-[65px] rounded-[7px]`}
-            style={{
-              backgroundColor: item.bg,
-              color: item.textColor,
-            }}
-          >
-            <span className="flex h-[23px] font-extrabold text-2xl/[33.6px]">
-              {item.value}
-            </span>
-            <span className="inline-block w-10 mx-auto font-medium text-[5px]/[7px] tracking-[-0.12px]">
-              {item.label}
-            </span>
-          </div>
-        ))}
-      </div>
+      {!isUserView && (
+        <div className="flex gap-x-[5px]">
+          {topItems.map((item, idx) => (
+            <div
+              key={idx}
+              className={`flex flex-col items-center justify-center gap-y-[7px] w-[65px] h-[65px] rounded-[7px]`}
+              style={{
+                backgroundColor: item.bg,
+                color: item.textColor,
+              }}
+            >
+              <span className="flex h-[23px] font-extrabold text-2xl/[33.6px]">
+                {item.value}
+              </span>
+              <span className="inline-block w-10 mx-auto font-medium text-[5px]/[7px] tracking-[-0.12px]">
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -131,7 +131,7 @@ const ReportsPageClient = ({ initialFilter, token, prefetchedData }) => {
         onFilterChange={setFilter}
         onCustomDate={setCustomRange}
       />
-      <ReportsBanner data={data} />
+      <ReportsBanner data={data} isUserView={pathname.startsWith("/admin/users-list/")} />
     </>
   );
 };
