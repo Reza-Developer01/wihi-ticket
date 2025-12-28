@@ -31,11 +31,13 @@ const MessagesHead = async ({
     <div className="flex items-center justify-between mb-[15px]">
       <div className="flex flex-col gap-y-[7px] w-full">
         <div className="flex items-center justify-between w-full">
-          <ChangeAgentButton
-            hasPermission={hasPermission}
-            agents={agents}
-            ticket_number={ticket_number}
-          />
+          {status !== "closed" && (
+            <ChangeAgentButton
+              hasPermission={hasPermission}
+              agents={agents}
+              ticket_number={ticket_number}
+            />
+          )}
 
           {status !== "closed" && (
             <ChangeStatusButton
