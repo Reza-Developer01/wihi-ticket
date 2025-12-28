@@ -12,19 +12,28 @@ const ReportsChartClient = ({ agentId, headers }) => {
   const [data, setData] = useState(null);
 
   const fetchData = async (filterValue, range = {}) => {
-    let url = `reports/chart/${agentId}?filter=${filterValue}`;
+    let effectiveFilter = "custom";
 
+    let url = `reports/chart/${agentId}?filter=${effectiveFilter}`;
+
+    // فقط وقتی خود فیلتر custom است، تاریخ بفرست
     if (filterValue === "custom" && range.from && range.to) {
       const fromISO = range.from.toISOString().split("T")[0];
       const toISO = range.to.toISOString().split("T")[0];
       url += `&from=${fromISO}&to=${toISO}`;
     }
 
+    console.log("🟢 FINAL URL:", url);
+
     const result = await getFetch(url, headers);
     setData(result.agents);
   };
 
   useEffect(() => {
+    console.log("🔵 useEffect TRIGGERED", {
+      filter,
+      customRange,
+    });
     fetchData(filter, customRange);
   }, [filter, customRange]);
 
