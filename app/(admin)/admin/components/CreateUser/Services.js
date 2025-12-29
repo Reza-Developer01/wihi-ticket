@@ -139,9 +139,9 @@ const Services = ({
           <div className="custom-shadow absolute top-[50px] right-0 left-0 bg-white border border-[#EFF0F6] rounded-[10px] z-10 max-h-60 overflow-y-auto">
             <ul className="divide-y divide-[#EFF0F6] text-sm text-[#8C8C8C]">
               {services.length ? (
-                services.map((item) => (
+                services.map((item, index) => (
                   <li
-                    key={item.id}
+                    key={index}
                     onClick={() => toggleService(item)}
                     className={`flex items-center justify-center gap-x-2 py-3 cursor-pointer hover:text-[#1A1C1E] ${
                       selected.some((s) => s.id === item.id)

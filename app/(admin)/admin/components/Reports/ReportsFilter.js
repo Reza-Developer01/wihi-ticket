@@ -5,12 +5,13 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const ReportsFilter = ({ currentFilter, onFilterChange, onCustomDate }) => {
   const [range, setRange] = useState([]);
   const [showCustom, setShowCustom] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleClick = (id) => {
     if (typeof onFilterChange === "function") {
@@ -79,7 +80,7 @@ const ReportsFilter = ({ currentFilter, onFilterChange, onCustomDate }) => {
 
         {pathname.startsWith("/admin/users-list/") &&
           pathname.endsWith("/reports") && (
-            <Link href="/">
+            <Link href="" onClick={() => router.back()}>
               <svg className="w-6 h-6 text-[#1A1C1E]">
                 <use href="#arrow-narrow-left" />
               </svg>
