@@ -39,14 +39,14 @@ const ReportsBannerBottom = ({ data, isUserView }) => {
           width: "w-[66px]",
         },
         {
-          value: data.in_progress_tickets,
+          value: data.open_tickets,
           label: "تعداد کل تیکت های منتظـــــــــــــر پاسخ",
           bg: "#219E9E1A",
           textColor: "#29B2B2",
           width: "w-[66px]",
         },
         {
-          value: data.open_tickets,
+          value: data.in_progress_tickets,
           label: "تعداد کل تیکت هـــــای باز",
           bg: "#219E9E1A",
           textColor: "#29B2B2",
@@ -74,7 +74,7 @@ const ReportsBannerBottom = ({ data, isUserView }) => {
           width: "w-[66px]",
         },
         {
-          value: data.callـqueue_callrequets,
+          value: data.is_progress_callrequets,
           label: "تعداد کل درخواست تماس تلفنـــــــی باز",
           bg: "#219E9E1A",
           textColor: "#29B2B2",

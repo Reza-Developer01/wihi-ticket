@@ -13,6 +13,7 @@ import {
 } from "recharts";
 
 const TicketChart = ({ ticket }) => {
+  console.log(ticket);
   if (!ticket || !Array.isArray(ticket) || ticket.length === 0) return null;
 
   const t = ticket[0] ?? {};
@@ -20,12 +21,11 @@ const TicketChart = ({ ticket }) => {
   const data = [
     { name: "پاسخ", value: Number(t.tickets_answered ?? 0) },
     { name: "بسته شده", value: Number(t.tickets_closed ?? 0) },
-    { name: "هدایت شده به کارشناس", value: Number(t.tickets_guided ?? 0) },
+    { name: "هدایت شده به کارشناس", value: Number(t.tickets_guided_to_agent ?? 0) },
     {
       name: "هدایت شده توسط کارشناس",
-      value: Number(t.tickets_guided_status ?? 0),
+      value: Number(t.tickets_guided_by_agent ?? 0),
     },
-    { name: "تغییر وضعیت داده شده", value: Number(t.tickets_in_progress ?? 0) },
     { name: "تعداد کل", value: Number(t.total_replied_tickets_count ?? 0) },
   ];
 

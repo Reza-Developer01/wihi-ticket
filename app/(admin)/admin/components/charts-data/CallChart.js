@@ -13,6 +13,7 @@ import {
 } from "recharts";
 
 const CallChart = ({ call }) => {
+  console.log(call);
   if (!call || call.length === 0) return null;
 
   const c = call[0];
@@ -20,8 +21,8 @@ const CallChart = ({ call }) => {
   const data = [
     { name: "پاسخ", value: c.callrequests_answered },
     { name: "بسته شده", value: c.callrequests_closed },
-    { name: "هدایت شده به کارشناس", value: c.callrequests_guided },
-    { name: "هدایت شده توسط کارشناس", value: c.callrequests_guided_status },
+    { name: "هدایت شده به کارشناس", value: c.tickets_guided_to_agent },
+    { name: "هدایت شده توسط کارشناس", value: c.tickets_guided_by_agent },
     { name: "تعداد کل", value: c.total_replied_callrequets_count },
   ];
 
