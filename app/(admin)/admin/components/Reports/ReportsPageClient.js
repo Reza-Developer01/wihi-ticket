@@ -29,7 +29,7 @@ const ReportsPageClient = ({ initialFilter, token, prefetchedData }) => {
       // --- ReportsBannerTop ---
       total_response_callrequests: customer.total_response_callrequests,
       total_response_ticket: customer.total_response_tickets,
-      average_combined_response_time: `میانگین پاسخگویی تماس: ${customer.average_callrequest_response_time} / میانگین پاسخگویی تیکت: ${customer.average_ticket_response_time}`,
+      average_combined_response_time: `میانگین پاسخگویی تماس: ${customer.average_callrequest_response_time} میانگین پاسخگویی تیکت: ${customer.average_ticket_response_time}`,
 
       // --- ReportsBannerBottom ---
       total_callrequests: customer.total_callrequests,
