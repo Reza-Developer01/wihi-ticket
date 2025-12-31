@@ -21,6 +21,8 @@ const BackButton = () => {
         return router.replace("/");
       case `/admin/agents-list`:
         return router.replace("/");
+      case `/admin/users-list`:
+        return router.replace("/");
     }
 
     router.back();
