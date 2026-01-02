@@ -21,6 +21,7 @@ const setAuthCookies = async (tokens) => {
     const refreshPayload = decodeJwt(tokens.refresh);
 
     const now = Math.floor(Date.now() / 1000);
+
     const accessMaxAge = accessPayload?.exp
       ? accessPayload.exp - now + 60
       : 3600;
@@ -40,24 +41,30 @@ const setAuthCookies = async (tokens) => {
       sameSite: isSecure ? "none" : "lax",
     };
 
-    cookieStore.set("access_token", tokens.access, {
-      ...cookieOptions,
-      maxAge: accessMaxAge,
-    });
+    if (tokens.access) {
+      cookieStore.set("access_token", tokens.access, {
+        ...cookieOptions,
+        maxAge: accessMaxAge,
+      });
+    }
 
-    cookieStore.set("refresh_token", tokens.refresh, {
-      ...cookieOptions,
-      maxAge: refreshMaxAge,
-    });
+    if (tokens.refresh) {
+      cookieStore.set("refresh_token", tokens.refresh, {
+        ...cookieOptions,
+        maxAge: refreshMaxAge,
+      });
+    }
 
-    cookieStore.set("role", tokens.user?.role || "", {
-      path: "/",
-      secure: isSecure,
-      sameSite: isSecure ? "none" : "lax",
-      maxAge: 3600,
-    });
+    if (tokens.user?.role) {
+      cookieStore.set("role", tokens.user.role, {
+        path: "/",
+        secure: isSecure,
+        sameSite: isSecure ? "none" : "lax",
+        maxAge: 7 * 24 * 3600,
+      });
+    }
   } catch (err) {
-    console.error("--- [DEBUG ERROR] CRASH IN setAuthCookies:", err);
+    console.error("--- [COOKIE SET ERROR] ---", err.message);
   }
 };
 
@@ -152,8 +159,6 @@ const refreshToken = async () => {
     const data = await postFetch("token/refresh/", { refresh });
 
     if (data.access) {
-      setAuthCookies({ access: data.access, refresh });
-
       return data.access;
     }
   } catch (e) {

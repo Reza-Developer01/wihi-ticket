@@ -72,22 +72,20 @@ async function internalRefreshToken() {
       refresh = cookieStore.get("refresh_token")?.value;
     }
 
-    const options = {
+    if (!refresh) return null;
+
+    const response = await fetch(`${BASE_URL}/token/refresh/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    };
-
-    if (refresh) {
-      options.body = JSON.stringify({ refresh });
-    }
-
-    const response = await fetch(`${BASE_URL}/token/refresh/`, options);
+      body: JSON.stringify({ refresh }),
+    });
 
     if (!response.ok) return null;
 
     const data = await response.json();
-    return data.access || data.token || null;
+    const newToken = data.access || data.token;
+
+    return newToken;
   } catch (e) {
     return null;
   }

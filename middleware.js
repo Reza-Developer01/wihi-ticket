@@ -1,55 +1,59 @@
 import { NextResponse } from "next/server";
 
-export function middleware(req) {
-  const token = req.cookies.get("refresh_token")?.value;
+export async function middleware(req) {
+  const { pathname } = req.nextUrl;
+  const accessToken = req.cookies.get("access_token")?.value;
+  const refreshToken = req.cookies.get("refresh_token")?.value;
   const role = req.cookies.get("role")?.value;
-  const pathname = req.nextUrl.pathname;
 
-  // --- 1. NOT LOGGED IN ---
-  if (!token) {
+  let response = NextResponse.next();
+  if (!accessToken && refreshToken) {
+    try {
+      const refreshRes = await fetch(
+        "http://preview.kft.co.com/ticket/api/token/refresh/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refresh: refreshToken }),
+        }
+      );
+
+      if (refreshRes.ok) {
+        const data = await refreshRes.json();
+
+        response.cookies.set("access_token", data.access, {
+          httpOnly: true,
+          path: "/",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 3600,
+        });
+      }
+    } catch (error) {
+      console.error("Middleware Silent Refresh Error:", error);
+    }
+  }
+
+  if (!refreshToken) {
     if (!pathname.startsWith("/auth")) {
       return NextResponse.redirect(new URL("/auth", req.url));
     }
-    return NextResponse.next();
+    return response;
   }
 
-  // --- 2. ADMIN RULES ---
   if (role === "admin") {
-    if (pathname === "/") {
+    if (pathname === "/")
       return NextResponse.redirect(new URL("/admin", req.url));
-    }
-    return NextResponse.next();
+    return response;
   }
 
-  // --- 3. AGENT RULES (only /agent allowed) ---
   if (role === "agent") {
-    if (!pathname.startsWith("/agent")) {
+    if (!pathname.startsWith("/agent"))
       return NextResponse.redirect(new URL("/agent", req.url));
-    }
-    return NextResponse.next();
+    return response;
   }
 
-  // --- 4. CUSTOMER RULES ---
-  if (pathname.startsWith("/auth")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  if (pathname.startsWith("/admin")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  if (
-    pathname.startsWith("/main") ||
-    pathname.startsWith("/call") ||
-    pathname.startsWith("/requests") ||
-    pathname.startsWith("/faqs")
-  ) {
-    if (role !== "customer") {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-  }
-
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
