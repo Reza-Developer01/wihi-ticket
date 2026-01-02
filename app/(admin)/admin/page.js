@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 const page = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("access_token")?.value;
 
   const data = await getFetch("reports/", {

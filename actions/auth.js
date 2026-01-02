@@ -12,51 +12,53 @@ const decodeJwt = (token) => {
   }
 };
 
-const setAuthCookies = (tokens) => {
-  const cookieStore = cookies();
-  console.log(tokens);
+const setAuthCookies = async (tokens) => {
+  try {
+    const cookieStore = await cookies();
+    const headerList = await headers();
 
-  const accessPayload = decodeJwt(tokens.access);
-  const refreshPayload = decodeJwt(tokens.refresh);
+    const accessPayload = decodeJwt(tokens.access);
+    const refreshPayload = decodeJwt(tokens.refresh);
 
-  const now = Math.floor(Date.now() / 1000);
-  const accessMaxAge = accessPayload?.exp ? accessPayload.exp - now : 3600;
-  const refreshMaxAge = refreshPayload?.exp
-    ? refreshPayload.exp - now
-    : 7 * 24 * 3600;
+    const now = Math.floor(Date.now() / 1000);
+    const accessMaxAge = accessPayload?.exp
+      ? accessPayload.exp - now + 60
+      : 3600;
+    const refreshMaxAge = refreshPayload?.exp
+      ? refreshPayload.exp - now
+      : 7 * 24 * 3600;
 
-  // بررسی اینکه سرور HTTPS واقعی دارد یا نه
-  const isSecure =
-    process.env.NODE_ENV === "production" &&
-    (process.env.USE_HTTPS === "true" ||
-      headers().get("x-forwarded-proto") === "https");
+    const isSecure =
+      process.env.NODE_ENV === "production" &&
+      (process.env.USE_HTTPS === "true" ||
+        headerList.get("x-forwarded-proto") === "https");
 
-  const cookieOptions = {
-    httpOnly: true,
-    path: "/",
-    secure: isSecure,
-    sameSite: isSecure ? "none" : "lax",
-  };
+    const cookieOptions = {
+      httpOnly: true,
+      path: "/",
+      secure: isSecure,
+      sameSite: isSecure ? "none" : "lax",
+    };
 
-  // Access Token
-  cookieStore.set("access_token", tokens.access, {
-    ...cookieOptions,
-    maxAge: accessMaxAge,
-  });
+    cookieStore.set("access_token", tokens.access, {
+      ...cookieOptions,
+      maxAge: accessMaxAge,
+    });
 
-  // Refresh Token
-  cookieStore.set("refresh_token", tokens.refresh, {
-    ...cookieOptions,
-    maxAge: refreshMaxAge,
-  });
+    cookieStore.set("refresh_token", tokens.refresh, {
+      ...cookieOptions,
+      maxAge: refreshMaxAge,
+    });
 
-  // Role
-  cookieStore.set("role", tokens.user?.role || "", {
-    path: "/",
-    secure: isSecure,
-    sameSite: isSecure ? "none" : "lax",
-    maxAge: 3600,
-  });
+    cookieStore.set("role", tokens.user?.role || "", {
+      path: "/",
+      secure: isSecure,
+      sameSite: isSecure ? "none" : "lax",
+      maxAge: 3600,
+    });
+  } catch (err) {
+    console.error("--- [DEBUG ERROR] CRASH IN setAuthCookies:", err);
+  }
 };
 
 const login = async (state, formData) => {
@@ -103,14 +105,15 @@ const checkOtp = async (state, formData) => {
       return { status: "error", message: data.non_field_errors[0] };
     }
 
-    setAuthCookies(data.tokens);
+    await setAuthCookies(data.tokens);
 
     const isSecure =
       process.env.NODE_ENV === "production" &&
       (process.env.USE_HTTPS === "true" ||
         headers().get("x-forwarded-proto") === "https");
 
-    cookies().set("role", data.user.role, {
+    const cookieStore = await cookies();
+    cookieStore.set("role", data.user.role, {
       path: "/",
       secure: isSecure,
       sameSite: isSecure ? "none" : "lax",
@@ -140,37 +143,27 @@ const checkOtp = async (state, formData) => {
 };
 
 const refreshToken = async () => {
-  const cookieStore = cookies();
-  let refresh = cookieStore.get("refresh_token")?.value;
-  console.log(refresh);
-
-  if (!refresh) {
-    const raw = headers().get("cookie") || "";
-    refresh = raw
-      .split("; ")
-      .find((c) => c.startsWith("refresh_token="))
-      ?.split("=")[1];
-  }
+  const cookieStore = await cookies();
+  const refresh = cookieStore.get("refresh_token")?.value;
 
   if (!refresh) return null;
 
-  const data = await postFetch("token/refresh/", { refresh });
-  console.log(data);
+  try {
+    const data = await postFetch("token/refresh/", { refresh });
 
-  if (data.access) {
-    setAuthCookies({
-      access: data.access,
-      refresh,
-    });
+    if (data.access) {
+      setAuthCookies({ access: data.access, refresh });
 
-    return data.access;
+      return data.access;
+    }
+  } catch (e) {
+    return null;
   }
-
   return null;
 };
 
 const getMe = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   let token = cookieStore.get("access_token")?.value;
 
   if (!token) {
