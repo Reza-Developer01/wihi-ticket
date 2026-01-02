@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
 const BASE_URL = "http://preview.kft.co.com/ticket/api";
 
 const getFetch = async (url, headers = {}, isRetry = false) => {
@@ -66,33 +64,31 @@ const postFetch = async (url, body, headers = {}, isRetry = false) => {
 
 async function internalRefreshToken() {
   try {
-    const cookieStore = await cookies();
-    const refresh = cookieStore.get("refresh_token")?.value;
+    let refresh = null;
 
-    if (!refresh) {
-      return null;
+    if (typeof window === "undefined") {
+      const { cookies } = await import("next/headers");
+      const cookieStore = await cookies();
+      refresh = cookieStore.get("refresh_token")?.value;
     }
 
-    const response = await fetch(`${BASE_URL}/token/refresh/`, {
+    const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh: refresh }),
-    });
+      credentials: "include",
+    };
 
-    if (!response.ok) {
-      return null;
+    if (refresh) {
+      options.body = JSON.stringify({ refresh });
     }
+
+    const response = await fetch(`${BASE_URL}/token/refresh/`, options);
+
+    if (!response.ok) return null;
 
     const data = await response.json();
-    const newToken = data.access || data.token;
-
-    if (newToken) {
-      return newToken;
-    }
-
-    return null;
+    return data.access || data.token || null;
   } catch (e) {
-    console.error("--- [DEBUG] Error in internalRefreshToken:", e);
     return null;
   }
 }
